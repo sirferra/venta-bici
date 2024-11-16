@@ -1,0 +1,21 @@
+services:
+  db:
+    image: mysql
+    # command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - '33006:3306'
+    expose:
+      - 33006
+    volumes:
+      - ventas-bicicletas:/var/lib/mysql
+    networks:
+      - ventas-bicicletas
+volumes:
+  ventas-bicicletas:
+    
+networks:
+  ventas-bicicletas:
+    name: ventas-bicicletas
