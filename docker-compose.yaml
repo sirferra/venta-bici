@@ -6,9 +6,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 1234
     ports:
-      - '33006:3306'
+      - '3306:3306'
     expose:
-      - 33006
+      - 3306
     volumes:
       - ventas-bicicletas:/var/lib/mysql
     networks:
