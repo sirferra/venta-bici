@@ -10,34 +10,23 @@ package persona;
  */
 public class Cliente extends Persona{
     //Atributos
-    String codigo;
-    String cuil;
+    private String cuil;
     
     //Constructores
     public Cliente() {
         super();
     }
     
-    public Cliente(String codigo, String cuil) {
-        this.codigo = codigo;
+    public Cliente(String cuil) {
         this.cuil = cuil;
     }
 
-    public Cliente(String codigo, String cuil, String nombre, String apellido, int dni, String telefono, String email) {
+    public Cliente(String cuil, String nombre, String apellido, int dni, String telefono, String email) {
         super(nombre, apellido, dni, telefono, email);
-        this.codigo = codigo;
         this.cuil = cuil;
     }
 
     //Getters y Setters
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
     public String getCuil() {
         return cuil;
     }
