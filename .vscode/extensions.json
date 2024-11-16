@@ -7,7 +7,8 @@
 		"vscjava.vscode-java-pack",
 		"vscjava.vscode-java-debug",
 		"vscjava.vscode-maven",
-		"vscjava.vscode-java-dependency"
+		"vscjava.vscode-java-dependency",
+		"hediet.vscode-drawio"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
