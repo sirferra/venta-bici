@@ -4,6 +4,11 @@
  */
 package persona;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import repositorio.Conexion;
+
 /**
  *
  * @author facundo.cuffia
@@ -33,6 +38,40 @@ public class Cliente extends Persona{
 
     public void setCuil(String cuil) {
         this.cuil = cuil;
+    }
+
+    public static List<Cliente> getAll(){
+        try {
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Cliente");
+            return Cliente.fromResultSet(resultados);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public static List<Cliente> fromResultSet(ResultSet resultados) {
+        try {
+            List<Cliente> clientes = new java.util.ArrayList<>();
+            while (resultados.next()) {
+                String cuil = resultados.getString("cuil");
+                String nombre = resultados.getString("nombre");
+                String apellido = resultados.getString("apellido");
+                int dni = resultados.getInt("dni");
+                String telefono = resultados.getString("telefono");
+                String email = resultados.getString("email");
+                clientes.add(new Cliente(cuil, nombre, apellido, dni, telefono, email));
+            }
+            return clientes;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String toString() {
+        return "Cliente{" + "cuil=" + cuil + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
     }
 
 }

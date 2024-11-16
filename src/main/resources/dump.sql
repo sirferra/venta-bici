@@ -7,7 +7,7 @@ CREATE TABLE Cliente (
     telefono VARCHAR(20),
     email VARCHAR(255) UNIQUE,
     dni VARCHAR(20) UNIQUE,
-    cuit VARCHAR(50)
+    cuil VARCHAR(50)
 );
 
 CREATE TABLE Vendedor (
@@ -20,6 +20,15 @@ CREATE TABLE Vendedor (
     dni VARCHAR(20) UNIQUE,
     cuit VARCHAR(50),
     sucursal VARCHAR(255)
+);
+
+CREATE TABLE Proveedor (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255),
+    telefono VARCHAR(20),
+    email VARCHAR(255) UNIQUE,
+    cuit VARCHAR(50)
 );
 
 CREATE TABLE Presupuesto (
@@ -62,7 +71,7 @@ CREATE TABLE Producto (
     modelo_id INT NOT NULL,
     FOREIGN KEY (categoria_id) REFERENCES Categoria(id) ON DELETE CASCADE,
     FOREIGN KEY (modelo_id) REFERENCES Modelo(id) ON DELETE CASCADE,
-    FOREIGN KEY (proveedor) REFERENCES Proveedor(id) ON DELETE CASCADE
+    FOREIGN KEY (proveedor_id) REFERENCES Proveedor(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Pedido (
@@ -71,7 +80,7 @@ CREATE TABLE Pedido (
     cliente_id INT NOT NULL,
     vendedor_id INT NOT NULL,
     total DECIMAL(10, 2) NOT NULL, 
-    FOREIGN KEY (cliente_id) REFERENCES Cliente(id) ON DELETE CASCADE
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id) ON DELETE CASCADE,
     FOREIGN KEY (vendedor_id) REFERENCES Vendedor(id) ON DELETE CASCADE
 );
 
@@ -80,7 +89,7 @@ CREATE TABLE DetallePedido (
     pedido_id INT NOT NULL,
     producto_id INT NOT NULL,
     cantidad INT NOT NULL,
-    precio DECIMAL(10, 2) NOT NULL,
+    precio DOUBLE NOT NULL,
     FOREIGN KEY (pedido_id) REFERENCES Pedido(id) ON DELETE CASCADE,
     FOREIGN KEY (producto_id) REFERENCES Producto(id) ON DELETE CASCADE
 );
