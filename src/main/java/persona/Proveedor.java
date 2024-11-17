@@ -135,6 +135,8 @@ public class Proveedor extends Persona {
         }
     }
 
+
+        
     public static List<Proveedor> fromResultSet(ResultSet resultados) {
         try {
             List<Proveedor> proveedores = new java.util.ArrayList<>();

@@ -5,6 +5,7 @@
 package producto;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
 
 import repositorio.Conexion;
@@ -38,6 +39,26 @@ public class Categoria {
         this.nombre = nombre;
     }
 
+    public static List<Categoria> getAll() {
+        try {
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Categoria");
+            return Categoria.fromResultSet(resultados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public static List<Categoria> buscarPorNombre(String nombre) {
+        try {
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Categoria WHERE nombre = '" + nombre + "'");
+            return Categoria.fromResultSet(resultados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    } 
+    
     public static Categoria buscarPorId(int categoria_id) {
         try{
             ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Categoria WHERE categoria_id = '" + categoria_id + "'");
@@ -46,6 +67,48 @@ public class Categoria {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean eliminarCategoria() {
+        try {
+            String query = "DELETE FROM Categoria WHERE categoria_id = ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, getId());
+            Conexion.getInstance().executeQueryWithParams(query, params);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean crearCategoria() {
+        try {
+            String query = "INSERT INTO Categoria(categoria_id, nombre) VALUES(?, ?)";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, getId());
+            params.put(2, getNombre());
+            Conexion.getInstance().executeQueryWithParams(query, params);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean modificarCategoria() {
+        try {
+            String query = "UPDATE Categoria SET categoria_id = ?, nombre = ? WHERE categoria_id = ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, getId());
+            params.put(2, getNombre());
+            params.put(3, getId());
+            Conexion.getInstance().executeQueryWithParams(query, params);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
     
@@ -63,10 +126,6 @@ public class Categoria {
             return null;
         }
     }
-    
-    
-    
-    
     
     
 }
