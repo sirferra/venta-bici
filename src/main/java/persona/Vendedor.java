@@ -192,6 +192,23 @@ public class Vendedor extends Persona {
             return false;
         }
     }
+
+    public boolean eliminarVendedorPorCuit() {
+        try {
+            Vendedor vendedorExistente = buscarPorCuit(getCuit());
+            if (vendedorExistente == null) {
+                throw new Exception("El vendedor no existe");
+            }
+            String query = "DELETE FROM Vendedor WHERE cuit = ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, getCuit());
+            Conexion.getInstance().executeQueryWithParams(query, params);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     
     // Convierto el resultado de las consultas en una lista objeto
 

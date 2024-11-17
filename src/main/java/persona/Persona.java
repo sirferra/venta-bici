@@ -5,7 +5,7 @@
 package persona;
 
 /**
- *
+ * Esta clase no impacta en la Base de datos
  * @author facundo.cuffia
  */
 public abstract class Persona {
