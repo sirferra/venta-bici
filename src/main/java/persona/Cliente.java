@@ -155,4 +155,7 @@ public class Cliente extends Persona{
         return "Cliente{" + "cuil=" + cuil + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
     }
 
+    public Object[] tObject() {
+        return new Object[]{cuil, getNombre(), getApellido(), getDni(), getTelefono(), getEmail()};
+    }
 }
