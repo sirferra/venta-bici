@@ -4,6 +4,12 @@
  */
 package producto;
 
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.List;
+
+import repositorio.Conexion;
+
 /**
  *
  * @author P4rzival
@@ -32,8 +38,34 @@ public class Marca {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public static Marca buscarPorId(int marca_id) {
+        try {
+            String sql = "SELECT * FROM marca WHERE marca_id = ?";
+            HashMap<Integer, Object> marca = new HashMap<>();
+            marca.put(1, marca_id);
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(sql, marca);
+            return Marca.fromResultSet(resultados).get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
-    
+    public static List<Marca> fromResultSet(ResultSet resultados) {
+        try {
+            List<Marca> marcas = new java.util.ArrayList<>();
+            while (resultados.next()) {
+                int id = resultados.getInt("marca_id");
+                String nombre = resultados.getString("nombre");
+                marcas.add(new Marca(id, nombre));
+            }
+            return marcas;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }   
 
 
 
