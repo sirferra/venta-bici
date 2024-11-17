@@ -6,8 +6,10 @@ package GUI;
 
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+
+import com.formdev.flatlaf.FlatDarculaLaf;
+
 import persona.Cliente;
-import utils.Tools;
 
 /**
  *
@@ -31,6 +33,7 @@ public class Main extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         panelCliente = new javax.swing.JPanel();
