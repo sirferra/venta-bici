@@ -95,6 +95,37 @@ public class Vendedor extends Persona {
         return null;
     }
     
+    
+    // Busca por nombre, apellido o ambos
+    public static List<Vendedor> buscarPorNombreApellido(String nombre, String apellido) {
+    try {
+
+        // Consulta base
+        String query = "SELECT * FROM Vendedor WHERE 1=1";
+        HashMap<Integer, Object> params = new HashMap<>();
+        int index = 1;
+
+        // Si el nombre esta vacio o nulo
+        if (nombre != null && !nombre.isEmpty()) {
+            query += " AND nombre LIKE ?";
+            params.put(index++, "%" + nombre + "%");
+        }
+
+        // Si el apellido esta vacio o nulo
+        if (apellido != null && !apellido.isEmpty()) {
+            query += " AND apellido LIKE ?";
+            params.put(index++, "%" + apellido + "%");
+        }
+
+        // Arma la consulta con la base y las condiciones
+        ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+        return Vendedor.fromResultSet(resultados);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+    
     // Crea un vendedor usando el objeto actual
 
     public boolean crearVendedor() {
