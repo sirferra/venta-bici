@@ -5,6 +5,7 @@
 package producto;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
 
 import repositorio.Conexion;
@@ -31,6 +32,107 @@ public class Modelo {
         this.marca = Marca.buscarPorId(marca_id);
     }
 
+    // crud 
+
+    public boolean crearModelo() {
+        try {
+            String sql = "INSERT INTO Modelo (nombre, marca_id) VALUES (?, ?)";
+            HashMap<Integer, Object> modelo = new HashMap<>();
+            modelo.put(1, getNombre());
+            modelo.put(2, getMarca().getId());
+            Conexion.getInstance().executeQueryWithParams(sql, modelo);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static List<Modelo> getAll() {
+        try {
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Modelo");
+            return Modelo.fromResultSet(resultados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Modelo buscarPorId(int modelo_id) {
+        try{
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Modelo WHERE modelo_id = '" + modelo_id + "'");
+            List<Modelo> modelos = Modelo.fromResultSet(resultados);
+            return modelos.isEmpty() ? null : modelos.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public static List<Modelo> buscarPorMarca(int marca_id) {
+        try{
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Modelo WHERE marca_id = '" + marca_id + "'");
+            return Modelo.fromResultSet(resultados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Modelo> buscarPorNombre(String nombre) {
+        try {
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Modelo WHERE nombre = '" + nombre + "'");
+            return Modelo.fromResultSet(resultados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean actualizarModelo() {
+        try {
+            String sql = "UPDATE Modelo SET nombre = ?, marca_id = ? WHERE modelo_id = ?";
+            HashMap<Integer, Object> modelo = new HashMap<>();
+            modelo.put(1, getNombre());
+            modelo.put(2, getMarca().getId());
+            modelo.put(3, getId());
+            Conexion.getInstance().executeQueryWithParams(sql, modelo);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarModelo() {
+        try {
+            String sql = "DELETE FROM Modelo WHERE modelo_id = ?";
+            HashMap<Integer, Object> modelo = new HashMap<>();
+            modelo.put(1, getId());
+            Conexion.getInstance().executeQueryWithParams(sql, modelo);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static List<Modelo> fromResultSet(ResultSet resultados) {
+        try {
+            List<Modelo> modelos = new java.util.ArrayList<>();
+            while (resultados.next()) {
+                int id = resultados.getInt("modelo_id");
+                String nombre = resultados.getString("nombre");
+                int marca_id = resultados.getInt("marca_id");
+                modelos.add(new Modelo(id, nombre, marca_id));
+            }
+            return modelos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public int getId() {
         return id;
     }
@@ -55,32 +157,5 @@ public class Modelo {
         this.marca = marca;
     }
 
-    public static Modelo buscarPorId(int modelo_id) {
-        try{
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Modelo WHERE modelo_id = '" + modelo_id + "'");
-            List<Modelo> modelos = Modelo.fromResultSet(resultados);
-            return modelos.isEmpty() ? null : modelos.get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
-    public static List<Modelo> fromResultSet(ResultSet resultados) {
-        try {
-            List<Modelo> modelos = new java.util.ArrayList<>();
-            while (resultados.next()) {
-                int id = resultados.getInt("modelo_id");
-                String nombre = resultados.getString("nombre");
-                int marca_id = resultados.getInt("marca_id");
-                modelos.add(new Modelo(id, nombre, marca_id));
-            }
-            return modelos;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
     
 }
