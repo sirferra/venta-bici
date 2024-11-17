@@ -9,6 +9,7 @@ package persona;
  * @author facundo.cuffia
  */
 public abstract class Persona {
+    private int id;
     //Atributos
     private String nombre;
     private String apellido;
@@ -28,7 +29,19 @@ public abstract class Persona {
         this.telefono = telefono;
         this.email = email;
     }
+    
+    public Persona(int id, String nombre, String apellido, int dni, String telefono, String email) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.telefono = telefono;
+        this.email = email;
+    }
 
+    public int getId() {
+        return id;
+    }
     
     //Getters y Setters
     public String getNombre() {

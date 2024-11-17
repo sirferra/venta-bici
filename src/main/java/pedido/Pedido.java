@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class Pedido {
     //Atributos
+    private int id;
     private Date fecha;
     private int idCliente; 
     private int idVendedor;
@@ -27,6 +28,18 @@ public class Pedido {
         this.total = total;
     }
     
+    public Pedido(int id, Date fecha, int idCliente, int idVendedor, double total) {
+        this.id = id;
+        this.fecha = fecha;
+        this.idCliente = idCliente;
+        this.idVendedor = idVendedor;
+        this.total = total;
+    }
+    
+    public int getId() {
+        return id;
+    }   
+
     //Getters y Setters
 
     public Date getFecha() {

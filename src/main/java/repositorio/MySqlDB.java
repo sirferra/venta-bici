@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MySqlDB {
     private Connection connection;
@@ -85,5 +87,14 @@ public class MySqlDB {
    public ResultSet executeQuery(String query) throws SQLException {
         Statement stmt = connection.createStatement();
         return stmt.executeQuery(query);
+    }
+
+    public ResultSet executeQueryWithParams(String query, HashMap<Integer, Object> parametros) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(query);
+        for (Map.Entry<Integer, Object> entry : parametros.entrySet()) {
+            ps.setObject(entry.getKey(), entry.getValue());
+        }
+        ps.execute();
+        return ps.getResultSet();
     }
 }
