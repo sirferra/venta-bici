@@ -32,7 +32,7 @@ public class Cliente extends Persona{
         this.cuil = cuil;
     }
 
-    public Cliente(String cuil, int id, String nombre, String apellido, int dni, String telefono, String email) {
+    public Cliente(int id, String cuil, String nombre, String apellido, int dni, String telefono, String email) {
         super(id, nombre, apellido, dni, telefono, email);
         this.cuil = cuil;
     }
@@ -115,11 +115,11 @@ public class Cliente extends Persona{
     return false; // Error durante la operación
     }
 
-
+    //Función para modificar un cliente
     public boolean modificarCliente(){
         try {
             int id = buscarPorDni(getDni()).getId();
-            if(id!=0){
+            if(id==0){
                 throw new Error("El id del cliente no existe");
             }
             String query = "UPDATE Cliente SET cuil = ?, nombre = ?, apellido = ?, dni = ?, telefono = ?, email = ? WHERE id = ?";
@@ -131,7 +131,6 @@ public class Cliente extends Persona{
             params.put(5, getTelefono());
             params.put(6, getEmail());
             params.put(7, id);
-
             Conexion.getInstance().executeQueryWithParams(query, params);
             return true;
         } catch (SQLException e) {
@@ -148,7 +147,7 @@ public class Cliente extends Persona{
             if(id==0){
                 throw new Error("El id del cliente no existe");
             }
-            String query = "DELETE FROM Cliente WHERE id = ?";
+            String query = "DELETE FROM cliente WHERE id = ?";
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, id);
             Conexion.getInstance().executeQueryWithParams(query, params);
@@ -163,42 +162,30 @@ public class Cliente extends Persona{
     public static Cliente buscarPorDni(int dni) {
         try {
             // Realizamos la consulta para obtener el cliente por DNI 
-            String query = "SELECT * FROM Cliente WHERE dni = '" + dni + "'";
-
+            String query = "SELECT * FROM cliente WHERE dni = " + dni;
             // Ejecutamos la consulta y devolvemos el resultado
             ResultSet resultados = Conexion.getInstance().executeQuery(query);
-
-            // Devolvemos el cliente encontrado (si existe)
+            // Devolvemos el cliente encontrado (si existe)El indice de los resultSet arranca en 1
             return Cliente.fromResultSet(resultados).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-    
-    /*public static Cliente buscarPorDni(int dni){
-        try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Cliente WHERE dni = '" + dni + "'");
-            return Cliente.fromResultSet(resultados).get(0);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    */
     
     //Convertir los resultados en una lista de objetos
     public static List<Cliente> fromResultSet(ResultSet resultados) {
         try {
             List<Cliente> clientes = new java.util.ArrayList<>();
             while (resultados.next()) {
+                int id = resultados.getInt("id");
                 String cuil = resultados.getString("cuil");
                 String nombre = resultados.getString("nombre");
                 String apellido = resultados.getString("apellido");
                 int dni = resultados.getInt("dni");
                 String telefono = resultados.getString("telefono");
                 String email = resultados.getString("email");
-                clientes.add(new Cliente(cuil, nombre, apellido, dni, telefono, email));
+                clientes.add(new Cliente(id, cuil, nombre, apellido, dni, telefono, email));
             }
             return clientes;
         } catch (Exception e) {

@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import gui.AgregarCliente;
+import gui.ModificarCliente;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
@@ -122,6 +123,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         btnModificarCliente.setText("Modificar Cliente");
+        btnModificarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarClienteActionPerformed(evt);
+            }
+        });
 
         btnEliminarCliente.setText("Eliminar Cliente");
         btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -491,9 +497,10 @@ public class Main extends javax.swing.JFrame {
     //Eliminar cliente seleccionado de la grilla
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
         
-        /* Obtener la fila seleccionada
+        //Obtener la fila seleccionada
         int fila = dgvClientes.getSelectedRow();
-        if(fila != 0){
+        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
+        if(fila >= 0){
              // Mostrar el mensaje de confirmación
             int respuesta = JOptionPane.showConfirmDialog(
             this,
@@ -504,12 +511,8 @@ public class Main extends javax.swing.JFrame {
             //Interpreto la elección
             if (respuesta == JOptionPane.YES_OPTION) {
                 Cliente cliente = new Cliente();
-                cliente.setCuil(dgvClientes.getValueAt(fila, 0).toString());
-                cliente.setNombre(dgvClientes.getValueAt(fila, 1).toString());
-                cliente.setApellido(dgvClientes.getValueAt(fila, 2).toString());
-                cliente.setDni(Integer.parseInt(dgvClientes.getValueAt(fila, 3).toString()) );
-                cliente.setTelefono(dgvClientes.getValueAt(fila, 4).toString());
-                cliente.setEmail(dgvClientes.getValueAt(fila, 1).toString());
+                //Guardo el dni en el atributo de mi objeto. Se usa en la funcion de eliminarCliente()
+                cliente.setDni(Integer.parseInt(dgvClientes.getValueAt(fila, 3).toString()));              
                 boolean bandera = cliente.eliminarCliente();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -518,8 +521,15 @@ public class Main extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
                 } 
             }
-        }*/
+        }
     }//GEN-LAST:event_btnEliminarClienteActionPerformed
+
+    private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
+        ModificarCliente frmModificarCliente = new ModificarCliente();
+        frmModificarCliente.setLocationRelativeTo(null);
+        frmModificarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frmModificarCliente.show();
+    }//GEN-LAST:event_btnModificarClienteActionPerformed
 
     
     
