@@ -28,6 +28,7 @@ public class MySqlDB {
         }
     }
 
+    //Scripts para montar la base de datos
     private void revisarDB() throws SQLException {
         DatabaseMetaData metaData = this.connection.getMetaData();
         ResultSet rs = metaData.getCatalogs();
@@ -66,7 +67,6 @@ public class MySqlDB {
             System.err.println("Error al leer archivo SQL: " + e.getMessage());
         }
     }
-
     public void migrarDB() throws SQLException {
         try{
             Statement stmt = connection.createStatement();
@@ -84,11 +84,13 @@ public class MySqlDB {
         }
     }
 
+    //Ejecuta una instruccion SQL sin parametros y devuelve un ResultSet
    public ResultSet executeQuery(String query) throws SQLException {
         Statement stmt = connection.createStatement();
         return stmt.executeQuery(query);
     }
-
+    
+    //Ejecuta una instruccion SQL con parametros (provenientes de un hashmap)y devuelve un ResultSet
     public ResultSet executeQueryWithParams(String query, HashMap<Integer, Object> parametros) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(query);
         for (Map.Entry<Integer, Object> entry : parametros.entrySet()) {

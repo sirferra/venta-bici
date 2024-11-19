@@ -150,7 +150,6 @@ public class Venta {
     }
 
     // Métodos auxiliares
-
     public static List<Venta> fromResultSet(ResultSet resultados) {
         try {
             List<Venta> ventas = new java.util.ArrayList<>();
@@ -168,6 +167,7 @@ public class Venta {
             return null;
         }
     }
+    
  /*
     Posible tabla ventas, la imagine para este crud
   * CREATE TABLE Venta (
@@ -178,8 +178,5 @@ public class Venta {
     total DECIMAL(10, 2)
 );
   */
-    
-    
-
     
 }

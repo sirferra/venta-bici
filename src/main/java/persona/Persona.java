@@ -48,6 +48,10 @@ public abstract class Persona {
         return nombre;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
