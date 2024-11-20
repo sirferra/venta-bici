@@ -29,11 +29,12 @@ public class Vendedor extends Persona {
         this.sucursal = sucursal;
     }
 
-    public Vendedor(String cuit, String sucursal, String nombre, String apellido, int dni, String telefono, String email) {
-        super(nombre, apellido, dni, telefono, email);
+    public Vendedor(String cuit, String sucursal, int id, String nombre, String apellido, int dni, String telefono, String email) {
+        super(id, nombre, apellido, dni, telefono, email);
         this.cuit = cuit;
         this.sucursal = sucursal;
     }
+    
     
     //Getters and Setters
     public String getCuit() {
@@ -91,19 +92,6 @@ public class Vendedor extends Persona {
         }
         return null;
     }
-    
-    
-    //Filtrado por DNI
-    public static Vendedor buscarPorDni(int dni) {
-        try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Vendedor WHERE dni = '" + dni + "'");
-            List<Vendedor> vendedores = Vendedor.fromResultSet(resultados);
-            return vendedores.isEmpty() ? null : vendedores.get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    } 
     
     // Busca por nombre, apellido o ambos
     public static List<Vendedor> buscarPorNombreApellido(String nombre, String apellido) {
@@ -180,8 +168,9 @@ public class Vendedor extends Persona {
     // Trae el vendedor por dni ( Como el anterior podria ser por cuit?) y formula el DELETE
     public boolean eliminarVendedor() {
         try {
-            Vendedor vendedorExistente = buscarPorDni(getDni());
-            if (vendedorExistente == null) {
+            //Ejecuto la funcion de busqueda auxiliar y guardo el resultado en id (clave principal de la tabla)
+            int id = buscarPorDni(getDni()).getId();
+            if (id == 0){
                 throw new Exception("El vendedor no existe");
             }
             String query = "DELETE FROM Vendedor WHERE dni = ?";
@@ -211,12 +200,52 @@ public class Vendedor extends Persona {
             return false;
         }
     }*/
+
+    //Buscar por dni auxiliar para eliminar
+    public static Vendedor buscarPorDni(int dni) {
+        try {
+            // Realizamos la consulta para obtener el cliente por DNI 
+            String query = "SELECT * FROM Vendedor WHERE dni = " + dni;
+            // Ejecutamos la consulta y devolvemos el resultado
+            ResultSet resultados = Conexion.getInstance().executeQuery(query);
+            // Devolvemos el cliente encontrado (si existe)
+            return Vendedor.fromResultSet(resultados).get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    } 
     
+    //Buscar por dni auxiliar para modificar
+    public static int buscarPorDni(String dni) {
+        try {
+            // Realizamos la consulta para obtener el cliente por DNI 
+            String query = "SELECT id FROM vendedor WHERE dni = ?";
+            // Utilizamos un parámetro para prevenir SQL Injection
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, dni);
+            // Ejecutamos la consulta y obtenemos el resultado
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+            // Verificamos si existe algún resultado
+            if (resultados.next()) {
+                // Retornamos el ID del cliente
+                return resultados.getInt("id");
+            } else {
+                System.out.println("No se encontró un vendedor con el DNI proporcionado.");
+                return 0; // O algún valor que indique que no se encontró
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0; // Devuelve 0 en caso de error para manejarlo adecuadamente
+        }
+    }
+
     // Convierto el resultado de las consultas en una lista objeto
     public static List<Vendedor> fromResultSet(ResultSet resultados) {
         try {
             List<Vendedor> vendedores = new java.util.ArrayList<>();
             while (resultados.next()) {
+                int id = resultados.getInt("id");
                 String cuit = resultados.getString("cuit");
                 String sucursal = resultados.getString("sucursal");
                 String nombre = resultados.getString("nombre");
@@ -224,7 +253,7 @@ public class Vendedor extends Persona {
                 int dni = resultados.getInt("dni");
                 String telefono = resultados.getString("telefono");
                 String email = resultados.getString("email");
-                vendedores.add(new Vendedor(cuit, sucursal, nombre, apellido, dni, telefono, email));
+                vendedores.add(new Vendedor(cuit, sucursal, id, nombre, apellido, dni, telefono, email));
             }
             return vendedores;
         } catch (Exception e) {

@@ -273,6 +273,11 @@ public class Main extends javax.swing.JFrame {
         jLabel8.setText("DNI:");
 
         btnEliminarVendedor.setText("Eliminar Vendedor");
+        btnEliminarVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarVendedorActionPerformed(evt);
+            }
+        });
 
         btnModificarVendedor.setText("Modificar Vendedor");
 
@@ -535,7 +540,7 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = cliente.eliminarCliente();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    cliente.getAll();
+                    //Colocar metodo para refrescar grilla
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
@@ -598,7 +603,8 @@ public class Main extends javax.swing.JFrame {
         }); 
         }
     }//GEN-LAST:event_pnlVendedoresComponentShown
-
+    
+    //Buscar vendedor por filtros
     private void btnBuscarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVendedorActionPerformed
         //Guardo los valores de los campos de texto para filtrar
         String dni = txtDniVen.getText();
@@ -630,12 +636,44 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarVendedorActionPerformed
 
+    //Crear nuevo vendedor
     private void btnNuevoVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoVendedorActionPerformed
         AgregarVendedor frmAgregarVendedor = new AgregarVendedor();
         frmAgregarVendedor.setLocationRelativeTo(null);
         frmAgregarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frmAgregarVendedor.show();
     }//GEN-LAST:event_btnNuevoVendedorActionPerformed
+
+    //Elimminar vendedor seleccionado de la grilla
+    private void btnEliminarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarVendedorActionPerformed
+        //Obtener la fila seleccionada
+        int fila = dgvVendedores.getSelectedRow();
+        System.out.println(fila);
+        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
+        if(fila >= 0){
+             // Mostrar el mensaje de confirmación
+            int respuesta = JOptionPane.showConfirmDialog(
+            this,
+            "¿Estás seguro de que deseas eliminar al usuario " + Integer.valueOf(dgvVendedores.getValueAt(fila, 3).toString()) + 
+            "?","Confirmar Eliminación", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.WARNING_MESSAGE);
+            //Interpreto la elección
+            if (respuesta == JOptionPane.YES_OPTION) {
+                Vendedor vendedor = new Vendedor();
+                //Guardo el dni en el atributo de mi objeto. Se usa en la funcion de eliminarCliente()
+                vendedor.setDni(Integer.parseInt(dgvVendedores.getValueAt(fila, 3).toString()));              
+                boolean bandera = vendedor.eliminarVendedor();
+                if (bandera) {
+                    JOptionPane.showMessageDialog(this, "Se ha eliminado el vendedor de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    //Colocar metodo para refrescar grilla
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                } 
+            }
+        }
+    }//GEN-LAST:event_btnEliminarVendedorActionPerformed
     
     
     
