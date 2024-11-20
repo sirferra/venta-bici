@@ -168,6 +168,52 @@ public class Venta {
         }
     }
     
+        // Por rango de fechas
+    public static List<Venta> filtrarPorRangoDeFechas(String fechaInicio, String fechaFin) {
+        try {
+            String query = "SELECT * FROM Venta WHERE fecha BETWEEN ? AND ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, fechaInicio);
+            params.put(2, fechaFin);
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+            return Venta.fromResultSet(resultados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // por cliente
+    public static List<Venta> filtrarPorCliente(String cliente) {
+        try {
+            String query = "SELECT * FROM Venta WHERE cliente LIKE ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, "%" + cliente + "%");
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+            return Venta.fromResultSet(resultados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Por producto
+    public static List<Venta> filtrarPorProducto(String producto) {
+        try {
+            String query = "SELECT * FROM Venta WHERE producto LIKE ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, "%" + producto + "%");
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+            return Venta.fromResultSet(resultados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    
+    
  /*
     Posible tabla ventas, la imagine para este crud
   * CREATE TABLE Venta (
