@@ -5,6 +5,7 @@
 package persona;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,6 +26,12 @@ public class Proveedor extends Persona {
     }
 
     public Proveedor(String cuit, String nombreFantasia) {
+        this.cuit = cuit;
+        this.nombreFantasia = nombreFantasia;
+    }
+
+    public Proveedor(String cuit, String nombreFantasia, int id, String nombre, String apellido, int dni, String telefono, String email) {
+        super(id, nombre, apellido, dni, telefono, email);
         this.cuit = cuit;
         this.nombreFantasia = nombreFantasia;
     }
@@ -62,41 +69,28 @@ public class Proveedor extends Persona {
         return null;
     }
 
-    public static Proveedor buscarPorCuit(String cuit) {
+    // Filtrado por cuit
+    public static List<Proveedor> buscarPorFiltros(String dni, String nombre, String apellido) {
         try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor WHERE cuit = '" + cuit + "'");
-            List<Proveedor> proveedores = Proveedor.fromResultSet(resultados);
-            return proveedores.isEmpty() ? null : proveedores.get(0);
-        } catch (Exception e) {
+            String sqlFiltro = "SELECT * FROM Proveedor WHERE 1 = 1";
+            if (dni != null && !dni.isEmpty()) {
+                sqlFiltro = sqlFiltro + " AND dni = '" + dni + "'";
+            }
+            if (nombre != null && !nombre.isEmpty()) {
+                sqlFiltro = sqlFiltro + " AND nombre = '" + nombre + "'"; 
+            }
+            if (apellido != null && !apellido.isEmpty()) {
+                sqlFiltro = sqlFiltro + " AND apellido = '" + apellido + "'";
+            }
+            ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro);
+            return Proveedor.fromResultSet(resultados);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-
-    public static Proveedor buscarPorDni(int dni) {
-        try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor WHERE dni = '" + dni + "'");
-            List<Proveedor> proveedores = Proveedor.fromResultSet(resultados);
-            return proveedores.isEmpty() ? null : proveedores.get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public boolean eliminarProveedor() {
-        try {
-            String query = "DELETE FROM Proveedor WHERE cuit = ?";
-            HashMap<Integer, Object> params = new HashMap<>();
-            params.put(1, getCuit());
-            Conexion.getInstance().executeQueryWithParams(query, params);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+    
+    //Crear proveedor
     public boolean crearProveedor() {
         try {
             String query = "INSERT INTO Proveedor(cuit, nombreFantasia, nombre, apellido, dni, telefono, email) VALUES(?, ?, ?, ?, ?, ?, ?)";
@@ -115,7 +109,23 @@ public class Proveedor extends Persona {
             return false;
         }
     }
-    public boolean modificarProveedor() {
+    
+    //Eliminar proveedor
+    public boolean eliminarProveedor() {
+        try {
+            String query = "DELETE FROM Proveedor WHERE dni = ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, getDni());
+            Conexion.getInstance().executeQueryWithParams(query, params);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    //Modificar proveedor
+     public boolean modificarProveedor() {
         try {
             String query = "UPDATE Proveedor SET cuit = ?, nombreFantasia = ?, nombre = ?, apellido = ?, dni = ?, telefono = ?, email = ? WHERE cuit = ?";
             HashMap<Integer, Object> params = new HashMap<>();
@@ -134,9 +144,20 @@ public class Proveedor extends Persona {
             return false;
         }
     }
-
-
-        
+    
+    //Buscar por dni auxiliar
+    public static Proveedor buscarPorDni(int dni) {
+        try {
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor WHERE dni = '" + dni + "'");
+            List<Proveedor> proveedores = Proveedor.fromResultSet(resultados);
+            return proveedores.isEmpty() ? null : proveedores.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    //Convertir ResultSet a arraylist de proveedores
     public static List<Proveedor> fromResultSet(ResultSet resultados) {
         try {
             List<Proveedor> proveedores = new java.util.ArrayList<>();
@@ -156,7 +177,8 @@ public class Proveedor extends Persona {
             return null;
         }
     }
-
+    
+    
     public static Proveedor buscarPorId(int proveedor_id) {
         try {
             ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor WHERE proveedor_id = '" + proveedor_id + "'");
@@ -167,4 +189,19 @@ public class Proveedor extends Persona {
         }
         return null;
     }
+    
+    /*
+    public static Proveedor buscarPorCuit(String cuit) {
+        try {
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor WHERE cuit = '" + cuit + "'");
+            List<Proveedor> proveedores = Proveedor.fromResultSet(resultados);
+            return proveedores.isEmpty() ? null : proveedores.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    */
+    
+    
 }

@@ -11,12 +11,14 @@ import javax.swing.table.DefaultTableModel;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import gui.cliente.AgregarCliente;
 import gui.cliente.ModificarCliente;
+import gui.proveedor.CrearProveedor;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import persona.Cliente;
 import persona.Vendedor;
 import gui.vendedor.AgregarVendedor;
+import persona.Proveedor;
 
 /**
  *
@@ -43,7 +45,7 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlProveedores = new javax.swing.JTabbedPane();
+        pnlPantalla = new javax.swing.JTabbedPane();
         pnlCliente = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         dgvClientes = new javax.swing.JTable();
@@ -72,9 +74,20 @@ public class Main extends javax.swing.JFrame {
         btnModificarVendedor = new javax.swing.JButton();
         btnNuevoVendedor = new javax.swing.JButton();
         btnBuscarVendedor = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        pnlProveedores = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         dgvProveedores = new javax.swing.JTable();
+        btnEliminarProveedor = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        btnModificarProveedor = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        txtNombreProv = new javax.swing.JTextField();
+        btnNuevoProveedor = new javax.swing.JButton();
+        txtDniProv = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txtApellidoProv = new javax.swing.JTextField();
+        btnBuscarProveedor = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
 
@@ -113,6 +126,7 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        dgvClientes.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(dgvClientes);
         if (dgvClientes.getColumnModel().getColumnCount() > 0) {
             dgvClientes.getColumnModel().getColumn(0).setResizable(false);
@@ -222,7 +236,7 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(57, Short.MAX_VALUE))
         );
 
-        pnlProveedores.addTab("Clientes", pnlCliente);
+        pnlPantalla.addTab("Clientes", pnlCliente);
 
         pnlVendedores.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -363,24 +377,30 @@ public class Main extends javax.swing.JFrame {
                 .addGap(0, 57, Short.MAX_VALUE))
         );
 
-        pnlProveedores.addTab("Vendedores", pnlVendedores);
+        pnlPantalla.addTab("Vendedores", pnlVendedores);
+
+        pnlProveedores.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                pnlProveedoresComponentShown(evt);
+            }
+        });
 
         dgvProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "N. FANTASIA", "NOMBRE", "APELLIDO", "DNI", "CUIT", "TELEFONO", "EMAIL"
+                "CUIT", "N. FANTASIA", "NOMBRE", "APELLIDO", "DNI", "TELEFONO", "EMAIL"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -391,30 +411,113 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        dgvProveedores.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(dgvProveedores);
         if (dgvProveedores.getColumnModel().getColumnCount() > 0) {
-            dgvProveedores.getColumnModel().getColumn(0).setResizable(false);
             dgvProveedores.getColumnModel().getColumn(2).setResizable(false);
             dgvProveedores.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        btnEliminarProveedor.setText("Eliminar Proveedor");
+        btnEliminarProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarProveedorActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("DNI:");
+
+        btnModificarProveedor.setText("Modificar Proveedor");
+        btnModificarProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarProveedorActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("Nombre:");
+
+        btnNuevoProveedor.setText("Nuevo Proveedor");
+        btnNuevoProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoProveedorActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel11.setText("FILTROS");
+
+        btnBuscarProveedor.setText("Buscar Proveedor");
+        btnBuscarProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarProveedorActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("Apellido:");
+
+        javax.swing.GroupLayout pnlProveedoresLayout = new javax.swing.GroupLayout(pnlProveedores);
+        pnlProveedores.setLayout(pnlProveedoresLayout);
+        pnlProveedoresLayout.setHorizontalGroup(
+            pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProveedoresLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
+                .addGroup(pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
+                    .addGroup(pnlProveedoresLayout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEliminarProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnModificarProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnNuevoProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlProveedoresLayout.createSequentialGroup()
+                        .addGroup(pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(pnlProveedoresLayout.createSequentialGroup()
+                                    .addComponent(jLabel9)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtDniProv, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(pnlProveedoresLayout.createSequentialGroup()
+                                    .addComponent(jLabel12)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtApellidoProv, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(pnlProveedoresLayout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtNombreProv, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnBuscarProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        pnlProveedoresLayout.setVerticalGroup(
+            pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProveedoresLayout.createSequentialGroup()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 229, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(btnModificarProveedor)
+                    .addComponent(btnNuevoProveedor)
+                    .addComponent(btnEliminarProveedor))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNombreProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtApellidoProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDniProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnBuscarProveedor)
+                .addGap(0, 57, Short.MAX_VALUE))
         );
 
-        pnlProveedores.addTab("Proveedores", jPanel3);
+        pnlPantalla.addTab("Proveedores", pnlProveedores);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -427,7 +530,7 @@ public class Main extends javax.swing.JFrame {
             .addGap(0, 574, Short.MAX_VALUE)
         );
 
-        pnlProveedores.addTab("Productos", jPanel4);
+        pnlPantalla.addTab("Productos", jPanel4);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -440,17 +543,17 @@ public class Main extends javax.swing.JFrame {
             .addGap(0, 574, Short.MAX_VALUE)
         );
 
-        pnlProveedores.addTab("Ventas", jPanel5);
+        pnlPantalla.addTab("Ventas", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlProveedores)
+            .addComponent(pnlPantalla)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlProveedores, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(pnlPantalla, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -705,6 +808,112 @@ public class Main extends javax.swing.JFrame {
             System.out.println("Seleccione una fila antes de intentar modificar");
         }
     }//GEN-LAST:event_btnModificarVendedorActionPerformed
+
+    /*************
+    ***PROVEEDOR** 
+    **************/
+    
+    
+    private void btnEliminarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProveedorActionPerformed
+        //Obtener la fila seleccionada
+        int fila = dgvProveedores.getSelectedRow();
+        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
+        if(fila >= 0){
+             // Mostrar el mensaje de confirmación
+            int respuesta = JOptionPane.showConfirmDialog(
+            this,
+            "¿Estás seguro de que deseas eliminar al proveedor " + Integer.valueOf(dgvProveedores.getValueAt(fila, 4).toString()) + 
+            "?","Confirmar Eliminación", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.WARNING_MESSAGE);
+            //Interpreto la elección
+            if (respuesta == JOptionPane.YES_OPTION) {
+                Proveedor proveedor = new Proveedor();
+                //Guardo el dni en el atributo de mi objeto. Se usa en la funcion de eliminarCliente()
+                proveedor.setDni(Integer.parseInt(dgvProveedores.getValueAt(fila, 4).toString()));              
+                boolean bandera = proveedor.eliminarProveedor();
+                if (bandera) {
+                    JOptionPane.showMessageDialog(this, "Se ha eliminado el proveedor de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    //Colocar metodo para refrescar grilla
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el proveedor", "Error", JOptionPane.ERROR_MESSAGE);
+                } 
+            }
+        }
+    }//GEN-LAST:event_btnEliminarProveedorActionPerformed
+
+    private void btnModificarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProveedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnModificarProveedorActionPerformed
+    
+    //Crear nuevo vendedor
+    private void btnNuevoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProveedorActionPerformed
+        CrearProveedor frmCrearProveedor = new CrearProveedor();
+        frmCrearProveedor.setLocationRelativeTo(null);
+        frmCrearProveedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frmCrearProveedor.show();
+    }//GEN-LAST:event_btnNuevoProveedorActionPerformed
+
+    //Buscar proveedor por filtro
+    private void btnBuscarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProveedorActionPerformed
+        //Guardo los valores de los campos de texto para filtrar
+        String dni = txtDniProv.getText();
+        String nombre = txtNombreProv.getText();
+        String apellido = txtApellidoProv.getText();
+        persona.Proveedor proveedor = new Proveedor();
+        //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
+        List<Proveedor> registros = proveedor.buscarPorFiltros(dni, nombre, apellido);
+        // Verifica que la lista no esté vacía o nula
+        if (registros == null || registros.isEmpty()) {
+        System.out.println("Advertencia: No hay registros existentes en la base de datos que coincidan con los filtros.");
+        return;
+        }
+        //Obtener el modelo de la tabla para poder modificarlo
+        DefaultTableModel modelo = (DefaultTableModel) dgvProveedores.getModel();
+        //Limpiar registros anteriores
+        modelo.setRowCount(0);
+        for (Proveedor registro : registros) {
+           //Creo una fila extrayendo los campos del objeto cliente almacenado en la lista de registros.
+           modelo.addRow(new Object[]{
+            registro.getCuit(),
+            registro.getNombreFantasia(),
+            registro.getNombre(),
+            registro.getApellido(),
+            registro.getDni(),
+            registro.getTelefono(),
+            registro.getEmail()
+        }); 
+        }
+    }//GEN-LAST:event_btnBuscarProveedorActionPerformed
+    
+    //Carga de lista completa inicial seleccionado de la grilla
+    private void pnlProveedoresComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlProveedoresComponentShown
+        persona.Proveedor proveedor = new Proveedor();
+        //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
+        List<Proveedor> registros = proveedor.getAll();
+        // Verifica que la lista no esté vacía o nula
+        if (registros == null || registros.isEmpty()) {
+        System.out.println("Advertencia: No hay registros existentes en la base de datos.");
+        return;
+        }
+        //Obtener el modelo de la tabla para poder modificarlo
+        DefaultTableModel modelo = (DefaultTableModel) dgvProveedores.getModel();
+        //Limpiar registros anteriores
+        modelo.setRowCount(0);
+        for (Proveedor registro : registros) {
+           //Creo una fila extrayendo los campos del objeto cliente almacenado en la lista de registros.
+           modelo.addRow(new Object[]{
+            registro.getCuit(),
+            registro.getNombreFantasia(),
+            registro.getNombre(),
+            registro.getApellido(),
+            registro.getDni(),
+            registro.getTelefono(),
+            registro.getEmail()
+        }); 
+        }
+    }//GEN-LAST:event_pnlProveedoresComponentShown
     
     
     /**
@@ -744,17 +953,24 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarCliente;
+    private javax.swing.JButton btnBuscarProveedor;
     private javax.swing.JButton btnBuscarVendedor;
     private javax.swing.JButton btnEliminarCliente;
+    private javax.swing.JButton btnEliminarProveedor;
     private javax.swing.JButton btnEliminarVendedor;
     private javax.swing.JButton btnModificarCliente;
+    private javax.swing.JButton btnModificarProveedor;
     private javax.swing.JButton btnModificarVendedor;
     private javax.swing.JButton btnNuevoCliente;
+    private javax.swing.JButton btnNuevoProveedor;
     private javax.swing.JButton btnNuevoVendedor;
     private javax.swing.JTable dgvClientes;
     private javax.swing.JTable dgvProveedores;
     private javax.swing.JTable dgvVendedores;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -762,20 +978,24 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel pnlCliente;
-    private javax.swing.JTabbedPane pnlProveedores;
+    private javax.swing.JTabbedPane pnlPantalla;
+    private javax.swing.JPanel pnlProveedores;
     private javax.swing.JPanel pnlVendedores;
     private javax.swing.JTextField txtApellidoCli;
+    private javax.swing.JTextField txtApellidoProv;
     private javax.swing.JTextField txtApellidoVen;
     private javax.swing.JTextField txtDniCli;
+    private javax.swing.JTextField txtDniProv;
     private javax.swing.JTextField txtDniVen;
     private javax.swing.JTextField txtNombreCli;
+    private javax.swing.JTextField txtNombreProv;
     private javax.swing.JTextField txtNombreVen;
     // End of variables declaration//GEN-END:variables
 }

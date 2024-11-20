@@ -48,6 +48,8 @@ public class AgregarVendedor extends javax.swing.JFrame {
         txtSucursal = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("NUEVO VENDEDOR");

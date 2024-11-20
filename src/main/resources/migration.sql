@@ -11,10 +11,12 @@ INSERT INTO Marca (nombre) VALUES
 ('Cannondale'),
 ('Scott');
 
-INSERT INTO Proveedor (nombre, direccion, telefono, email, cuit) VALUES
-('Distribuidora Bicis SA', 'Av. Principal 123', '555-1111', 'contacto@distribuidorabicis.com', '30-12345678-9'),
-('Proveedores MTB SRL', 'Calle Secundaria 456', '555-2222', 'info@proveedoresmtb.com', '30-87654321-0'),
-('Importaciones Ciclistas', 'Ruta Nacional 789', '555-3333', 'ventas@importciclistas.com', '30-11223344-5');
+INSERT INTO Proveedor (nombre, apellido, direccion, telefono, email, dni, cuit, nombreFantasia) VALUES
+('Diego', 'Fernández', 'Calle Brisa 55', '555-6789', 'diego.fernandez@example.com', '33445567', '20-33445567-1', 'Bicicletas Diego'),
+('Carlos', 'Fernández', 'Calle Sol 45', '555-0456', 'carlos.fernandez@example.com', '33445566', '20-33445566-3', 'Bicicarlos'),
+('Elena', 'Torres', 'Avenida Mar 88', '555-0123', 'elena.torres@example.com', '22113344', '27-22113344-9', 'Ciclos Elena'),
+('María', 'López', 'Boulevard Luna 12', '555-0789', 'maria.lopez@example.com', '55667788', '27-55667788-7', 'Tienda María');
+
 
 INSERT INTO Modelo (nombre, marca_id) VALUES
 ('Trance X', 1),
@@ -76,6 +78,3 @@ INSERT INTO DetallePedido (pedido_id, producto_id, cantidad, precio) VALUES
 (4, 4, 1, 4000.00),  -- Trek Émonda SL 6 Pro
 (4, 10, 1, 5000.00); -- Scott Addict RC 15
 
-INSERT INTO Presupuesto (nombre, apellido, direccion, telefono, email, dni, cuit, nombreFantasia) VALUES
-('Diego', 'Fernández', 'Calle Brisa 55', '555-6789', 'diego.fernandez@example.com', '33445566', '20-33445566-8', 'Bicicletas Diego'),
-('Elena', 'Torres', 'Avenida Mar 88', '555-0123', 'elena.torres@example.com', '22113344', '27-22113344-9', 'Ciclos Elena');

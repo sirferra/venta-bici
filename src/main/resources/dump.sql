@@ -1,4 +1,4 @@
--- Tabla de Cliente, Vendedor y Presupuesto incluyen los campos de Persona
+-- Tabla de Cliente, Vendedor incluyen los campos de Persona
 CREATE TABLE Cliente (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
@@ -25,15 +25,6 @@ CREATE TABLE Vendedor (
 CREATE TABLE Proveedor (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
-    direccion VARCHAR(255),
-    telefono VARCHAR(20),
-    email VARCHAR(255) UNIQUE,
-    cuit VARCHAR(50)
-);
-
-CREATE TABLE Presupuesto (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
     apellido VARCHAR(255) NOT NULL,
     direccion VARCHAR(255),
     telefono VARCHAR(20),
@@ -42,6 +33,7 @@ CREATE TABLE Presupuesto (
     cuit VARCHAR(50),
     nombreFantasia VARCHAR(255)
 );
+
 
 -- Restante del modelo, previamente definido
 CREATE TABLE Categoria (
