@@ -29,6 +29,8 @@ public class Main extends javax.swing.JFrame {
         
     }
 
+    //Metodo de rellenar tabla (insertar una vez listo el programa)
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -496,7 +498,6 @@ public class Main extends javax.swing.JFrame {
     
     //Eliminar cliente seleccionado de la grilla
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
-        
         //Obtener la fila seleccionada
         int fila = dgvClientes.getSelectedRow();
         //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
@@ -516,6 +517,7 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = cliente.eliminarCliente();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    cliente.getAll();
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
@@ -524,11 +526,28 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarClienteActionPerformed
 
+    //Modificar cliente
     private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
-        ModificarCliente frmModificarCliente = new ModificarCliente();
-        frmModificarCliente.setLocationRelativeTo(null);
-        frmModificarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frmModificarCliente.show();
+        //Obtengo el indice de la fila
+        int fila = dgvClientes.getSelectedRow();
+        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
+        if(fila >= 0){
+            //Obtengo los valores de la tabla
+            String cuil = dgvClientes.getValueAt(fila, 0).toString();
+            String nombre = dgvClientes.getValueAt(fila, 1).toString();
+            String apellido = dgvClientes.getValueAt(fila, 2).toString();
+            int dni = Integer.parseInt(dgvClientes.getValueAt(fila, 3).toString());
+            String telefono = dgvClientes.getValueAt(fila, 4).toString();
+            String email = dgvClientes.getValueAt(fila, 5).toString();
+            //Instancio la interfáz con el constructor personalizado de la clase de la interfaz de modificar
+            ModificarCliente frmModificarCliente = new ModificarCliente(cuil, nombre, apellido, dni, telefono, email);
+            frmModificarCliente.setLocationRelativeTo(null);
+            frmModificarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            frmModificarCliente.show();
+        }
+        else{
+            System.out.println("Seleccione una fila antes de intentar modificar");
+        }
     }//GEN-LAST:event_btnModificarClienteActionPerformed
 
     

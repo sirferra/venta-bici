@@ -4,21 +4,49 @@
  */
 package gui;
 
+import java.util.Set;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import persona.Cliente;
 
 /**
  *
- * @author kelog
+ * @author facundo.cuffia
  */
 public class ModificarCliente extends javax.swing.JFrame {
+    //Atributos
+    private String cuil;
+    private String nombre;
+    private String apellido;
+    private int dni;
+    private String telefono;
+    private String email;
 
+    //Creo el objeto que voy a manejar durante el proceso
+    private Cliente cliente = new Cliente();
+    //Aqui guardo el id del cliente a modificar para no tener que buscarlo cada vez
+    private int id_cliente;
     /**
      * Creates new form ModificarCliente
      */
     public ModificarCliente() {
         initComponents();
     }
-
+    
+    //Constructor para recibir parámetros desde main
+    public ModificarCliente(String cuil, String nombre, String apellido, int dni, String telefono, String email){
+        super();
+        this.cuil = cuil;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.telefono = telefono;
+        this.email = email;
+        initComponents();
+    }
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,6 +73,7 @@ public class ModificarCliente extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -150,15 +179,36 @@ public class ModificarCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
-
+        cliente.setCuil(txtCuil.getText());
+        cliente.setNombre(txtNombre.getText());
+        cliente.setApellido(txtApellido.getText());
+        cliente.setDni(Integer.parseInt(txtDni.getText()));
+        cliente.setTelefono(txtTelefono.getText());
+        cliente.setEmail(txtEmail.getText());
+        boolean bandera = cliente.modificarCliente(id_cliente);
+        if (bandera) {
+            JOptionPane.showMessageDialog(this, "Se ha modificado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "El DNI ingresado ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnModificarClienteActionPerformed
-
+    
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
+    
+    //Rellenar los campos al iniciar la interfaz
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        //
+        //Cargo los campos con los valores almacenados en el constructor
+        txtCuil.setText(cuil);
+        txtNombre.setText(nombre);
+        txtApellido.setText(apellido);
+        txtDni.setText(String.valueOf(dni));
+        txtTelefono.setText(telefono);
+        txtEmail.setText(email);
+        //cambio los atributos del objeto cliente actual que deseo modificar al pulsar el boton
+        id_cliente = cliente.buscarPorDni(txtDni.getText());
     }//GEN-LAST:event_formWindowOpened
 
     /**

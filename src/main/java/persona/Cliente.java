@@ -116,12 +116,8 @@ public class Cliente extends Persona{
     }
 
     //Función para modificar un cliente
-    public boolean modificarCliente(){
+    public boolean modificarCliente(int id_cliente){
         try {
-            int id = buscarPorDni(getDni()).getId();
-            if(id==0){
-                throw new Error("El id del cliente no existe");
-            }
             String query = "UPDATE Cliente SET cuil = ?, nombre = ?, apellido = ?, dni = ?, telefono = ?, email = ? WHERE id = ?";
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, getCuil());
@@ -130,7 +126,7 @@ public class Cliente extends Persona{
             params.put(4, getDni());
             params.put(5, getTelefono());
             params.put(6, getEmail());
-            params.put(7, id);
+            params.put(7, id_cliente);
             Conexion.getInstance().executeQueryWithParams(query, params);
             return true;
         } catch (SQLException e) {
@@ -171,6 +167,29 @@ public class Cliente extends Persona{
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public static int buscarPorDni(String dni) {
+        try {
+            // Realizamos la consulta para obtener el cliente por DNI 
+            String query = "SELECT id FROM cliente WHERE dni = ?";
+            // Utilizamos un parámetro para prevenir SQL Injection
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, dni);
+            // Ejecutamos la consulta y obtenemos el resultado
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+            // Verificamos si existe algún resultado
+            if (resultados.next()) {
+                // Retornamos el ID del cliente
+                return resultados.getInt("id");
+            } else {
+                System.out.println("No se encontró un cliente con el DNI proporcionado.");
+                return 0; // O algún valor que indique que no se encontró
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0; // Devuelve 0 en caso de error para manejarlo adecuadamente
+        }
     }
     
     //Convertir los resultados en una lista de objetos
