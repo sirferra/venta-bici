@@ -19,7 +19,6 @@ public class Conexion {
             throw new RuntimeException(e);
         }
     }
-
     public static MySqlDB getInstance(){
         return db;
     }
