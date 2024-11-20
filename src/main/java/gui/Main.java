@@ -15,6 +15,7 @@ import javax.swing.WindowConstants;
 
 import persona.Cliente;
 import persona.Vendedor;
+import gui.vendedor.AgregarVendedor;
 
 /**
  *
@@ -276,6 +277,11 @@ public class Main extends javax.swing.JFrame {
         btnModificarVendedor.setText("Modificar Vendedor");
 
         btnNuevoVendedor.setText("Nuevo Vendedor");
+        btnNuevoVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoVendedorActionPerformed(evt);
+            }
+        });
 
         btnBuscarVendedor.setText("Buscar Vendedores");
         btnBuscarVendedor.addActionListener(new java.awt.event.ActionListener() {
@@ -565,7 +571,7 @@ public class Main extends javax.swing.JFrame {
     /*************
     ***VENDEDOR*** 
     **************/
-    //Carga de lista completa inicial
+    //Carga de lista completa inicial seleccionado de la grilla
     private void pnlVendedoresComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlVendedoresComponentShown
         Vendedor vendedor = new Vendedor();
         //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
@@ -623,6 +629,13 @@ public class Main extends javax.swing.JFrame {
             }); 
         }
     }//GEN-LAST:event_btnBuscarVendedorActionPerformed
+
+    private void btnNuevoVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoVendedorActionPerformed
+        AgregarVendedor frmAgregarVendedor = new AgregarVendedor();
+        frmAgregarVendedor.setLocationRelativeTo(null);
+        frmAgregarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frmAgregarVendedor.show();
+    }//GEN-LAST:event_btnNuevoVendedorActionPerformed
     
     
     
