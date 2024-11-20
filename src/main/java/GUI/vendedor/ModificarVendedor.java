@@ -197,6 +197,7 @@ public class ModificarVendedor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Aplicar actualizacion del vendedor modificado
     private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
         vendedor.setCuit(txtCuit.getText());
         vendedor.setSucursal(txtSucursal.getText());
@@ -213,11 +214,11 @@ public class ModificarVendedor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "El DNI ingresado ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnModificarClienteActionPerformed
-
+    //Cerrar la interfaz
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
+    //Rellenar los campos al iniciar la interfaz
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         //Cargo los campos con los valores almacenados en el constructor
         txtCuit.setText(cuit);

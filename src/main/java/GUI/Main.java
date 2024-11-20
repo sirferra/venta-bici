@@ -707,12 +707,6 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarVendedorActionPerformed
     
     
-    
-    
-    
-    
-    
-    
     /**
      * @param args the command line arguments
      */

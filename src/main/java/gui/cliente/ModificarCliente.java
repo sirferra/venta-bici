@@ -45,8 +45,6 @@ public class ModificarCliente extends javax.swing.JFrame {
         initComponents();
     }
     
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -177,7 +175,7 @@ public class ModificarCliente extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    //Aplicar la modificacion del cliente
     private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
         cliente.setCuil(txtCuil.getText());
         cliente.setNombre(txtNombre.getText());
@@ -193,11 +191,10 @@ public class ModificarCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "El DNI ingresado ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnModificarClienteActionPerformed
-    
+    //Cerrar interfaz
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-    
     //Rellenar los campos al iniciar la interfaz
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         //Cargo los campos con los valores almacenados en el constructor
