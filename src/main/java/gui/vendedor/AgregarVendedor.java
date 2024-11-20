@@ -2,51 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package gui;
+package gui.vendedor;
 
-import java.util.Set;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import persona.Cliente;
+import persona.Vendedor;
 
 /**
  *
  * @author facundo.cuffia
  */
-public class ModificarCliente extends javax.swing.JFrame {
-    //Atributos
-    private String cuil;
-    private String nombre;
-    private String apellido;
-    private int dni;
-    private String telefono;
-    private String email;
+public class AgregarVendedor extends javax.swing.JFrame {
 
-    //Creo el objeto que voy a manejar durante el proceso
-    private Cliente cliente = new Cliente();
-    //Aqui guardo el id del cliente a modificar para no tener que buscarlo cada vez
-    private int id_cliente;
     /**
-     * Creates new form ModificarCliente
+     * Creates new form AgregarVendedor
      */
-    public ModificarCliente() {
+    public AgregarVendedor() {
         initComponents();
     }
-    
-    //Constructor para recibir parámetros desde main
-    public ModificarCliente(String cuil, String nombre, String apellido, int dni, String telefono, String email){
-        super();
-        this.cuil = cuil;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
-        this.telefono = telefono;
-        this.email = email;
-        initComponents();
-    }
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,24 +37,20 @@ public class ModificarCliente extends javax.swing.JFrame {
         txtDni = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtCuil = new javax.swing.JTextField();
+        txtCuit = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
-        btnModificarCliente = new javax.swing.JButton();
+        btnCrearVendedor = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        txtSucursal = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("MODIFICAR CLIENTE");
+        jLabel1.setText("NUEVO VENDEDOR");
 
         jLabel2.setText("Nombre:");
 
@@ -89,16 +58,16 @@ public class ModificarCliente extends javax.swing.JFrame {
 
         jLabel3.setText("DNI:");
 
-        jLabel6.setText("CUIL");
+        jLabel6.setText("CUIT");
 
         jLabel5.setText("Teléfono:");
 
         jLabel7.setText("E-mail:");
 
-        btnModificarCliente.setText("MODIFICAR");
-        btnModificarCliente.addActionListener(new java.awt.event.ActionListener() {
+        btnCrearVendedor.setText("CREAR CLIENTE");
+        btnCrearVendedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarClienteActionPerformed(evt);
+                btnCrearVendedorActionPerformed(evt);
             }
         });
 
@@ -109,34 +78,44 @@ public class ModificarCliente extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Sucursal");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(88, 88, 88))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(73, 73, 73)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                            .addComponent(txtApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                            .addComponent(txtDni, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                            .addComponent(txtCuil, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                            .addComponent(btnModificarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(107, 107, 107)
-                        .addComponent(jLabel1)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(73, 73, 73)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8))
+                                .addGap(70, 70, 70))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCrearVendedor)
+                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCuit, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -158,7 +137,7 @@ public class ModificarCliente extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCuil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCuit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -168,9 +147,13 @@ public class ModificarCliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnModificarCliente)
+                    .addComponent(txtSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearVendedor)
                     .addComponent(btnCancelar))
                 .addGap(36, 36, 36))
         );
@@ -178,38 +161,35 @@ public class ModificarCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
-        cliente.setCuil(txtCuil.getText());
-        cliente.setNombre(txtNombre.getText());
-        cliente.setApellido(txtApellido.getText());
-        cliente.setDni(Integer.parseInt(txtDni.getText()));
-        cliente.setTelefono(txtTelefono.getText());
-        cliente.setEmail(txtEmail.getText());
-        boolean bandera = cliente.modificarCliente(id_cliente);
+    private void btnCrearVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearVendedorActionPerformed
+        Vendedor vendedor = new Vendedor();
+        vendedor.setNombre(txtNombre.getText());
+        vendedor.setApellido(txtApellido.getText());
+        vendedor.setDni(Integer.parseInt(txtDni.getText()));
+        vendedor.setCuit(txtCuit.getText());
+        vendedor.setTelefono(txtTelefono.getText());
+        vendedor.setEmail(txtEmail.getText());
+        vendedor.setSucursal(txtSucursal.getText());
+        boolean bandera = vendedor.crearVendedor();
         if (bandera) {
-            JOptionPane.showMessageDialog(this, "Se ha modificado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Se ha cargado el vendedor de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            // Limpiar los campos de texto.
+            txtCuit.setText("");
+            txtNombre.setText("");
+            txtApellido.setText("");
+            txtDni.setText("");
+            txtTelefono.setText("");
+            txtEmail.setText("");
+            txtSucursal.setText("");
         }
         else{
             JOptionPane.showMessageDialog(this, "El DNI ingresado ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnModificarClienteActionPerformed
-    
+    }//GEN-LAST:event_btnCrearVendedorActionPerformed
+
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-    
-    //Rellenar los campos al iniciar la interfaz
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        //Cargo los campos con los valores almacenados en el constructor
-        txtCuil.setText(cuil);
-        txtNombre.setText(nombre);
-        txtApellido.setText(apellido);
-        txtDni.setText(String.valueOf(dni));
-        txtTelefono.setText(telefono);
-        txtEmail.setText(email);
-        //cambio los atributos del objeto cliente actual que deseo modificar al pulsar el boton
-        id_cliente = cliente.buscarPorDni(txtDni.getText());
-    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -228,27 +208,27 @@ public class ModificarCliente extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AgregarVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AgregarVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AgregarVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AgregarVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarCliente().setVisible(true);
+                new AgregarVendedor().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnModificarCliente;
+    private javax.swing.JButton btnCrearVendedor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -256,11 +236,13 @@ public class ModificarCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField txtApellido;
-    private javax.swing.JTextField txtCuil;
+    private javax.swing.JTextField txtCuit;
     private javax.swing.JTextField txtDni;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtSucursal;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

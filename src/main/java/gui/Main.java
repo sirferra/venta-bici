@@ -8,12 +8,13 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import gui.AgregarCliente;
-import gui.ModificarCliente;
+import gui.cliente.AgregarCliente;
+import gui.cliente.ModificarCliente;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import persona.Cliente;
+import persona.Vendedor;
 
 /**
  *
@@ -55,7 +56,7 @@ public class Main extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         btnBuscarCliente = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        pnlVendedores = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         dgvVendedores = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
@@ -221,22 +222,28 @@ public class Main extends javax.swing.JFrame {
 
         pnlProveedores.addTab("Clientes", pnlCliente);
 
+        pnlVendedores.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                pnlVendedoresComponentShown(evt);
+            }
+        });
+
         dgvVendedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NOMBRE", "APELLIDO", "DNI", "CUIT", "TELEFONO", "EMAIL", "SUCURSAL"
+                "CUIT", "NOMBRE", "APELLIDO", "DNI", "TELEFONO", "EMAIL", "SUCURSAL"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false, false, false
+                true, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -247,12 +254,12 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        dgvVendedores.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(dgvVendedores);
         if (dgvVendedores.getColumnModel().getColumnCount() > 0) {
-            dgvVendedores.getColumnModel().getColumn(0).setResizable(false);
             dgvVendedores.getColumnModel().getColumn(1).setResizable(false);
             dgvVendedores.getColumnModel().getColumn(2).setResizable(false);
-            dgvVendedores.getColumnModel().getColumn(7).setResizable(false);
+            dgvVendedores.getColumnModel().getColumn(6).setResizable(false);
         }
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -271,16 +278,21 @@ public class Main extends javax.swing.JFrame {
         btnNuevoVendedor.setText("Nuevo Vendedor");
 
         btnBuscarVendedor.setText("Buscar Vendedores");
+        btnBuscarVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarVendedorActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlVendedoresLayout = new javax.swing.GroupLayout(pnlVendedores);
+        pnlVendedores.setLayout(pnlVendedoresLayout);
+        pnlVendedoresLayout.setHorizontalGroup(
+            pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlVendedoresLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(pnlVendedoresLayout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnEliminarVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,18 +300,18 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(btnModificarVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnNuevoVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(pnlVendedoresLayout.createSequentialGroup()
+                        .addGroup(pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(pnlVendedoresLayout.createSequentialGroup()
                                     .addComponent(jLabel8)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtDniVen, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(pnlVendedoresLayout.createSequentialGroup()
                                     .addComponent(jLabel7)
                                     .addGap(18, 18, 18)
                                     .addComponent(txtApellidoVen, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(pnlVendedoresLayout.createSequentialGroup()
                                     .addComponent(jLabel6)
                                     .addGap(18, 18, 18)
                                     .addComponent(txtNombreVen, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -307,26 +319,26 @@ public class Main extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        pnlVendedoresLayout.setVerticalGroup(
+            pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlVendedoresLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(btnModificarVendedor)
                     .addComponent(btnNuevoVendedor)
                     .addComponent(btnEliminarVendedor))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombreVen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtApellidoVen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDniVen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -334,7 +346,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(0, 57, Short.MAX_VALUE))
         );
 
-        pnlProveedores.addTab("Vendedores", jPanel2);
+        pnlProveedores.addTab("Vendedores", pnlVendedores);
 
         dgvProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -550,6 +562,70 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnModificarClienteActionPerformed
 
+    /*************
+    ***VENDEDOR*** 
+    **************/
+    //Carga de lista completa inicial
+    private void pnlVendedoresComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlVendedoresComponentShown
+        Vendedor vendedor = new Vendedor();
+        //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
+        List<Vendedor> registros = vendedor.getAll();
+        // Verifica que la lista no esté vacía o nula
+        if (registros == null || registros.isEmpty()) {
+        System.out.println("Advertencia: No hay registros existentes en la base de datos.");
+        return;
+        }
+        //Obtener el modelo de la tabla para poder modificarlo
+        DefaultTableModel modelo = (DefaultTableModel) dgvVendedores.getModel();
+        //Limpiar registros anteriores
+        modelo.setRowCount(0);
+        for (Vendedor registro : registros) {
+           //Creo una fila extrayendo los campos del objeto cliente almacenado en la lista de registros.
+           modelo.addRow(new Object[]{
+            registro.getCuit(),
+            registro.getNombre(),
+            registro.getApellido(),
+            registro.getDni(),
+            registro.getTelefono(),
+            registro.getEmail(),
+            registro.getSucursal()
+        }); 
+        }
+    }//GEN-LAST:event_pnlVendedoresComponentShown
+
+    private void btnBuscarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVendedorActionPerformed
+        //Guardo los valores de los campos de texto para filtrar
+        String dni = txtDniVen.getText();
+        String nombre = txtNombreVen.getText();
+        String apellido = txtApellidoVen.getText();
+        Vendedor vendedor = new Vendedor();
+        //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
+        List<Vendedor> registros = Vendedor.buscarPorFiltros(dni, nombre, apellido);
+        // Verifica que la lista no esté vacía o nula
+        if (registros == null || registros.isEmpty()) {
+        System.out.println("Advertencia: No hay registros existentes en la base de datos que coincidan con los filtros.");
+        return;
+        }
+        //Obtener el modelo de la tabla para poder modificarlo
+        DefaultTableModel modelo = (DefaultTableModel) dgvVendedores.getModel();
+        //Limpiar registros anteriores
+        modelo.setRowCount(0);
+        for (Vendedor registro : registros) {
+           //Creo una fila extrayendo los campos del objeto cliente almacenado en la lista de registros.
+           modelo.addRow(new Object[]{
+            registro.getCuit(),
+            registro.getNombre(),
+            registro.getApellido(),
+            registro.getDni(),
+            registro.getTelefono(),
+            registro.getEmail(),
+            registro.getSucursal()
+            }); 
+        }
+    }//GEN-LAST:event_btnBuscarVendedorActionPerformed
+    
+    
+    
     
     
     
@@ -609,7 +685,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -618,6 +693,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel pnlCliente;
     private javax.swing.JTabbedPane pnlProveedores;
+    private javax.swing.JPanel pnlVendedores;
     private javax.swing.JTextField txtApellidoCli;
     private javax.swing.JTextField txtApellidoVen;
     private javax.swing.JTextField txtDniCli;

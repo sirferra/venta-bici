@@ -5,6 +5,7 @@
 package persona;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import repositorio.Conexion;
@@ -55,6 +56,7 @@ public class Vendedor extends Persona {
     /**
      * Metodos estaticos CRUD
      * Verificar en consultas los nombres de las tablas
+     * @return 
      **/
     
     
@@ -63,27 +65,35 @@ public class Vendedor extends Persona {
         try {
             ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Vendedor");
             return Vendedor.fromResultSet(resultados);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-
     
     // Filtrado por cuit
-    public static Vendedor buscarPorCuit(String cuit) {
+    public static List<Vendedor> buscarPorFiltros(String dni, String nombre, String apellido) {
         try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Vendedor WHERE cuit = '" + cuit + "'");
-            List<Vendedor> vendedores = Vendedor.fromResultSet(resultados);
-            return vendedores.isEmpty() ? null : vendedores.get(0);
-        } catch (Exception e) {
+            String sqlFiltro = "SELECT * FROM Vendedor WHERE 1 = 1";
+            if (dni != null && !dni.isEmpty()) {
+                sqlFiltro = sqlFiltro + " AND dni = '" + dni + "'";
+            }
+            if (nombre != null && !nombre.isEmpty()) {
+                sqlFiltro = sqlFiltro + " AND nombre = '" + nombre + "'"; 
+            }
+            if (apellido != null && !apellido.isEmpty()) {
+                sqlFiltro = sqlFiltro + " AND apellido = '" + apellido + "'";
+            }
+            ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro);
+            return Vendedor.fromResultSet(resultados);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
     
+    
     //Filtrado por DNI
-
     public static Vendedor buscarPorDni(int dni) {
         try {
             ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Vendedor WHERE dni = '" + dni + "'");
@@ -93,30 +103,25 @@ public class Vendedor extends Persona {
             e.printStackTrace();
         }
         return null;
-    }
-    
+    } 
     
     // Busca por nombre, apellido o ambos
     public static List<Vendedor> buscarPorNombreApellido(String nombre, String apellido) {
     try {
-
         // Consulta base
         String query = "SELECT * FROM Vendedor WHERE 1=1";
         HashMap<Integer, Object> params = new HashMap<>();
         int index = 1;
-
         // Si el nombre esta vacio o nulo
         if (nombre != null && !nombre.isEmpty()) {
             query += " AND nombre LIKE ?";
             params.put(index++, "%" + nombre + "%");
         }
-
         // Si el apellido esta vacio o nulo
         if (apellido != null && !apellido.isEmpty()) {
             query += " AND apellido LIKE ?";
             params.put(index++, "%" + apellido + "%");
         }
-
         // Arma la consulta con la base y las condiciones
         ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
         return Vendedor.fromResultSet(resultados);
@@ -127,7 +132,6 @@ public class Vendedor extends Persona {
 }
     
     // Crea un vendedor usando el objeto actual
-
     public boolean crearVendedor() {
         try {
             String query = "INSERT INTO Vendedor(cuit, sucursal, nombre, apellido, dni, telefono, email) VALUES(?, ?, ?, ?, ?, ?, ?)";
@@ -147,7 +151,6 @@ public class Vendedor extends Persona {
             return false;
         }
     }
-
     
     //  Filtra el vendedor por dni y trae los datos correspondientes al mismo para reasignarle los valores (podria ser cuil o codigo ?) 
     public boolean modificarVendedor() {
@@ -175,7 +178,6 @@ public class Vendedor extends Persona {
     }
     
     // Trae el vendedor por dni ( Como el anterior podria ser por cuit?) y formula el DELETE
-
     public boolean eliminarVendedor() {
         try {
             Vendedor vendedorExistente = buscarPorDni(getDni());
@@ -193,7 +195,7 @@ public class Vendedor extends Persona {
         }
     }
 
-    public boolean eliminarVendedorPorCuit() {
+    /*public boolean eliminarVendedorPorCuit() {
         try {
             Vendedor vendedorExistente = buscarPorCuit(getCuit());
             if (vendedorExistente == null) {
@@ -208,10 +210,9 @@ public class Vendedor extends Persona {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
     
     // Convierto el resultado de las consultas en una lista objeto
-
     public static List<Vendedor> fromResultSet(ResultSet resultados) {
         try {
             List<Vendedor> vendedores = new java.util.ArrayList<>();
