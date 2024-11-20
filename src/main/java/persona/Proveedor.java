@@ -59,6 +59,7 @@ public class Proveedor extends Persona {
         this.nombreFantasia = nombreFantasia;
     }
     
+    //Buscar todos los proveedores
     public static List<Proveedor> getAll() {
         try {
             ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor");
@@ -125,9 +126,9 @@ public class Proveedor extends Persona {
     }
     
     //Modificar proveedor
-     public boolean modificarProveedor() {
+     public boolean modificarProveedor(int id_proveedor) {
         try {
-            String query = "UPDATE Proveedor SET cuit = ?, nombreFantasia = ?, nombre = ?, apellido = ?, dni = ?, telefono = ?, email = ? WHERE cuit = ?";
+            String query = "UPDATE Proveedor SET cuit = ?, nombreFantasia = ?, nombre = ?, apellido = ?, dni = ?, telefono = ?, email = ? WHERE id = ?";
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, getCuit());
             params.put(2, getNombreFantasia());
@@ -136,7 +137,7 @@ public class Proveedor extends Persona {
             params.put(5, getDni());
             params.put(6, getTelefono());
             params.put(7, getEmail());
-            params.put(8, getCuit());
+            params.put(8, id_proveedor);
             Conexion.getInstance().executeQueryWithParams(query, params);
             return true;
         } catch (Exception e) {
@@ -156,6 +157,30 @@ public class Proveedor extends Persona {
         }
         return null;
     }
+    
+    public int buscarPorDni(String dni) {
+        try {
+            // Realizamos la consulta para obtener el proveedor por DNI 
+            String query = "SELECT id FROM proveedor WHERE dni = ?";
+            // Utilizamos un parámetro para prevenir SQL Injection
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, dni);
+            // Ejecutamos la consulta y obtenemos el resultado
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+            // Verificamos si existe algún resultado
+            if (resultados.next()) {
+                // Retornamos el ID del cliente
+                return resultados.getInt("id");
+            } else {
+                System.out.println("No se encontró un proveedor con el DNI proporcionado.");
+                return 0; // O algún valor que indique que no se encontró
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0; // Devuelve 0 en caso de error para manejarlo adecuadamente
+        }
+    }
+
     
     //Convertir ResultSet a arraylist de proveedores
     public static List<Proveedor> fromResultSet(ResultSet resultados) {
@@ -177,6 +202,7 @@ public class Proveedor extends Persona {
             return null;
         }
     }
+    
     
     
     public static Proveedor buscarPorId(int proveedor_id) {

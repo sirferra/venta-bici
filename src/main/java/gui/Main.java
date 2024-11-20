@@ -12,6 +12,7 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import gui.cliente.AgregarCliente;
 import gui.cliente.ModificarCliente;
 import gui.proveedor.CrearProveedor;
+import gui.proveedor.ModificarProveedor;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
@@ -809,10 +810,9 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnModificarVendedorActionPerformed
 
-    /*************
-    ***PROVEEDOR** 
+    /**************
+    ***PROVEEDOR***
     **************/
-    
     
     private void btnEliminarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProveedorActionPerformed
         //Obtener la fila seleccionada
@@ -844,7 +844,28 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarProveedorActionPerformed
 
     private void btnModificarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProveedorActionPerformed
-        // TODO add your handling code here:
+        //Obtengo el indice de la fila
+        int fila = dgvProveedores.getSelectedRow();
+        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
+        if(fila >= 0){
+            //Obtengo los valores de la tabla
+            String cuit = dgvProveedores.getValueAt(fila, 0).toString();
+            String nombreFantasia = dgvProveedores.getValueAt(fila, 1).toString();
+            String nombre = dgvProveedores.getValueAt(fila, 2).toString();
+            String apellido = dgvProveedores.getValueAt(fila, 3).toString();
+            int dni = Integer.parseInt(dgvProveedores.getValueAt(fila, 4).toString());
+            String telefono = dgvProveedores.getValueAt(fila, 5).toString();
+            String email = dgvProveedores.getValueAt(fila, 6).toString();
+            //Instancio la interfáz con el constructor personalizado de la clase de la interfaz de modificar
+            ModificarProveedor frmModificarProveedor = new ModificarProveedor(cuit, nombreFantasia, nombre, apellido, dni, telefono, email);
+            frmModificarProveedor.setLocationRelativeTo(null);
+            frmModificarProveedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            frmModificarProveedor.show();
+        }
+        else{
+            System.out.println("Seleccione una fila antes de intentar modificar");
+        }
+        
     }//GEN-LAST:event_btnModificarProveedorActionPerformed
     
     //Crear nuevo vendedor
@@ -914,7 +935,6 @@ public class Main extends javax.swing.JFrame {
         }); 
         }
     }//GEN-LAST:event_pnlProveedoresComponentShown
-    
     
     /**
      * @param args the command line arguments
