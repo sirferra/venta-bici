@@ -141,25 +141,21 @@ public class Vendedor extends Persona {
     }
     
     //  Filtra el vendedor por dni y trae los datos correspondientes al mismo para reasignarle los valores (podria ser cuil o codigo ?) 
-    public boolean modificarVendedor() {
+    public boolean modificarVendedor(int id_vendedor) {
         try {
-            Vendedor vendedorExistente = buscarPorDni(getDni());
-            if (vendedorExistente == null) {
-                throw new Exception("El vendedor no existe");
-            }
-            String query = "UPDATE Vendedor SET cuit = ?, sucursal = ?, nombre = ?, apellido = ?, telefono = ?, email = ? WHERE dni = ?";
+            String query = "UPDATE Vendedor SET cuit = ?, sucursal = ?, nombre = ?, apellido = ?, dni = ?, telefono = ?, email = ? WHERE id = ?";
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, getCuit());
             params.put(2, getSucursal());
             params.put(3, getNombre());
             params.put(4, getApellido());
-            params.put(5, getTelefono());
-            params.put(6, getEmail());
-            params.put(7, getDni());
-
+            params.put(5, getDni());
+            params.put(6, getTelefono());
+            params.put(7, getEmail());
+            params.put(8, id_vendedor);
             Conexion.getInstance().executeQueryWithParams(query, params);
             return true;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }

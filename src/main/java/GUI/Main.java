@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import GUI.vendedor.ModificarVendedor;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -280,6 +281,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         btnModificarVendedor.setText("Modificar Vendedor");
+        btnModificarVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarVendedorActionPerformed(evt);
+            }
+        });
 
         btnNuevoVendedor.setText("Nuevo Vendedor");
         btnNuevoVendedor.addActionListener(new java.awt.event.ActionListener() {
@@ -674,6 +680,32 @@ public class Main extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnEliminarVendedorActionPerformed
+    
+    //Modificar vendedor seleccionado de la grilla
+    private void btnModificarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarVendedorActionPerformed
+        //Obtengo el indice de la fila
+        int fila = dgvVendedores.getSelectedRow();
+        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
+        if(fila >= 0){
+            //Obtengo los valores de la tabla
+            String cuit = dgvVendedores.getValueAt(fila, 0).toString();
+            String nombre = dgvVendedores.getValueAt(fila, 1).toString();
+            String apellido = dgvVendedores.getValueAt(fila, 2).toString();
+            int dni = Integer.parseInt(dgvVendedores.getValueAt(fila, 3).toString());
+            String telefono = dgvVendedores.getValueAt(fila, 4).toString();
+            String email = dgvVendedores.getValueAt(fila, 5).toString();
+            String sucursal = dgvVendedores.getValueAt(fila, 6).toString();
+            //Instancio la interfáz con el constructor personalizado de la clase de la interfaz de modificar
+            ModificarVendedor frmModificarVendedor = new ModificarVendedor(cuit, sucursal, nombre, apellido, dni, telefono, email);
+            frmModificarVendedor.setLocationRelativeTo(null);
+            frmModificarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            frmModificarVendedor.show();
+        }
+        else{
+            System.out.println("Seleccione una fila antes de intentar modificar");
+        }
+    }//GEN-LAST:event_btnModificarVendedorActionPerformed
+    
     
     
     
