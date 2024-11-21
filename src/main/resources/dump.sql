@@ -55,7 +55,7 @@ CREATE TABLE Modelo (
 
 CREATE TABLE Producto (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    codigo VARCHAR(255) NOT NULL,
+    codigo VARCHAR(255) NOT NULL UNIQUE,
     nombre VARCHAR(255) NOT NULL,
     proveedor_id INT NOT NULL,
     categoria_id INT NOT NULL,

@@ -119,7 +119,6 @@ public class Producto {
     }
 
     //CRUD 
-    
     public boolean crearProducto() {
         try {
             String query = "INSERT INTO Producto (codigo, nombre, proveedor_id, categoria_id, stock, modelo_id) VALUES (?, ?, ?, ?, ?, ?)";
