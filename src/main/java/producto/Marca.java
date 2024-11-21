@@ -64,18 +64,16 @@ public class Marca {
         }
     }
 
-    public static Marca buscarPorId(int marca_id) {
-        try {
-            String sql = "SELECT * FROM marca WHERE marca_id = ?";
-            HashMap<Integer, Object> marca = new HashMap<>();
-            marca.put(1, marca_id);
-            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(sql, marca);
-            return Marca.fromResultSet(resultados).get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static Marca buscarPorId(int id) {
+    try {
+        ResultSet resultados = Conexion.getInstance().executeQuery("SELECT id, nombre FROM Marca WHERE id = " + id);
+        List<Marca> marcas = Marca.fromResultSet(resultados);
+        return marcas.isEmpty() ? null : marcas.get(0);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
     }
+}
 
     public static List<Marca> buscarPorNombre(String nombre) {
         try {
@@ -92,7 +90,7 @@ public class Marca {
 
     public boolean modificarMarca() {
         try {
-            String sql = "UPDATE marca SET marca_id = ?, nombre = ? WHERE marca_id = ?";
+            String sql = "UPDATE marca SET id = ?, nombre = ? WHERE id = ?";
             HashMap<Integer, Object> marca = new HashMap<>();
             marca.put(1, getId());
             marca.put(2, getNombre());
@@ -107,7 +105,7 @@ public class Marca {
 
     public boolean eliminarMarca() {
         try {
-            String sql = "DELETE FROM marca WHERE marca_id = ?";
+            String sql = "DELETE FROM marca WHERE id = ?";
             HashMap<Integer, Object> marca = new HashMap<>();
             marca.put(1, getId());
             Conexion.getInstance().executeQueryWithParams(sql, marca);
@@ -122,7 +120,7 @@ public class Marca {
         try {
             List<Marca> marcas = new java.util.ArrayList<>();
             while (resultados.next()) {
-                int id = resultados.getInt("marca_id");
+                int id = resultados.getInt("id");
                 String nombre = resultados.getString("nombre");
                 marcas.add(new Marca(id, nombre));
             }
@@ -131,9 +129,7 @@ public class Marca {
             e.printStackTrace();
             return null;
         }
-    }   
-
-
-
+    }
+    
     
 }

@@ -16,6 +16,8 @@ import repositorio.Conexion;
  * @author facundo.cuffia
  */
 public class Proveedor extends Persona {
+
+    
     //Atributos
     private String cuit;
     private String nombreFantasia;
@@ -215,6 +217,32 @@ public class Proveedor extends Persona {
         }
         return null;
     }
+    
+    public static Proveedor buscarPorNombre(String nombre) {
+    try {
+        String query = "SELECT * FROM Proveedor WHERE nombre = ?";
+        HashMap<Integer, Object> params = new HashMap<>();
+        params.put(1, nombre);
+
+        ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+
+        if (resultados.next()) {
+            // Construir el objeto Proveedor utilizando los datos obtenidos
+            String cuit = resultados.getString("cuit");
+            String nombreFantasia = resultados.getString("nombreFantasia");
+            String apellido = resultados.getString("apellido");
+            int dni = resultados.getInt("dni");
+            String telefono = resultados.getString("telefono");
+            String email = resultados.getString("email");
+
+            // Crear y devolver un nuevo objeto Proveedor
+            return new Proveedor(cuit, nombreFantasia, nombre, apellido, dni, telefono, email);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null; // Si no se encuentra un proveedor, devolver null
+}
     
     /*
     public static Proveedor buscarPorCuit(String cuit) {
