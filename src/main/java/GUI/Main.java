@@ -8,17 +8,16 @@ import GUI.vendedor.ModificarVendedor;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
-import gui.cliente.AgregarCliente;
-import gui.cliente.ModificarCliente;
-import gui.proveedor.CrearProveedor;
-import gui.proveedor.ModificarProveedor;
+import GUI.cliente.AgregarCliente;
+import GUI.cliente.ModificarCliente;
+import GUI.proveedor.CrearProveedor;
+import GUI.proveedor.ModificarProveedor;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import persona.Cliente;
 import persona.Vendedor;
-import gui.vendedor.AgregarVendedor;
+import GUI.vendedor.AgregarVendedor;
 import persona.Proveedor;
 
 /**
