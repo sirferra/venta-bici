@@ -713,11 +713,10 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /*************
-    ****CLIENTE*** 
-    **************/
-    //Carga de lista completa inicial
-    private void pnlClienteComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlClienteComponentShown
+    /************
+    ***LISTADOS**
+    ************/
+    public void listarTodosClientes(){
         persona.Cliente cliente = new Cliente();
         //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
         List<Cliente> registros = cliente.getAll();
@@ -741,11 +740,9 @@ public class Main extends javax.swing.JFrame {
             registro.getEmail()
         }); 
         }
-    }//GEN-LAST:event_pnlClienteComponentShown
-    
-    //Buscar por filtros y refrescar
-    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
-        //Guardo los valores de los campos de texto para filtrar
+    }
+    public void listarFiltrosClientes(){
+         //Guardo los valores de los campos de texto para filtrar
         String dni = txtDniCli.getText();
         String nombre = txtNombreCli.getText();
         String apellido = txtApellidoCli.getText();
@@ -772,75 +769,8 @@ public class Main extends javax.swing.JFrame {
             registro.getEmail()
         }); 
         }
-    }//GEN-LAST:event_btnBuscarClienteActionPerformed
-    
-    //Crear nuevo cliente
-    private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
-        AgregarCliente frmAgregarCliente = new AgregarCliente();
-        frmAgregarCliente.setLocationRelativeTo(null);
-        frmAgregarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frmAgregarCliente.show();
-    }//GEN-LAST:event_btnNuevoClienteActionPerformed
-    
-    //Eliminar cliente seleccionado de la grilla
-    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
-        //Obtener la fila seleccionada
-        int fila = dgvClientes.getSelectedRow();
-        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
-        if(fila >= 0){
-             // Mostrar el mensaje de confirmación
-            int respuesta = JOptionPane.showConfirmDialog(
-            this,
-            "¿Estás seguro de que deseas eliminar al usuario " + Integer.valueOf(dgvClientes.getValueAt(fila, 3).toString()) + 
-            "?","Confirmar Eliminación", 
-            JOptionPane.YES_NO_OPTION, 
-            JOptionPane.WARNING_MESSAGE);
-            //Interpreto la elección
-            if (respuesta == JOptionPane.YES_OPTION) {
-                Cliente cliente = new Cliente();
-                //Guardo el dni en el atributo de mi objeto. Se usa en la funcion de eliminarCliente()
-                cliente.setDni(Integer.parseInt(dgvClientes.getValueAt(fila, 3).toString()));              
-                boolean bandera = cliente.eliminarCliente();
-                if (bandera) {
-                    JOptionPane.showMessageDialog(this, "Se ha eliminado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    //Colocar metodo para refrescar grilla
-                }
-                else{
-                    JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
-                } 
-            }
-        }
-    }//GEN-LAST:event_btnEliminarClienteActionPerformed
-
-    //Modificar cliente
-    private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
-        //Obtengo el indice de la fila
-        int fila = dgvClientes.getSelectedRow();
-        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
-        if(fila >= 0){
-            //Obtengo los valores de la tabla
-            String cuil = dgvClientes.getValueAt(fila, 0).toString();
-            String nombre = dgvClientes.getValueAt(fila, 1).toString();
-            String apellido = dgvClientes.getValueAt(fila, 2).toString();
-            int dni = Integer.parseInt(dgvClientes.getValueAt(fila, 3).toString());
-            String telefono = dgvClientes.getValueAt(fila, 4).toString();
-            String email = dgvClientes.getValueAt(fila, 5).toString();
-            //Instancio la interfáz con el constructor personalizado de la clase de la interfaz de modificar
-            ModificarCliente frmModificarCliente = new ModificarCliente(cuil, nombre, apellido, dni, telefono, email);
-            frmModificarCliente.setLocationRelativeTo(null);
-            frmModificarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            frmModificarCliente.show();
-        }
-        else{
-            System.out.println("Seleccione una fila antes de intentar modificar");
-        }
-    }//GEN-LAST:event_btnModificarClienteActionPerformed
-
-    /*************
-    ***VENDEDOR*** 
-    **************/
-    //Carga de lista completa inicial seleccionado de la grilla
-    private void pnlVendedoresComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlVendedoresComponentShown
+    }
+    public void listarTodosVendedores(){
         Vendedor vendedor = new Vendedor();
         //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
         List<Vendedor> registros = vendedor.getAll();
@@ -864,11 +794,8 @@ public class Main extends javax.swing.JFrame {
             registro.getEmail(),
             registro.getSucursal()
         }); 
-        }
-    }//GEN-LAST:event_pnlVendedoresComponentShown
-    
-    //Buscar vendedor por filtros
-    private void btnBuscarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVendedorActionPerformed
+    }}
+    public void listarFiltrosVendedores(){
         //Guardo los valores de los campos de texto para filtrar
         String dni = txtDniVen.getText();
         String nombre = txtNombreVen.getText();
@@ -897,18 +824,96 @@ public class Main extends javax.swing.JFrame {
             registro.getSucursal()
             }); 
         }
-    }//GEN-LAST:event_btnBuscarVendedorActionPerformed
-
-    //Crear nuevo vendedor
-    private void btnNuevoVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoVendedorActionPerformed
-        AgregarVendedor frmAgregarVendedor = new AgregarVendedor();
-        frmAgregarVendedor.setLocationRelativeTo(null);
-        frmAgregarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frmAgregarVendedor.show();
-    }//GEN-LAST:event_btnNuevoVendedorActionPerformed
-
-    //Elimminar vendedor seleccionado de la grilla
-    private void btnEliminarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarVendedorActionPerformed
+    }
+    public void listarTodosProveedores(){
+        persona.Proveedor proveedor = new Proveedor();
+        //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
+        List<Proveedor> registros = proveedor.getAll();
+        // Verifica que la lista no esté vacía o nula
+        if (registros == null || registros.isEmpty()) {
+        System.out.println("Advertencia: No hay registros existentes en la base de datos.");
+        return;
+        }
+        //Obtener el modelo de la tabla para poder modificarlo
+        DefaultTableModel modelo = (DefaultTableModel) dgvProveedores.getModel();
+        //Limpiar registros anteriores
+        modelo.setRowCount(0);
+        for (Proveedor registro : registros) {
+           //Creo una fila extrayendo los campos del objeto cliente almacenado en la lista de registros.
+           modelo.addRow(new Object[]{
+            registro.getCuit(),
+            registro.getNombreFantasia(),
+            registro.getNombre(),
+            registro.getApellido(),
+            registro.getDni(),
+            registro.getTelefono(),
+            registro.getEmail()
+        }); 
+        }
+    }
+    public void listarFiltrosProveedores(){
+        //Guardo los valores de los campos de texto para filtrar
+        String dni = txtDniProv.getText();
+        String nombre = txtNombreProv.getText();
+        String apellido = txtApellidoProv.getText();
+        persona.Proveedor proveedor = new Proveedor();
+        //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
+        List<Proveedor> registros = proveedor.buscarPorFiltros(dni, nombre, apellido);
+        // Verifica que la lista no esté vacía o nula
+        if (registros == null || registros.isEmpty()) {
+        System.out.println("Advertencia: No hay registros existentes en la base de datos que coincidan con los filtros.");
+        return;
+        }
+        //Obtener el modelo de la tabla para poder modificarlo
+        DefaultTableModel modelo = (DefaultTableModel) dgvProveedores.getModel();
+        //Limpiar registros anteriores
+        modelo.setRowCount(0);
+        for (Proveedor registro : registros) {
+           //Creo una fila extrayendo los campos del objeto cliente almacenado en la lista de registros.
+           modelo.addRow(new Object[]{
+            registro.getCuit(),
+            registro.getNombreFantasia(),
+            registro.getNombre(),
+            registro.getApellido(),
+            registro.getDni(),
+            registro.getTelefono(),
+            registro.getEmail()
+        }); 
+        }
+    }
+    
+    /************
+    ***ELIMINAR**
+    ************/
+    public void eliminarCliente(){
+    //Obtener la fila seleccionada
+        int fila = dgvClientes.getSelectedRow();
+        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
+        if(fila >= 0){
+             // Mostrar el mensaje de confirmación
+            int respuesta = JOptionPane.showConfirmDialog(
+            this,
+            "¿Estás seguro de que deseas eliminar al usuario " + Integer.valueOf(dgvClientes.getValueAt(fila, 3).toString()) + 
+            "?","Confirmar Eliminación", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.WARNING_MESSAGE);
+            //Interpreto la elección
+            if (respuesta == JOptionPane.YES_OPTION) {
+                Cliente cliente = new Cliente();
+                //Guardo el dni en el atributo de mi objeto. Se usa en la funcion de eliminarCliente()
+                cliente.setDni(Integer.parseInt(dgvClientes.getValueAt(fila, 3).toString()));              
+                boolean bandera = cliente.eliminarCliente();
+                if (bandera) {
+                    JOptionPane.showMessageDialog(this, "Se ha eliminado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    //Colocar metodo para refrescar grilla
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                } 
+            }
+        }
+    }
+    public void eliminarVendedor(){
         //Obtener la fila seleccionada
         int fila = dgvVendedores.getSelectedRow();
         System.out.println(fila);
@@ -968,6 +973,12 @@ public class Main extends javax.swing.JFrame {
     **************/
     
     private void btnEliminarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProveedorActionPerformed
+      // esta función esta vacía
+    }
+  
+  
+    public void eliminarProveedor(){
+        //Obtener la fila seleccionada
         int fila = dgvProveedores.getSelectedRow();
 
         if(fila >= 0){
@@ -993,7 +1004,58 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarProveedorActionPerformed
 
     private void btnModificarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProveedorActionPerformed
-
+    }
+    
+    /************
+    **MODIFICAR**
+    ************/
+    public void modificarCliente(){
+        //Obtengo el indice de la fila
+        int fila = dgvClientes.getSelectedRow();
+        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
+        if(fila >= 0){
+            //Obtengo los valores de la tabla
+            String cuil = dgvClientes.getValueAt(fila, 0).toString();
+            String nombre = dgvClientes.getValueAt(fila, 1).toString();
+            String apellido = dgvClientes.getValueAt(fila, 2).toString();
+            int dni = Integer.parseInt(dgvClientes.getValueAt(fila, 3).toString());
+            String telefono = dgvClientes.getValueAt(fila, 4).toString();
+            String email = dgvClientes.getValueAt(fila, 5).toString();
+            //Instancio la interfáz con el constructor personalizado de la clase de la interfaz de modificar
+            ModificarCliente frmModificarCliente = new ModificarCliente(cuil, nombre, apellido, dni, telefono, email);
+            frmModificarCliente.setLocationRelativeTo(null);
+            frmModificarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            frmModificarCliente.show();
+        }
+        else{
+            System.out.println("Seleccione una fila antes de intentar modificar");
+        }
+    }
+    public void modificarVendedor(){
+        //Obtengo el indice de la fila
+        int fila = dgvVendedores.getSelectedRow();
+        //Indice de filas en Jtable arranca desde 0, asi aseguro que haya al menos una seleccionada
+        if(fila >= 0){
+            //Obtengo los valores de la tabla
+            String cuit = dgvVendedores.getValueAt(fila, 0).toString();
+            String nombre = dgvVendedores.getValueAt(fila, 1).toString();
+            String apellido = dgvVendedores.getValueAt(fila, 2).toString();
+            int dni = Integer.parseInt(dgvVendedores.getValueAt(fila, 3).toString());
+            String telefono = dgvVendedores.getValueAt(fila, 4).toString();
+            String email = dgvVendedores.getValueAt(fila, 5).toString();
+            String sucursal = dgvVendedores.getValueAt(fila, 6).toString();
+            //Instancio la interfáz con el constructor personalizado de la clase de la interfaz de modificar
+            ModificarVendedor frmModificarVendedor = new ModificarVendedor(cuit, sucursal, nombre, apellido, dni, telefono, email);
+            frmModificarVendedor.setLocationRelativeTo(null);
+            frmModificarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            frmModificarVendedor.show();
+        }
+        else{
+            System.out.println("Seleccione una fila antes de intentar modificar");
+        }
+    }
+    public void modificarProveedor(){
+        //Obtengo el indice de la fila
         int fila = dgvProveedores.getSelectedRow();
 
         if(fila >= 0){
@@ -1014,7 +1076,84 @@ public class Main extends javax.swing.JFrame {
         else{
             System.out.println("Seleccione una fila antes de intentar modificar");
         }
-        
+    }
+    
+    
+    
+    
+    /*************
+    ****CLIENTE*** 
+    **************/
+    //Carga de lista completa inicial
+    private void pnlClienteComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlClienteComponentShown
+        listarTodosClientes();
+    }//GEN-LAST:event_pnlClienteComponentShown
+    
+    //Buscar por filtros y refrescar
+    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
+       listarFiltrosClientes();
+    }//GEN-LAST:event_btnBuscarClienteActionPerformed
+    
+    //Crear nuevo cliente
+    private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
+        AgregarCliente frmAgregarCliente = new AgregarCliente();
+        frmAgregarCliente.setLocationRelativeTo(null);
+        frmAgregarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frmAgregarCliente.show();
+    }//GEN-LAST:event_btnNuevoClienteActionPerformed
+    
+    //Eliminar cliente seleccionado de la grilla
+    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
+        eliminarCliente();
+    }//GEN-LAST:event_btnEliminarClienteActionPerformed
+
+    //Modificar cliente
+    private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
+        modificarCliente();
+    }//GEN-LAST:event_btnModificarClienteActionPerformed
+
+    /*************
+    ***VENDEDOR*** 
+    **************/
+    //Carga de lista completa inicial seleccionado de la grilla
+    private void pnlVendedoresComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlVendedoresComponentShown
+        listarTodosVendedores();
+    }//GEN-LAST:event_pnlVendedoresComponentShown
+    
+    //Buscar vendedor por filtros
+    private void btnBuscarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVendedorActionPerformed
+        listarFiltrosVendedores();
+    }//GEN-LAST:event_btnBuscarVendedorActionPerformed
+
+    //Crear nuevo vendedor
+    private void btnNuevoVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoVendedorActionPerformed
+        AgregarVendedor frmAgregarVendedor = new AgregarVendedor();
+        frmAgregarVendedor.setLocationRelativeTo(null);
+        frmAgregarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frmAgregarVendedor.show();
+    }//GEN-LAST:event_btnNuevoVendedorActionPerformed
+
+    //Elimminar vendedor seleccionado de la grilla
+    private void btnEliminarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarVendedorActionPerformed
+        eliminarVendedor();
+    }//GEN-LAST:event_btnEliminarVendedorActionPerformed
+    
+    //Modificar vendedor seleccionado de la grilla
+    private void btnModificarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarVendedorActionPerformed
+        modificarVendedor();
+    }//GEN-LAST:event_btnModificarVendedorActionPerformed
+
+    /**************
+    ***PROVEEDOR***
+    **************/
+    //Eliminar proveedor
+    private void btnEliminarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProveedorActionPerformed
+        eliminarProveedor();
+    }//GEN-LAST:event_btnEliminarProveedorActionPerformed
+
+    //Modificar proveedor
+    private void btnModificarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProveedorActionPerformed
+        modificarProveedor();
     }//GEN-LAST:event_btnModificarProveedorActionPerformed
     
     //Crear nuevo vendedor
@@ -1027,71 +1166,22 @@ public class Main extends javax.swing.JFrame {
 
     //Buscar proveedor por filtro
     private void btnBuscarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProveedorActionPerformed
-        //Guardo los valores de los campos de texto para filtrar
-        String dni = txtDniProv.getText();
-        String nombre = txtNombreProv.getText();
-        String apellido = txtApellidoProv.getText();
-        persona.Proveedor proveedor = new Proveedor();
-        //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
-        List<Proveedor> registros = proveedor.buscarPorFiltros(dni, nombre, apellido);
-        // Verifica que la lista no esté vacía o nula
-        if (registros == null || registros.isEmpty()) {
-        System.out.println("Advertencia: No hay registros existentes en la base de datos que coincidan con los filtros.");
-        return;
-        }
-        //Obtener el modelo de la tabla para poder modificarlo
-        DefaultTableModel modelo = (DefaultTableModel) dgvProveedores.getModel();
-        //Limpiar registros anteriores
-        modelo.setRowCount(0);
-        for (Proveedor registro : registros) {
-           //Creo una fila extrayendo los campos del objeto cliente almacenado en la lista de registros.
-           modelo.addRow(new Object[]{
-            registro.getCuit(),
-            registro.getNombreFantasia(),
-            registro.getNombre(),
-            registro.getApellido(),
-            registro.getDni(),
-            registro.getTelefono(),
-            registro.getEmail()
-        }); 
-        }
+        listarFiltrosProveedores();
     }//GEN-LAST:event_btnBuscarProveedorActionPerformed
     
     //Carga de lista completa inicial seleccionado de la grilla
     private void pnlProveedoresComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlProveedoresComponentShown
-        persona.Proveedor proveedor = new Proveedor();
-        //Creo una lista de objetos cliente y guardo en ella lo retornado por getAll()
-        List<Proveedor> registros = proveedor.getAll();
-        // Verifica que la lista no esté vacía o nula
-        if (registros == null || registros.isEmpty()) {
-        System.out.println("Advertencia: No hay registros existentes en la base de datos.");
-        return;
-        }
-        //Obtener el modelo de la tabla para poder modificarlo
-        DefaultTableModel modelo = (DefaultTableModel) dgvProveedores.getModel();
-        //Limpiar registros anteriores
-        modelo.setRowCount(0);
-        for (Proveedor registro : registros) {
-           //Creo una fila extrayendo los campos del objeto cliente almacenado en la lista de registros.
-           modelo.addRow(new Object[]{
-            registro.getCuit(),
-            registro.getNombreFantasia(),
-            registro.getNombre(),
-            registro.getApellido(),
-            registro.getDni(),
-            registro.getTelefono(),
-            registro.getEmail()
-        }); 
-        }
+        listarTodosProveedores();
     }//GEN-LAST:event_pnlProveedoresComponentShown
 
     private void pnlPantallaComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlPantallaComponentShown
-
         
     }//GEN-LAST:event_pnlPantallaComponentShown
 
     private void dgvProductosComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_dgvProductosComponentShown
-        // TODO add your handling code here:
+    }
+    private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
+        
     }//GEN-LAST:event_dgvProductosComponentShown
 
     
