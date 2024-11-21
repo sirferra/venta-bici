@@ -96,13 +96,13 @@ public class Main extends javax.swing.JFrame {
         txtCategoria = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        txtDniProv1 = new javax.swing.JTextField();
-        btnBuscarProveedor1 = new javax.swing.JButton();
+        txtModelo = new javax.swing.JTextField();
+        btnBuscarProducto = new javax.swing.JButton();
         btnEliminarProducto = new javax.swing.JButton();
         btnModificarProducto = new javax.swing.JButton();
         btnNuevoProducto = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        dgvProveedores1 = new javax.swing.JTable();
+        dgvProductos = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -544,10 +544,10 @@ public class Main extends javax.swing.JFrame {
 
         jLabel16.setText("Modelo:");
 
-        btnBuscarProveedor1.setText("Buscar Producto");
-        btnBuscarProveedor1.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarProducto.setText("Buscar Producto");
+        btnBuscarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarProveedor1ActionPerformed(evt);
+                btnBuscarProductoActionPerformed(evt);
             }
         });
 
@@ -572,7 +572,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        dgvProveedores1.setModel(new javax.swing.table.DefaultTableModel(
+        dgvProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -598,11 +598,11 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        dgvProveedores1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane4.setViewportView(dgvProveedores1);
-        if (dgvProveedores1.getColumnModel().getColumnCount() > 0) {
-            dgvProveedores1.getColumnModel().getColumn(2).setResizable(false);
-            dgvProveedores1.getColumnModel().getColumn(3).setResizable(false);
+        dgvProductos.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(dgvProductos);
+        if (dgvProductos.getColumnModel().getColumnCount() > 0) {
+            dgvProductos.getColumnModel().getColumn(2).setResizable(false);
+            dgvProductos.getColumnModel().getColumn(3).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -623,7 +623,7 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(btnNuevoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnBuscarProveedor1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel15)
@@ -633,7 +633,7 @@ public class Main extends javax.swing.JFrame {
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDniProv1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 522, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -657,11 +657,11 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDniProv1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16))
-                .addGap(18, 18, 18)
-                .addComponent(btnBuscarProveedor1)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnBuscarProducto)
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pnlPantalla.addTab("Productos", jPanel4);
@@ -1069,9 +1069,9 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_pnlProveedoresComponentShown
 
-    private void btnBuscarProveedor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProveedor1ActionPerformed
+    private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarProveedor1ActionPerformed
+    }//GEN-LAST:event_btnBuscarProductoActionPerformed
 
     private void btnEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProductoActionPerformed
         // TODO add your handling code here:
@@ -1122,8 +1122,8 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarCliente;
+    private javax.swing.JButton btnBuscarProducto;
     private javax.swing.JButton btnBuscarProveedor;
-    private javax.swing.JButton btnBuscarProveedor1;
     private javax.swing.JButton btnBuscarVendedor;
     private javax.swing.JButton btnEliminarCliente;
     private javax.swing.JButton btnEliminarProducto;
@@ -1138,8 +1138,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnNuevoProveedor;
     private javax.swing.JButton btnNuevoVendedor;
     private javax.swing.JTable dgvClientes;
+    private javax.swing.JTable dgvProductos;
     private javax.swing.JTable dgvProveedores;
-    private javax.swing.JTable dgvProveedores1;
     private javax.swing.JTable dgvVendedores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1174,8 +1174,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDniCli;
     private javax.swing.JTextField txtDniProv;
-    private javax.swing.JTextField txtDniProv1;
     private javax.swing.JTextField txtDniVen;
+    private javax.swing.JTextField txtModelo;
     private javax.swing.JTextField txtNombreCli;
     private javax.swing.JTextField txtNombreProv;
     private javax.swing.JTextField txtNombreVen;

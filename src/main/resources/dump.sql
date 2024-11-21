@@ -1,4 +1,3 @@
--- Tabla de Cliente, Vendedor incluyen los campos de Persona
 CREATE TABLE Cliente (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
@@ -34,8 +33,6 @@ CREATE TABLE Proveedor (
     nombreFantasia VARCHAR(255)
 );
 
-
--- Restante del modelo, previamente definido
 CREATE TABLE Categoria (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL
@@ -55,15 +52,15 @@ CREATE TABLE Modelo (
 
 CREATE TABLE Producto (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    codigo VARCHAR(255) NOT NULL UNIQUE,
+    codigo VARCHAR(255) NOT NULL,
     nombre VARCHAR(255) NOT NULL,
     proveedor_id INT NOT NULL,
     categoria_id INT NOT NULL,
     stock INT NOT NULL,
     modelo_id INT NOT NULL,
-    FOREIGN KEY (id_categoria) REFERENCES Categoria(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_modelo) REFERENCES Modelo(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id) ON DELETE CASCADE
+    FOREIGN KEY (categoria_id) REFERENCES Categoria(id) ON DELETE CASCADE,
+    FOREIGN KEY (modelo_id) REFERENCES Modelo(id) ON DELETE CASCADE,
+    FOREIGN KEY (proveedor_id) REFERENCES Proveedor(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Pedido (
