@@ -2,7 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package GUI.producto;
+package GUI.Producto;
+
+import java.util.List;
+import javax.swing.JOptionPane;
+import persona.Proveedor;
+import producto.Categoria;
+import producto.Marca;
+import producto.Modelo;
+import producto.Producto;
 
 /**
  *
@@ -15,7 +23,50 @@ public class ModificarProducto extends javax.swing.JFrame {
      */
     public ModificarProducto() {
         initComponents();
+         cargarCombos();
+        
+    
+}
+    
+    private String codigoActual;
+
+    public ModificarProducto(String codigo, String nombre, String marca, String modelo, String categoria) {
+        super();
+        this.codigoActual = codigo;
+        initComponents();
+        cargarCombos();
+
+        // Cargar datos actuales en los campos
+        txtCodigo.setText(codigo);
+        txtNombre.setText(nombre);
+        cboMarca.setSelectedItem(marca);
+        cboModelo.setSelectedItem(modelo);
+        cboCategoria.setSelectedItem(categoria);
     }
+    
+    private void cargarCombos() {
+    // Llenar combobox de Marca
+    List<Marca> marcas = Marca.getAll();
+    cboMarca.removeAllItems();
+    for (Marca m : marcas) {
+        cboMarca.addItem(m.getNombre());
+    }
+
+    // Llenar combobox de Modelo
+    List<Modelo> modelos = Modelo.getAll();
+    cboModelo.removeAllItems();
+    for (Modelo mod : modelos) {
+        cboModelo.addItem(mod.getNombre());
+    }
+
+    // Llenar combobox de Categoría
+    List<Categoria> categorias = Categoria.getAll();
+    cboCategoria.removeAllItems();
+    for (Categoria cat : categorias) {
+        cboCategoria.addItem(cat.getNombre());
+    }
+}
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,6 +92,7 @@ public class ModificarProducto extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setName("frmModificarProducto"); // NOI18N
         setUndecorated(true);
         setResizable(false);
 
@@ -48,8 +100,18 @@ public class ModificarProducto extends javax.swing.JFrame {
         jLabel1.setText("MODIFICAR PRODUCTO");
 
         btnModificarProdcuto.setText("MODIFICAR");
+        btnModificarProdcuto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarProdcutoActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Código:");
 
@@ -137,6 +199,41 @@ public class ModificarProducto extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnModificarProdcutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProdcutoActionPerformed
+       String codigo = txtCodigo.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String marca = cboMarca.getSelectedItem() != null ? cboMarca.getSelectedItem().toString() : "";
+        String modelo = cboModelo.getSelectedItem() != null ? cboModelo.getSelectedItem().toString() : "";
+        String categoria = cboCategoria.getSelectedItem() != null ? cboCategoria.getSelectedItem().toString() : "";
+
+        if (codigo.isEmpty() || nombre.isEmpty() || marca.isEmpty() || modelo.isEmpty() || categoria.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;}
+        
+       
+        Producto producto = Producto.buscarProductoPorCodigo(codigoActual);
+        if (producto != null) {
+            producto.setCodigo(codigo);
+            producto.setNombre(nombre);
+            producto.setProveedor(Proveedor.buscarPorNombre(marca));
+            producto.setModelo(Modelo.buscarModeloPorNombre(modelo));
+            producto.setCategoria(Categoria.buscarCategoriaPorNombre(categoria));
+
+            if (producto.actualizarProducto()) {
+                JOptionPane.showMessageDialog(this, "Producto modificado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al modificar el producto. Verifique los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró el producto con el código especificado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarProdcutoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();;
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments

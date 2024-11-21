@@ -60,7 +60,7 @@ public class Modelo {
 
     public static Modelo buscarPorId(int modelo_id) {
         try{
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Modelo WHERE modelo_id = '" + modelo_id + "'");
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Modelo WHERE id = '" + modelo_id + "'");
             List<Modelo> modelos = Modelo.fromResultSet(resultados);
             return modelos.isEmpty() ? null : modelos.get(0);
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class Modelo {
 
     public boolean actualizarModelo() {
         try {
-            String sql = "UPDATE Modelo SET nombre = ?, marca_id = ? WHERE modelo_id = ?";
+            String sql = "UPDATE Modelo SET nombre = ?, marca_id = ? WHERE id = ?";
             HashMap<Integer, Object> modelo = new HashMap<>();
             modelo.put(1, getNombre());
             modelo.put(2, getMarca().getId());
@@ -106,7 +106,7 @@ public class Modelo {
 
     public boolean eliminarModelo() {
         try {
-            String sql = "DELETE FROM Modelo WHERE modelo_id = ?";
+            String sql = "DELETE FROM Modelo WHERE id = ?";
             HashMap<Integer, Object> modelo = new HashMap<>();
             modelo.put(1, getId());
             Conexion.getInstance().executeQueryWithParams(sql, modelo);
@@ -121,7 +121,7 @@ public class Modelo {
         try {
             List<Modelo> modelos = new java.util.ArrayList<>();
             while (resultados.next()) {
-                int id = resultados.getInt("modelo_id");
+                int id = resultados.getInt("id");
                 String nombre = resultados.getString("nombre");
                 int marca_id = resultados.getInt("marca_id");
                 modelos.add(new Modelo(id, nombre, marca_id));
@@ -132,6 +132,28 @@ public class Modelo {
             return null;
         }
     }
+    
+    public static Modelo buscarModeloPorNombre(String nombre) {
+    try {
+        String query = "SELECT * FROM Modelo WHERE nombre = ?";
+        HashMap<Integer, Object> params = new HashMap<>();
+        params.put(1, nombre);
+
+        ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+        
+        if (resultados.next()) {
+            int id = resultados.getInt("id");
+            int marca_id = resultados.getInt("id");
+            return new Modelo(id, nombre, marca_id);
+        } else {
+            System.out.println("No se encontró un modelo con el nombre especificado.");
+            return null;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
 
     public int getId() {
         return id;

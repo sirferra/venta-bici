@@ -4,6 +4,14 @@
  */
 package GUI.producto;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+import persona.Proveedor;
+import producto.Categoria;
+import producto.Marca;
+import producto.Modelo;
+import producto.Producto;
+
 /**
  *
  * @author facundo.cuffia
@@ -15,7 +23,31 @@ public class AgregarProducto extends javax.swing.JFrame {
      */
     public AgregarProducto() {
         initComponents();
+        cargarCombos();
     }
+    
+    private void cargarCombos() {
+
+    List<Marca> marcas = Marca.getAll();
+    cboMarca.removeAllItems();
+    for (Marca marca : marcas) {
+        cboMarca.addItem(marca.getNombre());
+    }
+
+
+    List<Modelo> modelos = Modelo.getAll();
+    cboModelo.removeAllItems();
+    for (Modelo modelo : modelos) {
+        cboModelo.addItem(modelo.getNombre());
+    }
+
+
+    List<Categoria> categorias = Categoria.getAll();
+    cboCategoria.removeAllItems();
+    for (Categoria categoria : categorias) {
+        cboCategoria.addItem(categoria.getNombre());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,7 +67,7 @@ public class AgregarProducto extends javax.swing.JFrame {
         cboCategoria = new javax.swing.JComboBox<>();
         txtCodigo = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
-        btnModificarProdcuto = new javax.swing.JButton();
+        btnAgregarProducto = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -59,11 +91,21 @@ public class AgregarProducto extends javax.swing.JFrame {
 
         cboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        btnModificarProdcuto.setText("MODIFICAR");
+        btnAgregarProducto.setText("AGREGAR");
+        btnAgregarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarProductoActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Nombre:");
 
         btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Código:");
 
@@ -100,8 +142,8 @@ public class AgregarProducto extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnCancelar)
                         .addGap(18, 18, 18)
-                        .addComponent(btnModificarProdcuto)))
-                .addContainerGap(72, Short.MAX_VALUE))
+                        .addComponent(btnAgregarProducto)))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,13 +172,55 @@ public class AgregarProducto extends javax.swing.JFrame {
                     .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnModificarProdcuto)
+                    .addComponent(btnAgregarProducto)
                     .addComponent(btnCancelar))
                 .addGap(37, 37, 37))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarProductoActionPerformed
+    String codigo = txtCodigo.getText().trim();
+    String nombre = txtNombre.getText().trim();
+    String marca = (String) cboMarca.getSelectedItem();
+    String modelo = (String) cboModelo.getSelectedItem();
+    String categoria = (String) cboCategoria.getSelectedItem();
+
+    if (codigo.isEmpty() || nombre.isEmpty() || marca == null || modelo == null || categoria == null) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    Proveedor proveedor = Proveedor.buscarPorNombre(marca);
+    Modelo modeloObj = Modelo.buscarPorNombre(modelo).get(0); 
+    Categoria categoriaObj = Categoria.buscarPorNombre(categoria).get(0); 
+
+    if (proveedor == null || modeloObj == null || categoriaObj == null) {
+        JOptionPane.showMessageDialog(this, "No se encontraron datos relacionados. Verifique los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+
+    Producto producto = new Producto();
+    producto.setCodigo(codigo);
+    producto.setNombre(nombre);
+    producto.setProveedor(proveedor);
+    producto.setModelo(modeloObj);
+    producto.setCategoria(categoriaObj);
+
+    if (producto.crearProducto()) {
+        JOptionPane.showMessageDialog(this, "Producto agregado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        dispose(); 
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al agregar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    }//GEN-LAST:event_btnAgregarProductoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,8 +258,8 @@ public class AgregarProducto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarProducto;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnModificarProdcuto;
     private javax.swing.JComboBox<String> cboCategoria;
     private javax.swing.JComboBox<String> cboMarca;
     private javax.swing.JComboBox<String> cboModelo;

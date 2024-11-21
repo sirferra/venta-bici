@@ -1,20 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package producto;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import persona.Proveedor;
 import repositorio.Conexion;
 
-/**
- *
- * @author P4rzival
- */
 public class Producto {
     private int id;
     private String codigo;
@@ -24,12 +17,18 @@ public class Producto {
     private int stock;
     private Modelo modelo;
 
+    // Nombres descriptivos adicionales
+    private String nombreProveedor;
+    private String nombreCategoria;
+    private String nombreModelo;
+
     public Producto() {
         super();
     }
 
-    // Constructor en base a relaciones por código
-    public Producto(int id, String codigo, String nombre, Proveedor proveedor, Categoria categoria, int stock, Modelo modelo) {
+    // Constructor completo (incluye nombres descriptivos)
+    public Producto(int id, String codigo, String nombre, Proveedor proveedor, Categoria categoria, int stock, Modelo modelo, 
+                    String nombreProveedor, String nombreCategoria, String nombreModelo) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -37,31 +36,23 @@ public class Producto {
         this.categoria = categoria;
         this.stock = stock;
         this.modelo = modelo;
+        this.nombreProveedor = nombreProveedor;
+        this.nombreCategoria = nombreCategoria;
+        this.nombreModelo = nombreModelo;
     }
 
-    // Constructor sin ID
-    public Producto(String codigo, String nombre, Proveedor proveedor, Categoria categoria, int stock, Modelo modelo) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.proveedor = proveedor;
-        this.categoria = categoria;
-        this.stock = stock;
-        this.modelo = modelo;
-    }
-    
-
-    // Constructor en base a relaciones por base de datos
-    public Producto(int id, String codigo, String nombre, int proveedor_id, int categoria_id, int stock, int modelo_id) {
+    // Constructor simplificado
+    public Producto(int id, String codigo, String nombre, int proveedorId, int categoriaId, int stock, int modeloId) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
-        this.proveedor = Proveedor.buscarPorId(proveedor_id); 
-        this.categoria = Categoria.buscarPorId(categoria_id);
+        this.proveedor = Proveedor.buscarPorId(proveedorId);
+        this.categoria = Categoria.buscarPorId(categoriaId);
         this.stock = stock;
-        this.modelo = Modelo.buscarPorId(modelo_id);
+        this.modelo = Modelo.buscarPorId(modeloId);
     }
-    
-    // Getter and setters
+
+    // Getters y setters
     public int getId() {
         return id;
     }
@@ -118,44 +109,46 @@ public class Producto {
         this.modelo = modelo;
     }
 
-    //CRUD 
-    public boolean crearProducto() {
-        try {
-            String query = "INSERT INTO Producto (codigo, nombre, proveedor_id, categoria_id, stock, modelo_id) VALUES (?, ?, ?, ?, ?, ?)";
-            HashMap<Integer, Object> params = new HashMap<>();
-            params.put(1, getCodigo());
-            params.put(2, getNombre());
-            params.put(3, getProveedor().getId());
-            params.put(4, getCategoria().getId());
-            params.put(5, getStock());
-            params.put(6, getModelo().getId());
-            Conexion.getInstance().executeQueryWithParams(query, params);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
-    public Producto buscarPorId(int id) {
-        try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Producto WHERE id = '" + id + "'");
-            List<Producto> productos = Producto.fromResultSet(resultados);
-            return productos.isEmpty() ? null : productos.get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public String getNombreProveedor() {
+        return nombreProveedor;
     }
 
-    public static List<Producto> getAll() {
+    public void setNombreProveedor(String nombreProveedor) {
+        this.nombreProveedor = nombreProveedor;
+    }
+
+    public String getNombreCategoria() {
+        return nombreCategoria;
+    }
+
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
+    }
+
+    public String getNombreModelo() {
+        return nombreModelo;
+    }
+
+    public void setNombreModelo(String nombreModelo) {
+        this.nombreModelo = nombreModelo;
+    }
+
+    // Métodos CRUD
+    public boolean crearProducto() {
         try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Producto");
-            return Producto.fromResultSet(resultados);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        String query = "INSERT INTO Producto (codigo, nombre, proveedor_id, modelo_id, categoria_id) VALUES (?, ?, ?, ?, ?)";
+        HashMap<Integer, Object> params = new HashMap<>();
+        params.put(1, getCodigo());
+        params.put(2, getNombre());
+        params.put(3, getProveedor().getId());
+        params.put(4, getModelo().getId());
+        params.put(5, getCategoria().getId());
+        Conexion.getInstance().executeQueryWithParams(query, params);
+        return true;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+         }
     }
 
     public boolean actualizarProducto() {
@@ -190,69 +183,101 @@ public class Producto {
         }
     }
 
-    // filtros
-    public static List<Producto> buscarPorProveedor(Proveedor proveedor) {
+    // Métodos para obtener productos (filtros y consulta general)
+    public static List<Producto> getAll() {
+        String query = "SELECT Producto.id, Producto.codigo, Producto.nombre, Producto.stock, " +
+                   "CONCAT(Proveedor.nombre, ' ', Proveedor.apellido) AS nombre_proveedor, " +
+                   "Categoria.nombre AS nombre_categoria, " +
+                   "Modelo.nombre AS nombre_modelo " +
+                   "FROM Producto " +
+                   "INNER JOIN Proveedor ON Producto.proveedor_id = Proveedor.id " +
+                   "INNER JOIN Categoria ON Producto.categoria_id = Categoria.id " +
+                   "INNER JOIN Modelo ON Producto.modelo_id = Modelo.id";
         try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Producto WHERE proveedor_id = '" + proveedor.getId() + "'");
+            ResultSet resultados = Conexion.getInstance().executeQuery(query);
             return Producto.fromResultSet(resultados);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
+    }
+    
+    public static Producto buscarProductoPorCodigo(String codigo) {
+    try {
+        String query = "SELECT Producto.id, Producto.codigo, Producto.nombre, Producto.stock, " +
+                       "CONCAT(Proveedor.nombre, ' ', Proveedor.apellido) AS nombre_proveedor, " +
+                       "Categoria.nombre AS nombre_categoria, " +
+                       "Modelo.nombre AS nombre_modelo " +
+                       "FROM Producto " +
+                       "INNER JOIN Proveedor ON Producto.proveedor_id = Proveedor.id " +
+                       "INNER JOIN Categoria ON Producto.categoria_id = Categoria.id " +
+                       "INNER JOIN Modelo ON Producto.modelo_id = Modelo.id " +
+                       "WHERE Producto.codigo = ?";
+        HashMap<Integer, Object> params = new HashMap<>();
+        params.put(1, codigo);
+
+        ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+
+        if (resultados.next()) {
+            int id = resultados.getInt("id");
+            String nombre = resultados.getString("nombre");
+            int stock = resultados.getInt("stock");
+            String nombreProveedor = resultados.getString("nombre_proveedor");
+            String nombreCategoria = resultados.getString("nombre_categoria");
+            String nombreModelo = resultados.getString("nombre_modelo");
+
+            // Crear y retornar producto
+            Producto producto = new Producto();
+            producto.setId(id);
+            producto.setCodigo(codigo);
+            producto.setNombre(nombre);
+            producto.setStock(stock);
+            producto.setNombreProveedor(nombreProveedor);
+            producto.setNombreCategoria(nombreCategoria);
+            producto.setNombreModelo(nombreModelo);
+
+            return producto;
+        } else {
+            System.out.println("No se encontró un producto con el código especificado.");
+            return null;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
         return null;
     }
-
-    public static List<Producto> buscarPorCategoria(Categoria categoria) {
-        try {    
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Producto WHERE categoria_id = '" + categoria.getId() + "'");
-            return Producto.fromResultSet(resultados);
-        } catch (Exception e) {
-            e.printStackTrace();    
-        }
-        return null;
-    }
-
-    public static List<Producto> buscarPorModelo(Modelo modelo) {
+}
+    
+    
+    public static List<Producto> buscarPorFiltros(String codigo, String categoria, String modelo) {
         try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Producto WHERE modelo_id = '" + modelo.getId() + "'");
-            return Producto.fromResultSet(resultados);
+            String query = "SELECT Producto.id, Producto.codigo, Producto.nombre, " +
+                           "CONCAT(Proveedor.nombre, ' ', Proveedor.apellido) AS nombre_proveedor, " +
+                           "Categoria.nombre AS nombre_categoria, " +
+                           "Modelo.nombre AS nombre_modelo " +
+                           "FROM Producto " +
+                           "INNER JOIN Proveedor ON Producto.proveedor_id = Proveedor.id " +
+                           "INNER JOIN Categoria ON Producto.categoria_id = Categoria.id " +
+                           "INNER JOIN Modelo ON Producto.modelo_id = Modelo.id " +
+                           "WHERE 1=1 ";
+
+            if (codigo != null && !codigo.isEmpty()) {
+                query += "AND Producto.codigo LIKE '%" + codigo + "%' ";
+            }
+            if (categoria != null && !categoria.isEmpty()) {
+                query += "AND Categoria.nombre LIKE '%" + categoria + "%' ";
+            }
+            if (modelo != null && !modelo.isEmpty()) {
+                query += "AND Modelo.nombre LIKE '%" + modelo + "%' ";
+            }
+
+            ResultSet resultados = Conexion.getInstance().executeQuery(query);
+            return Producto.fromResultSetSinStock(resultados);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public static List<Producto> buscarPorNombre(String nombre) {
-        try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Producto WHERE nombre = '" + nombre + "'");
-            return Producto.fromResultSet(resultados);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static List<Producto> buscarPorStock(int stock) {
-        try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Producto WHERE stock = '" + stock + "'");
-            return Producto.fromResultSet(resultados);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static List<Producto> buscarPorCodigo(String codigo) {
-        try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Producto WHERE codigo = '" + codigo + "'");
-            return Producto.fromResultSet(resultados);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    // Data transformer
     public static List<Producto> fromResultSet(ResultSet resultados) {
         try {
             List<Producto> productos = new java.util.ArrayList<>();
@@ -260,11 +285,22 @@ public class Producto {
                 int id = resultados.getInt("id");
                 String codigo = resultados.getString("codigo");
                 String nombre = resultados.getString("nombre");
-                int proveedor_id = resultados.getInt("proveedor_id");
-                int categoria_id = resultados.getInt("categoria_id");
                 int stock = resultados.getInt("stock");
-                int modelo_id = resultados.getInt("modelo_id");
-                productos.add(new Producto(id, codigo, nombre, proveedor_id, categoria_id, stock, modelo_id));
+                String nombreProveedor = resultados.getString("nombre_proveedor");
+                String nombreCategoria = resultados.getString("nombre_categoria");
+                String nombreModelo = resultados.getString("nombre_modelo");
+
+                // Crear producto
+                Producto producto = new Producto();
+                producto.setId(id);
+                producto.setCodigo(codigo);
+                producto.setNombre(nombre);
+                producto.setStock(stock);
+                producto.setNombreProveedor(nombreProveedor);
+                producto.setNombreCategoria(nombreCategoria);
+                producto.setNombreModelo(nombreModelo);
+
+                productos.add(producto);
             }
             return productos;
         } catch (Exception e) {
@@ -272,4 +308,34 @@ public class Producto {
             return null;
         }
     }
+    
+    public static List<Producto> fromResultSetSinStock(ResultSet resultados) {
+        try {
+            List<Producto> productos = new ArrayList<>();
+            while (resultados.next()) {
+                int id = resultados.getInt("id");
+                String codigo = resultados.getString("codigo");
+                String nombre = resultados.getString("nombre");
+                String nombreProveedor = resultados.getString("nombre_proveedor");
+                String nombreCategoria = resultados.getString("nombre_categoria");
+                String nombreModelo = resultados.getString("nombre_modelo");
+
+                Producto producto = new Producto();
+                producto.setId(id);
+                producto.setCodigo(codigo);
+                producto.setNombre(nombre);
+                producto.setNombreProveedor(nombreProveedor);
+                producto.setNombreCategoria(nombreCategoria);
+                producto.setNombreModelo(nombreModelo);
+
+                productos.add(producto);
+            }
+            return productos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    
 }

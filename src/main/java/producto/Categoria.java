@@ -61,7 +61,7 @@ public class Categoria {
     
     public static Categoria buscarPorId(int categoria_id) {
         try{
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Categoria WHERE categoria_id = '" + categoria_id + "'");
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Categoria WHERE id = '" + categoria_id + "'");
             List<Categoria> categorias = Categoria.fromResultSet(resultados);
             return categorias.isEmpty() ? null : categorias.get(0);
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class Categoria {
 
     public boolean eliminarCategoria() {
         try {
-            String query = "DELETE FROM Categoria WHERE categoria_id = ?";
+            String query = "DELETE FROM Categoria WHERE id = ?";
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, getId());
             Conexion.getInstance().executeQueryWithParams(query, params);
@@ -85,7 +85,7 @@ public class Categoria {
 
     public boolean crearCategoria() {
         try {
-            String query = "INSERT INTO Categoria(categoria_id, nombre) VALUES(?, ?)";
+            String query = "INSERT INTO Categoria(id, nombre) VALUES(?, ?)";
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, getId());
             params.put(2, getNombre());
@@ -112,11 +112,32 @@ public class Categoria {
         }
     }
     
+    public static Categoria buscarCategoriaPorNombre(String nombre) {
+    try {
+        String query = "SELECT * FROM Categoria WHERE nombre = ?";
+        HashMap<Integer, Object> params = new HashMap<>();
+        params.put(1, nombre);
+
+        ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+
+        if (resultados.next()) {
+            int id = resultados.getInt("id");
+            return new Categoria(id, nombre);
+        } else {
+            System.out.println("No se encontró una categoría con el nombre especificado.");
+            return null;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+    
     public static List<Categoria> fromResultSet(ResultSet resultados) {
         try {
             List<Categoria> categorias = new java.util.ArrayList<>();
             while (resultados.next()) {
-                int id = resultados.getInt("categoria_id");
+                int id = resultados.getInt("id");
                 String nombre = resultados.getString("nombre");
                 categorias.add(new Categoria(id, nombre));
             }
