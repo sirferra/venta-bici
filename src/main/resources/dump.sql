@@ -61,9 +61,9 @@ CREATE TABLE Producto (
     categoria_id INT NOT NULL,
     stock INT NOT NULL,
     modelo_id INT NOT NULL,
-    FOREIGN KEY (categoria_id) REFERENCES Categoria(id) ON DELETE CASCADE,
-    FOREIGN KEY (modelo_id) REFERENCES Modelo(id) ON DELETE CASCADE,
-    FOREIGN KEY (proveedor_id) REFERENCES Proveedor(id) ON DELETE CASCADE
+    FOREIGN KEY (id_categoria) REFERENCES Categoria(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_modelo) REFERENCES Modelo(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Pedido (
