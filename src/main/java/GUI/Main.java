@@ -20,10 +20,11 @@ import javax.swing.WindowConstants;
 import persona.Cliente;
 import persona.Vendedor;
 import GUI.vendedor.AgregarVendedor;
+import java.util.Iterator;
 import pedido.Pedido;
 import persona.Proveedor;
 import producto.Producto;
-import venta.Venta;
+import pedido.DetallePedido;
 
 /**
  *
@@ -799,6 +800,11 @@ public class Main extends javax.swing.JFrame {
         btnGenerarVenta.setText("Generar Venta");
 
         btnBuscarVentas.setText("Buscar");
+        btnBuscarVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarVentasActionPerformed(evt);
+            }
+        });
 
         jLabel27.setText("TOTAL:");
 
@@ -1099,6 +1105,71 @@ public class Main extends javax.swing.JFrame {
         }); 
         }
     }
+    public void listarTodosPedidos(){
+        List<Pedido> pedidos = Pedido.buscarTodosPedidos();
+        DefaultTableModel model = (DefaultTableModel) dgvVentas.getModel();
+        model.setRowCount(0); // Limpia la tabla
+        for (Pedido pedido : pedidos) {
+            model.addRow(new Object[]{
+                pedido.getId(),
+                pedido.getFecha(),
+                pedido.getVendedor().getNombre(),
+                pedido.getCliente().getNombre(),
+                pedido.getTotal()
+            });
+        }
+    }
+    public void listarFiltrosPedidos(){  
+        String clienteNombre = txtNombreClient.getText();
+        String clienteApellido = txtApellidoClient.getText();
+        String vendedorNombre = txtNombreVend.getText();
+        String vendedorApellido = txtApellidoVend.getText();
+        String fechaDesde = txtFechaDesde.getText();
+        String fechaHasta = txtFechaHasta.getText();
+        List<Pedido> pedidos = Pedido.buscarPorFiltros(clienteNombre, clienteApellido, vendedorNombre, vendedorApellido, fechaDesde, fechaHasta);
+        DefaultTableModel model = (DefaultTableModel) dgvVentas.getModel();
+        model.setRowCount(0); // Limpia la tabla
+        for (Pedido pedido : pedidos) {
+            model.addRow(new Object[]{
+                pedido.getId(),
+                pedido.getFecha(),
+                pedido.getVendedor().getNombre(),
+                pedido.getCliente().getNombre(),
+                pedido.getTotal()
+            });
+        }
+    }
+    public void listarTodosDetalles(int fila){
+        DefaultTableModel modelo = (DefaultTableModel) dgvDetalle.getModel();
+        modelo.setRowCount(0);
+        if (fila >= 0) {
+            // Obtener los valores de las columnas
+            int id_pedido = Integer.parseInt(dgvVentas.getValueAt(fila, 0).toString());
+            DetallePedido detalle = new DetallePedido();
+            List<DetallePedido> registros = detalle.obtenerDetalles(id_pedido);
+            for (DetallePedido registro : registros){
+                modelo.addRow(new Object[]{
+                registro.getProducto().getNombre(),
+                registro.getCantidad(),
+                registro.getPrecio()
+                });
+            }
+        }
+        //Variable para calcular total de venta seleccionada    
+        double totalVenta = 0;
+        String prodMasVendido = DetallePedido.obtenerProductoMasVendido();
+        // Iterar por todas las filas de la tabla
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            // Obtener el valor de la columna "precio" (ajusta el índice de la columna si es diferente)
+            Object valor = modelo.getValueAt(i, 2); 
+            if (valor != null) {
+                totalVenta += Double.parseDouble(valor.toString());
+            }
+        }
+
+        txtTotal.setText(String.valueOf(totalVenta));
+        txtMasVendido.setText(prodMasVendido);
+    }
     
     /************
     ***ELIMINAR**
@@ -1260,9 +1331,6 @@ public class Main extends javax.swing.JFrame {
             System.out.println("Seleccione una fila antes de intentar modificar");
         }
     }
-    
-    
-    
     
     /*************
     ****CLIENTE*** 
@@ -1470,17 +1538,13 @@ public class Main extends javax.swing.JFrame {
 
     private void pnlProductoComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlProductoComponentShown
         producto.Producto producto = new Producto();
-        
-        List<Producto> registros = producto.getAll();
-        
+        List<Producto> registros = producto.getAll();     
         if (registros == null || registros.isEmpty()) {
         System.out.println("Advertencia: No hay productos existentes en la base de datos.");
         return;
         }
-        
         DefaultTableModel modelo = (DefaultTableModel) dgvProductos.getModel();
-        modelo.setRowCount(0);
-        
+        modelo.setRowCount(0);  
         for (Producto registro : registros) {
             modelo.addRow(new Object[]{
             registro.getCodigo(),
@@ -1489,7 +1553,7 @@ public class Main extends javax.swing.JFrame {
             registro.getNombreCategoria(),
             registro.getNombreModelo()
                     
-        });
+            });
         }
     }//GEN-LAST:event_pnlProductoComponentShown
 
@@ -1497,35 +1561,23 @@ public class Main extends javax.swing.JFrame {
     /**************
     ****PEDIDOS****
     **************/
+    //Mostrar todas las ventas
     private void pnlVentasComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlVentasComponentShown
-        List<Pedido> pedidos = Pedido.getPedidosParaGrilla();
-        DefaultTableModel model = (DefaultTableModel) dgvVentas.getModel();
-        model.setRowCount(0); // Limpia la tabla
-        for (Pedido pedido : pedidos) {
-            model.addRow(new Object[]{
-                pedido.getId(),
-                pedido.getFecha(),
-                pedido.getVendedor().getNombre(),
-                pedido.getCliente().getNombre(),
-                pedido.getTotal()
-            });
-        }
+        listarTodosPedidos();
     }//GEN-LAST:event_pnlVentasComponentShown
-
+    
+    //Mostrar detalles de la venta seleccionada
     private void dgvVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvVentasMouseClicked
-         // Obtener el índice de la fila donde se hizo clic
+        // Obtener el índice de la fila donde se hizo clic
         int fila = dgvVentas.rowAtPoint(evt.getPoint());
-
-        if (fila >= 0) { // Verificar que se hizo clic sobre una fila válida
-            // Obtener los valores de las columnas
-            Object id = dgvVentas.getValueAt(fila, 0); // Columna 0: ID
-            //consulta
-
-            
-
-          
-        }
+        listarTodosDetalles(fila);
+        
     }//GEN-LAST:event_dgvVentasMouseClicked
+    
+    //Aplicar y buscr por filtros
+    private void btnBuscarVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVentasActionPerformed
+        listarFiltrosPedidos();
+    }//GEN-LAST:event_btnBuscarVentasActionPerformed
     
    
    
