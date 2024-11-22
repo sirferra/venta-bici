@@ -3,7 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package pedido;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import producto.Producto;
+import repositorio.Conexion;
 
 /**
  *
@@ -71,4 +75,13 @@ public class DetallePedido {
         this.pedido = pedido;
     }
     
-}
+    
+    
+    String sql = "SELECT pr.nombre AS producto, d.cantidad, d.precio, de.total FROM"
+            + "detallepedido AS d INNER JOIN"
+            + "Producto AS pr ON pedido_id = pr.id INNER JOIN "
+            + "";
+    
+}    
+
+

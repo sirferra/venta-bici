@@ -3,7 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package pedido;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import persona.Cliente;
+import persona.Vendedor;
+import repositorio.Conexion;
 /**
  *
  * @author facundo.cuffia
@@ -12,8 +18,8 @@ public class Pedido {
     //Atributos
     private int id;
     private Date fecha;
-    private int idCliente; 
-    private int idVendedor;
+    private Cliente Cliente; 
+    private Vendedor Vendedor;
     private double total;
     
     //Constructores
@@ -21,26 +27,23 @@ public class Pedido {
         super();
     }
 
-    public Pedido(Date fecha, int idCliente, int idVendedor, double total) {
-        this.fecha = fecha;
-        this.idCliente = idCliente;
-        this.idVendedor = idVendedor;
-        this.total = total;
-    }
-    
-    public Pedido(int id, Date fecha, int idCliente, int idVendedor, double total) {
+    public Pedido(int id, Date fecha, Cliente cliente, Vendedor vendedor, double total) {
         this.id = id;
         this.fecha = fecha;
-        this.idCliente = idCliente;
-        this.idVendedor = idVendedor;
+        this.Cliente = cliente;
+        this.Vendedor = vendedor;
         this.total = total;
     }
-    
-    public int getId() {
-        return id;
-    }   
 
     //Getters y Setters
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Date getFecha() {
         return fecha;
@@ -50,20 +53,20 @@ public class Pedido {
         this.fecha = fecha;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return Cliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente Cliente) {
+        this.Cliente = Cliente;
     }
 
-    public int getIdVendedor() {
-        return idVendedor;
+    public Vendedor getVendedor() {
+        return Vendedor;
     }
 
-    public void setIdVendedor(int idVendedor) {
-        this.idVendedor = idVendedor;
+    public void setVendedor(Vendedor Vendedor) {
+        this.Vendedor = Vendedor;
     }
 
     public double getTotal() {
@@ -73,6 +76,67 @@ public class Pedido {
     public void setTotal(double total) {
         this.total = total;
     }
+   
+    //
     
+    // Método para obtener los datos de pedidos
+    public static List<Pedido> getPedidosParaGrilla() {
+        List<Pedido> pedidos = new ArrayList<>();
+        try {
+            String sql = "SELECT p.id, p.fecha, " +
+             "CONCAT(v.nombre, ' ', v.apellido) AS vendedor, " +
+             "CONCAT(c.nombre, ' ', c.apellido) AS cliente, " +
+             "p.total " +
+             "FROM Pedido AS p " +
+             "INNER JOIN Vendedor AS v ON p.vendedor_id = v.id " +
+             "INNER JOIN Cliente AS c ON p.cliente_id = c.id";
+            ResultSet resultados = Conexion.getInstance().executeQuery(sql);
+
+            while (resultados.next()) {
+                // Obtener los valores del ResultSet
+                int id = resultados.getInt("id");
+                Date fecha = resultados.getDate("fecha");
+                String vendedorNombre = resultados.getString("vendedor");
+                String clienteNombre = resultados.getString("cliente");
+                double total = resultados.getDouble("total");
+
+                // Crear instancias de Cliente y Vendedor con los nombres
+                Cliente cliente = new Cliente(); // Ajusta según la implementación de Cliente
+                cliente.setNombre(clienteNombre);
+
+                Vendedor vendedor = new Vendedor(); // Ajusta según la implementación de Vendedor
+                vendedor.setNombre(vendedorNombre);
+
+                // Crear el objeto Pedido
+                Pedido pedido = new Pedido(id, fecha, cliente, vendedor, total);
+                pedidos.add(pedido);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pedidos;
+    }
+    
+    
+    
+    
+    /*/Auxiliar para convertir resultsets
+    public static List<Pedido> fromResultSet(ResultSet resultados) {
+        try {
+            List<Pedido> pedido = new java.util.ArrayList<>();
+            while (resultados.next()) {
+                int id = resultados.getInt("id");
+                Date fecha = resultados.getDate("p.fecha");
+                int idVendedor = resultados.getInt("cliente_id");
+                int idCliente = resultados.getInt("vendedor_id");
+                double total = resultados.getDouble("total");
+                pedido.add(new Pedido(id, fecha, idVendedor, idCliente, total));
+            }
+            return pedido;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }*/
     
 }
