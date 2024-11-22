@@ -194,6 +194,8 @@ public class Pedido {
             pedido.put(3, getCliente().getId());
             pedido.put(4, getTotal());
             Conexion.getInstance().executeQueryWithParams(sql, pedido);
+            // get id from last insert
+            setId(Conexion.getInstance().getIdFromLastInsert());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
