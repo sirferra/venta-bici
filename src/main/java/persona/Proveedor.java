@@ -209,7 +209,7 @@ public class Proveedor extends Persona {
     
     public static Proveedor buscarPorId(int proveedor_id) {
         try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor WHERE proveedor_id = '" + proveedor_id + "'");
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor WHERE id = '" + proveedor_id + "'");
             List<Proveedor> proveedores = Proveedor.fromResultSet(resultados);
             return proveedores.isEmpty() ? null : proveedores.get(0);
         } catch (Exception e) {

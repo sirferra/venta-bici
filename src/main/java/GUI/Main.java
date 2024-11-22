@@ -20,6 +20,7 @@ import javax.swing.WindowConstants;
 import persona.Cliente;
 import persona.Vendedor;
 import GUI.vendedor.AgregarVendedor;
+import GUI.ventas.CrearVenta;
 import pedido.Pedido;
 import persona.Proveedor;
 import producto.Producto;
@@ -797,6 +798,11 @@ public class Main extends javax.swing.JFrame {
         jScrollPane6.setViewportView(dgvDetalle);
 
         btnGenerarVenta.setText("Generar Venta");
+        btnGenerarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarVentaActionPerformed(evt);
+            }
+        });
 
         btnBuscarVentas.setText("Buscar");
 
@@ -1361,30 +1367,30 @@ public class Main extends javax.swing.JFrame {
     ***PRODUCTO****
     **************/
     private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
-    String codigo = txtCodigo.getText().trim();
-    String categoria = txtCategoria.getText().trim();
-    String modelo = txtModelo.getText().trim();
+        String codigo = txtCodigo.getText().trim();
+        String categoria = txtCategoria.getText().trim();
+        String modelo = txtModelo.getText().trim();
 
-    List<Producto> registros = Producto.buscarPorFiltros(codigo, categoria, modelo);
+        List<Producto> registros = Producto.buscarPorFiltros(codigo, categoria, modelo);
 
-    if (registros == null || registros.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "No hay productos que coincidan con los filtros.", "Sin resultados", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        if (registros == null || registros.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay productos que coincidan con los filtros.", "Sin resultados", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    DefaultTableModel modeloTabla = (DefaultTableModel) dgvProductos.getModel();
+        DefaultTableModel modeloTabla = (DefaultTableModel) dgvProductos.getModel();
 
-    modeloTabla.setRowCount(0);
+        modeloTabla.setRowCount(0);
 
-    for (Producto registro : registros) {
-        modeloTabla.addRow(new Object[]{
-            registro.getCodigo(),
-            registro.getNombre(),
-            registro.getNombreCategoria(),
-            registro.getNombreProveedor(),
-            registro.getNombreModelo()
-        });
-    }
+        for (Producto registro : registros) {
+            modeloTabla.addRow(new Object[]{
+                registro.getCodigo(),
+                registro.getNombre(),
+                registro.getNombreCategoria(),
+                registro.getNombreProveedor(),
+                registro.getNombreModelo()
+            });
+        }
     }//GEN-LAST:event_btnBuscarProductoActionPerformed
 
     private void btnEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProductoActionPerformed
@@ -1526,6 +1532,19 @@ public class Main extends javax.swing.JFrame {
           
         }
     }//GEN-LAST:event_dgvVentasMouseClicked
+
+    private void btnGenerarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaActionPerformed
+        CrearVenta frmAgregarVenta = new CrearVenta();
+        frmAgregarVenta.setLocationRelativeTo(null);
+        frmAgregarVenta.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frmAgregarVenta.show();
+        frmAgregarVenta.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                pnlVentasComponentShown(null);
+            }
+        });
+    }//GEN-LAST:event_btnGenerarVentaActionPerformed
     
    
    

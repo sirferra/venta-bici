@@ -4,9 +4,24 @@
  */
 package GUI.ventas;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import pedido.DetallePedido;
+import pedido.Pedido;
+import persona.Cliente;
+import persona.Vendedor;
+import producto.Producto;
+
 /**
  *
- * @author kelog
+ * @author kelog, sirferra
  */
 public class CrearVenta extends javax.swing.JFrame {
 
@@ -15,6 +30,40 @@ public class CrearVenta extends javax.swing.JFrame {
      */
     public CrearVenta() {
         initComponents();
+        List<Vendedor> vendedores = Vendedor.getAll();
+        for(Vendedor v: vendedores){
+            jComboBox1.addItem(v);
+        }
+        List<Cliente> clientes = Cliente.getAll();
+        for(Cliente c: clientes){
+            jComboBox2.addItem(c);
+        }
+        List<Producto> productos = Producto.getAllRaw();
+        for(Producto p: productos){
+            jComboBox3.addItem(p);
+        }
+        
+    }
+
+    public void addProduct(java.awt.event.ActionEvent evt) {
+        Producto p = (Producto)jComboBox3.getSelectedItem();
+        DefaultTableModel modelo = (DefaultTableModel)tablaProductos.getModel();
+        int i = 0;
+        boolean encontrado = false;
+        // si existe el producto dentro de la tabla, lo que hace es aumentar la cantidad
+        while (i < modelo.getRowCount() && !encontrado) {
+            if ((int)modelo.getValueAt(i, 0) == p.getId()) {
+                int cantidad = (int)modelo.getValueAt(i, 3) + 1;
+                modelo.setValueAt(cantidad, i, 3);
+                encontrado = true;
+            }
+            i++;
+        }
+        // si no existe el producto dentro de la tabla, lo que hace es agregarlo
+        if (!encontrado) {
+            modelo.addRow(new Object[]{p.getId(), p.getNombre(), p.getPrecio(), 1});
+        }
+        tablaProductos.setModel(modelo);
     }
 
     /**
@@ -26,21 +75,173 @@ public class CrearVenta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<Vendedor>();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaProductos = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setText("NUEVA  VENTA");
+
+        jLabel1.setText("Vendedor");
+
+        jLabel3.setText("Cliente");
+
+        jLabel4.setText("Producto");
+
+        jButton1.setText("Agregar Producto");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProduct(evt);
+            }
+        });
+
+        tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {
+                "id", "name","precio", "cantidad"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaProductos);
+        if (tablaProductos.getColumnModel().getColumnCount() > 0) {
+            tablaProductos.getColumnModel().getColumn(0).setResizable(false);
+            tablaProductos.getColumnModel().getColumn(1).setResizable(false);
+            tablaProductos.getColumnModel().getColumn(2).setResizable(false);
+            tablaProductos.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        jButton2.setText("Agregar Venta");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarVenta(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 754, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(47, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(28, 28, 28)))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+
+    private void agregarVenta(java.awt.event.ActionEvent evt) {
+        Cliente cliente = (Cliente)jComboBox2.getSelectedItem();
+        Vendedor vendedor = (Vendedor)jComboBox1.getSelectedItem();
+        List<Map<String, Object>> productos = new ArrayList<>();
+        for (int i = 0; i < tablaProductos.getRowCount(); i++) {
+            Map<String, Object> producto = new HashMap<>();
+            producto.put("id", Integer.parseInt(tablaProductos.getValueAt(i, 0).toString()));
+            producto.put("nombre", tablaProductos.getValueAt(i, 1).toString());
+            producto.put("precio", Double.parseDouble(tablaProductos.getValueAt(i, 2).toString())); // Columna 2: precio
+            producto.put("cantidad", Integer.parseInt(tablaProductos.getValueAt(i, 3).toString())); // Columna 3: cantidad
+            productos.add(producto);
+        }
+        double total = productos.stream()
+            .mapToDouble(p -> (double) p.get("precio") * (int) p.get("cantidad"))
+            .sum();
+        Pedido pedido = new Pedido(new Date(), cliente, vendedor, total);
+        DetallePedido[] detalles = new DetallePedido[productos.size()];
+        for (int i = 0; i < productos.size(); i++) {
+            Map<String, Object> producto = productos.get(i);
+            int cantidad = (int) producto.get("cantidad");
+            double precio = (double) producto.get("precio");
+            Producto p = Producto.buscarPorId((int) producto.get("id"));
+            DetallePedido detalle = new DetallePedido(p, cantidad, precio, pedido);
+            detalles[i] = detalle;
+            detalle.crearDetallePedido();
+        }
+        pedido.crearPedido();
+        
+        JOptionPane.showMessageDialog(this, "Venta creada exitosamente.");
+        this.dispose();
+    }
 
     /**
      * @param args the command line arguments
@@ -78,5 +279,16 @@ public class CrearVenta extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<Vendedor> jComboBox1;
+    private javax.swing.JComboBox<Cliente> jComboBox2;
+    private javax.swing.JComboBox<Producto> jComboBox3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tablaProductos;
     // End of variables declaration//GEN-END:variables
 }
