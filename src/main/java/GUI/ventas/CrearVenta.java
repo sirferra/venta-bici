@@ -228,6 +228,7 @@ public class CrearVenta extends javax.swing.JFrame {
             .sum();
         Pedido pedido = new Pedido(new Date(), cliente, vendedor, total);
         DetallePedido[] detalles = new DetallePedido[productos.size()];
+        pedido.crearPedido();
         for (int i = 0; i < productos.size(); i++) {
             Map<String, Object> producto = productos.get(i);
             int cantidad = (int) producto.get("cantidad");
@@ -237,7 +238,7 @@ public class CrearVenta extends javax.swing.JFrame {
             detalles[i] = detalle;
             detalle.crearDetallePedido();
         }
-        pedido.crearPedido();
+        
         
         JOptionPane.showMessageDialog(this, "Venta creada exitosamente.");
         this.dispose();
