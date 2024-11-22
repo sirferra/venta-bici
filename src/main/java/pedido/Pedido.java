@@ -94,7 +94,7 @@ public class Pedido {
              "p.total " +
              "FROM Pedido AS p " +
              "INNER JOIN Vendedor AS v ON p.vendedor_id = v.id " +
-             "INNER JOIN Cliente AS c ON p.cliente_id = c.id"+
+             "INNER JOIN Cliente AS c ON p.cliente_id = c.id "+
              "ORDER BY p.id";
             ResultSet resultados = Conexion.getInstance().executeQuery(sql);
 
