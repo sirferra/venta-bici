@@ -31,30 +31,20 @@ public class ModificarProducto extends javax.swing.JFrame {
     private String codigoActual;
     private Proveedor proveedorActual; 
 
-    public ModificarProducto(String codigo, String nombre, String marca, String modelo, String categoria) {
+    public ModificarProducto(String codigo, String nombre, Proveedor proveedor, String modelo, String categoria) {
     super();
     this.codigoActual = codigo;
+    this.proveedorActual = proveedor;
     initComponents();
     cargarCombos();
+
 
     txtCodigo.setText(codigo);
     txtNombre.setText(nombre);
 
-    // Dividir el nombre completo del proveedor en nombre y apellido
-    String[] partes = marca.split(" ", 2); // Divide en nombre y apellido
-    String nombreProveedor = partes[0];
-    String apellidoProveedor = partes.length > 1 ? partes[1] : ""; // Manejar si no hay apellido
-
-    // Buscar el proveedor por nombre y apellido
-    this.proveedorActual = Proveedor.buscarPorNombreYApellido(nombreProveedor, apellidoProveedor);
-    if (proveedorActual == null) {
-        System.err.println("Error: No se encontró el proveedor con el nombre: " + marca);
-    }
-
-    cboMarca.setSelectedItem(marca);
-    cboModelo.setSelectedItem(modelo);
-    cboCategoria.setSelectedItem(categoria);
-    }
+    cboModelo.setSelectedItem(modelo);  
+    cboCategoria.setSelectedItem(categoria); 
+}
     
  
     private boolean combosCargados = false;
@@ -68,23 +58,26 @@ public class ModificarProducto extends javax.swing.JFrame {
         cboModelo.removeAllItems();
         cboCategoria.removeAllItems();
 
-        // Llenar combobox de Marca
-        List<Marca> marcas = Marca.getAll();
-        for (Marca m : marcas) {
-            cboMarca.addItem(m.getNombre());
-        }
 
-        // Llenar combobox de Modelo
-        List<Modelo> modelos = Modelo.getAll();
-        for (Modelo mod : modelos) {
-            cboModelo.addItem(mod.getNombre());
-        }
+    List<Marca> marcas = Marca.getAll();
+    cboMarca.removeAllItems();
+    for (Marca m : marcas) {
+        cboMarca.addItem(m.getNombre());
+    }
 
-        // Llenar combobox de Categoría
-        List<Categoria> categorias = Categoria.getAll();
-        for (Categoria cat : categorias) {
-            cboCategoria.addItem(cat.getNombre());
-        }
+
+    List<Modelo> modelos = Modelo.getAll();
+    cboModelo.removeAllItems();
+    for (Modelo mod : modelos) {
+        cboModelo.addItem(mod.getNombre());
+    }
+
+
+    List<Categoria> categorias = Categoria.getAll();
+    cboCategoria.removeAllItems();
+    for (Categoria cat : categorias) {
+        cboCategoria.addItem(cat.getNombre());
+    }
 
         combosCargados = true; 
     }
@@ -228,47 +221,45 @@ public class ModificarProducto extends javax.swing.JFrame {
     private void btnModificarProdcutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProdcutoActionPerformed
     String codigo = txtCodigo.getText().trim();
     String nombre = txtNombre.getText().trim();
-    String modelo = cboModelo.getSelectedItem() != null ? cboModelo.getSelectedItem().toString() : "";
-    String categoria = cboCategoria.getSelectedItem() != null ? cboCategoria.getSelectedItem().toString() : "";
+    String marca = (String) cboMarca.getSelectedItem();
+    String modelo = (String) cboModelo.getSelectedItem();
+    String categoria = (String) cboCategoria.getSelectedItem();
 
-    if (codigo.isEmpty() || nombre.isEmpty() || modelo.isEmpty() || categoria.isEmpty()) {
+    if (codigo.isEmpty() || nombre.isEmpty() || marca == null || modelo == null || categoria == null) {
         JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
+
+    if (proveedorActual == null) {
+        JOptionPane.showMessageDialog(this, "Error: No se encontró el proveedor asignado.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+
+    Modelo modeloObj = Modelo.buscarPorNombre(modelo).get(0);
+    Categoria categoriaObj = Categoria.buscarPorNombre(categoria).get(0);
+
+
     Producto producto = Producto.buscarProductoPorCodigo(codigoActual);
-    if (producto != null) {
-        producto.setCodigo(codigo);
-        producto.setNombre(nombre);
+    if (producto == null) {
+        JOptionPane.showMessageDialog(this, "Error: No se encontró el producto para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        if (proveedorActual == null) {
-            JOptionPane.showMessageDialog(this, "Error: El proveedor no fue encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        producto.setProveedor(proveedorActual);
 
-        Modelo modeloObj = Modelo.buscarModeloPorNombre(modelo);
-        if (modeloObj == null) {
-            JOptionPane.showMessageDialog(this, "El modelo seleccionado no existe.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        producto.setModelo(modeloObj);
+    producto.setCodigo(codigo);
+    producto.setNombre(nombre);
+    producto.setProveedor(proveedorActual); 
+    producto.setModelo(modeloObj);
+    producto.setCategoria(categoriaObj);
 
-        Categoria categoriaObj = Categoria.buscarCategoriaPorNombre(categoria);
-        if (categoriaObj == null) {
-            JOptionPane.showMessageDialog(this, "La categoría seleccionada no existe.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        producto.setCategoria(categoriaObj);
 
-        if (producto.actualizarProducto()) {
-            JOptionPane.showMessageDialog(this, "Producto modificado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al modificar el producto. Verifique los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    if (producto.actualizarProducto()) {
+        JOptionPane.showMessageDialog(this, "Producto modificado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
     } else {
-        JOptionPane.showMessageDialog(this, "No se encontró el producto con el código especificado.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Error al modificar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
     }
     
     }//GEN-LAST:event_btnModificarProdcutoActionPerformed

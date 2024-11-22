@@ -1158,88 +1158,85 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarProductoActionPerformed
 
     private void btnEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProductoActionPerformed
-                                                 
-        int fila = dgvProductos.getSelectedRow();
-        if (fila >= 0) {
-            int respuesta = JOptionPane.showConfirmDialog(
-                this,
-                "¿Estás seguro de que deseas eliminar el producto con código " + dgvProductos.getValueAt(fila, 0).toString() + "?",
-                "Confirmar Eliminación",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-            );
+    int fila = dgvProductos.getSelectedRow();
+
+    if (fila >= 0) {
+        String codigoProducto = dgvProductos.getValueAt(fila, 0).toString();
+
+        int respuesta = JOptionPane.showConfirmDialog(
+            this,
+            "¿Estás seguro de que deseas eliminar el producto con código " + codigoProducto + "?",
+            "Confirmar Eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
 
         if (respuesta == JOptionPane.YES_OPTION) {
             try {
                 Producto producto = new Producto();
-                String codigoProducto = dgvProductos.getValueAt(fila, 0).toString(); // Código del producto
-                producto.setCodigo(codigoProducto);
-                boolean eliminado = producto.eliminarProducto();
+                boolean eliminado = producto.eliminarProductoPorCodigo(codigoProducto);
+
+                System.out.println("Intentando eliminar el producto con código: " + codigoProducto);
+                System.out.println("Resultado de la eliminación: " + eliminado);
 
                 if (eliminado) {
-                    JOptionPane.showMessageDialog(
-                        this,
-                        "El producto se ha eliminado correctamente.",
-                        "Éxito",
-                        JOptionPane.INFORMATION_MESSAGE
-                    );
-                    pnlProductoComponentShown(null); // Refresca la grilla
+                    JOptionPane.showMessageDialog(this, "El producto se ha eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    pnlProductoComponentShown(null);
                 } else {
-                    JOptionPane.showMessageDialog(
-                        this,
-                        "Hubo un error al intentar eliminar el producto.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                    );
+                    JOptionPane.showMessageDialog(this, "Hubo un error al intentar eliminar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Hubo un error procesando la solicitud: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-                );
+                System.out.println("Error durante la eliminación: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Hubo un error procesando la solicitud: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     } else {
-        JOptionPane.showMessageDialog(
-            this,
-            "Por favor, selecciona un producto de la tabla.",
-            "Advertencia",
-            JOptionPane.WARNING_MESSAGE
-        );
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona un producto de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_btnEliminarProductoActionPerformed
 
     private void btnModificarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProductoActionPerformed
-     int fila = dgvProductos.getSelectedRow();
+       
+    int fila = dgvProductos.getSelectedRow();
 
     if (fila >= 0) {
         String codigo = dgvProductos.getValueAt(fila, 0).toString();
         String nombre = dgvProductos.getValueAt(fila, 1).toString();
-        String proveedorNombre = dgvProductos.getValueAt(fila, 2).toString();
+        String proveedorNombreCompleto = dgvProductos.getValueAt(fila, 2).toString();
         String categoria = dgvProductos.getValueAt(fila, 3).toString();
         String modelo = dgvProductos.getValueAt(fila, 4).toString();
 
+        String[] proveedorSplit = proveedorNombreCompleto.split(" ");
+        String proveedorNombre = proveedorSplit[0];
+        String proveedorApellido = (proveedorSplit.length > 1) ? proveedorSplit[1] : "";
 
-        if (dgvProductos.getColumnCount() > 5) {
-            int proveedorId = Integer.parseInt(dgvProductos.getValueAt(fila, 5).toString());
+        System.out.println("Código: " + codigo);
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Proveedor: " + proveedorNombreCompleto);
+        System.out.println("Categoría: " + categoria);
+        System.out.println("Modelo: " + modelo);
+        
+        
+        Proveedor proveedor = Proveedor.buscarPorNombre(proveedorNombre, proveedorApellido);
 
-
-            Proveedor proveedor = Proveedor.buscarPorId(proveedorId);
-            if (proveedor == null) {
-                JOptionPane.showMessageDialog(this, "Error: No se pudo encontrar el proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-
-            ModificarProducto modificarProducto = new ModificarProducto(codigo, nombre, proveedorNombre, modelo, categoria);
-            modificarProducto.setLocationRelativeTo(null);
-            modificarProducto.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-            modificarProducto.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: No se pudo obtener el ID del proveedor. La columna no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+        if (proveedor == null) {
+            JOptionPane.showMessageDialog(this, "Error: No se encontró el proveedor seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+        ModificarProducto modificarProducto = new ModificarProducto(codigo, nombre, proveedor, modelo, categoria);
+        modificarProducto.setLocationRelativeTo(null);
+        modificarProducto.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+
+        modificarProducto.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                cargarDatosEnTabla(); 
+            }
+        });
+
+        modificarProducto.setVisible(true);
     } else {
         JOptionPane.showMessageDialog(this, "Por favor, selecciona un producto para modificar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
@@ -1247,64 +1244,63 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarProductoActionPerformed
 
     private void btnNuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProductoActionPerformed
-       AgregarProducto frmAgregarProducto = new AgregarProducto();
-       frmAgregarProducto.setLocationRelativeTo(null);
-       frmAgregarProducto.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-       frmAgregarProducto.setVisible(true);
+    AgregarProducto frmAgregarProducto = new AgregarProducto();
+    frmAgregarProducto.setLocationRelativeTo(null);
+    frmAgregarProducto.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+    frmAgregarProducto.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosed(java.awt.event.WindowEvent e) {
+            cargarDatosEnTabla(); 
+        }
+    });
+
+    frmAgregarProducto.setVisible(true);
     }//GEN-LAST:event_btnNuevoProductoActionPerformed
 
     private void pnlProductoComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlProductoComponentShown
 
-    DefaultTableModel modelo = new DefaultTableModel(
-        new Object[][]{}, 
-        new String[]{"Código", "Nombre", "Proveedor", "Categoría", "Modelo", "ID Proveedor"} 
-    ) {
-        boolean[] canEdit = new boolean[]{
-            false, false, false, false, false, false 
-        };
-
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return canEdit[columnIndex];
-        }
+  DefaultTableModel modelo = new DefaultTableModel(
+    new Object[][]{}, 
+    new String[]{"Código", "Nombre", "Proveedor", "Categoría", "Modelo"} 
+) {
+    boolean[] canEdit = new boolean[]{
+        false, false, false, false, false
     };
 
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit[columnIndex];
+    }
+};
 
-    dgvProductos.setModel(modelo);
-
-
-    cargarDatosEnTabla();
+dgvProductos.setModel(modelo);
+cargarDatosEnTabla();
     
     }//GEN-LAST:event_pnlProductoComponentShown
     
     private void cargarDatosEnTabla() {
     List<Producto> registros = Producto.getAll();
 
+    // Verificar si la lista está vacía o nula
     if (registros == null || registros.isEmpty()) {
         System.out.println("Advertencia: No hay productos existentes en la base de datos.");
         return;
     }
 
+    // Obtener el modelo de la tabla
     DefaultTableModel modelo = (DefaultTableModel) dgvProductos.getModel();
     modelo.setRowCount(0); // Limpiar la tabla antes de cargar nuevos datos
 
+    // Cargar los datos en el modelo sin incluir el ID del proveedor
     for (Producto registro : registros) {
         modelo.addRow(new Object[]{
-            registro.getCodigo(),
-            registro.getNombre(),
-            registro.getNombreProveedor(),
-            registro.getNombreCategoria(),
-            registro.getNombreModelo(),
-            registro.getProveedor().getId() // ID del proveedor como columna oculta
+            registro.getCodigo(),                 // Columna 0: Código del producto
+            registro.getNombre(),                 // Columna 1: Nombre del producto
+            registro.getNombreProveedor(),        // Columna 2: Nombre completo del proveedor (nombre + apellido)
+            registro.getNombreCategoria(),        // Columna 3: Nombre de la categoría
+            registro.getNombreModelo()            // Columna 4: Nombre del modelo
         });
-    }
-
-    // Ocultar la columna del ID del proveedor
-    if (dgvProductos.getColumnModel().getColumnCount() > 5) {
-        dgvProductos.getColumnModel().getColumn(5).setMinWidth(0);
-        dgvProductos.getColumnModel().getColumn(5).setMaxWidth(0);
-        dgvProductos.getColumnModel().getColumn(5).setWidth(0);
     }
 }
     

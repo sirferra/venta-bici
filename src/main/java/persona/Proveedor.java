@@ -236,25 +236,27 @@ public class Proveedor extends Persona {
     }
 }
     
-    public static Proveedor buscarPorNombre(String nombre) {
+  public static Proveedor buscarPorNombre(String nombre, String apellido) {
     try {
-        String query = "SELECT * FROM Proveedor WHERE nombre = ?";
+        String query = "SELECT * FROM Proveedor WHERE nombre = ? AND apellido = ?";
         HashMap<Integer, Object> params = new HashMap<>();
-        params.put(1, nombre.trim()); // Eliminar espacios adicionales
+        params.put(1, nombre);
+        params.put(2, apellido);
 
         ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
 
         if (resultados.next()) {
+            int id = resultados.getInt("id");
             String cuit = resultados.getString("cuit");
             String nombreFantasia = resultados.getString("nombreFantasia");
-            String apellido = resultados.getString("apellido");
-            int dni = resultados.getInt("dni");
+            String direccion = resultados.getString("direccion");
             String telefono = resultados.getString("telefono");
             String email = resultados.getString("email");
+            String dni = resultados.getString("dni");
 
-            return new Proveedor(cuit, nombreFantasia, nombre, apellido, dni, telefono, email);
+            return new Proveedor(cuit, nombreFantasia, id, nombre, apellido, Integer.parseInt(dni), telefono, email);
         } else {
-            System.err.println("Error: No se encontró un proveedor con el nombre: " + nombre);
+            System.out.println("No se encontró un proveedor con el nombre: " + nombre + " y apellido: " + apellido);
             return null;
         }
     } catch (Exception e) {
@@ -262,6 +264,7 @@ public class Proveedor extends Persona {
         return null;
     }
 }
+
     
     public static Proveedor buscarPorNombreYApellido(String nombre, String apellido) {
     try {

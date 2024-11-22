@@ -182,18 +182,18 @@ public boolean actualizarProducto() {
     }
 }
 
-    public boolean eliminarProducto() {
-        try {
-            String query = "DELETE FROM Producto WHERE id = ?";
-            HashMap<Integer, Object> params = new HashMap<>();
-            params.put(1, getId());
-            Conexion.getInstance().executeQueryWithParams(query, params);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    public boolean eliminarProductoPorCodigo(String codigo) {
+       try {
+           String query = "DELETE FROM Producto WHERE codigo = ?";
+           HashMap<Integer, Object> params = new HashMap<>();
+           params.put(1, codigo);
+           Conexion.getInstance().executeQueryWithParams(query, params);
+           return true;
+       } catch (Exception e) {
+           e.printStackTrace();
+           return false;
+       }
+   }
 
     // Métodos para obtener productos (filtros y consulta general)
     public static List<Producto> getAll() {
