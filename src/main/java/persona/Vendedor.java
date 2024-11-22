@@ -260,7 +260,20 @@ public class Vendedor extends Persona {
 
     @Override
     public String toString() {
-        return "Vendedor{" + "cuit=" + cuit + ", sucursal=" + sucursal + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
+        // return "Vendedor{" + "cuit=" + cuit + ", sucursal=" + sucursal + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
+        // Comento lo de arriba porque esta función es necesaria para rellenar el combobox
+        return this.getNombre() + " " + this.getApellido();
+    }
+
+    public static Vendedor buscarPorId(int id) {
+        try {
+            String query = "SELECT * FROM Vendedor WHERE id = " + id;
+            ResultSet resultados = Conexion.getInstance().executeQuery(query);
+            return Vendedor.fromResultSet(resultados).get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     
 }

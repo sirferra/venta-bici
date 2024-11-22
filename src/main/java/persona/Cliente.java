@@ -194,6 +194,18 @@ public class Cliente extends Persona{
         }
     }
     
+    public static Cliente buscarPorId(int id) {
+        try {
+            String query = "SELECT id FROM cliente WHERE id = ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, id);
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+            return Cliente.fromResultSet(resultados).get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null; 
+        }
+    }
     //Convertir los resultados en una lista de objetos
     public static List<Cliente> fromResultSet(ResultSet resultados) {
         try {
@@ -216,7 +228,9 @@ public class Cliente extends Persona{
     }
 
     public String toString() {
-        return "Cliente{" + "cuil=" + cuil + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
+       // return "Cliente{" + "cuil=" + cuil + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
+        // Comento lo de arriba porque esta función es necesaria para rellenar el combobox
+        return this.getNombre() + " " + this.getApellido();
     }
 
     public Object[] tObject() {

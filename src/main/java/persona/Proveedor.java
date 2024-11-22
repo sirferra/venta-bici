@@ -207,34 +207,16 @@ public class Proveedor extends Persona {
     
     
     
-   public static Proveedor buscarPorId(int proveedorId) {
-    try {
-        String query = "SELECT * FROM Proveedor WHERE id = ?"; 
-        HashMap<Integer, Object> params = new HashMap<>();
-        params.put(1, proveedorId);
-
-        ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
-
-        if (resultados.next()) {
-            String cuit = resultados.getString("cuit");
-            String nombreFantasia = resultados.getString("nombreFantasia");
-            String nombre = resultados.getString("nombre");
-            String apellido = resultados.getString("apellido");
-            String direccion = resultados.getString("direccion");
-            String telefono = resultados.getString("telefono");
-            String email = resultados.getString("email");
-            String dni = resultados.getString("dni");
-
-            return new Proveedor(cuit, nombreFantasia, nombre, apellido, Integer.parseInt(dni), telefono, email);
-        } else {
-            System.out.println("No se encontró un proveedor con el ID proporcionado.");
-            return null;
+    public static Proveedor buscarPorId(int proveedor_id) {
+        try {
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor WHERE id = '" + proveedor_id + "'");
+            List<Proveedor> proveedores = Proveedor.fromResultSet(resultados);
+            return proveedores.isEmpty() ? null : proveedores.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
         return null;
     }
-}
     
   public static Proveedor buscarPorNombre(String nombre, String apellido) {
     try {

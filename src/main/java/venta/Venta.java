@@ -11,7 +11,7 @@ import repositorio.Conexion;
 
 /**
  *
- * @author P4rzival
+ * @author facundo.cuffia
  */
 public class Venta {
     

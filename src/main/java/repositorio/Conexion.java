@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
-    private static final String CONNECTION_STRING =  "jdbc:mysql://root:@localhost:3306";
+    private static final String CONNECTION_STRING =  "jdbc:mysql://root:1234@localhost:3306";
     private static final Connection connection;
     private static final MySqlDB db;
 
