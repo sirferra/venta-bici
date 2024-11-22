@@ -134,6 +134,8 @@ public class Main extends javax.swing.JFrame {
         txtMasVendido = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
+        btnLimpiarFiltrosProd = new javax.swing.JButton();
+       // jPanel5 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -641,6 +643,13 @@ public class Main extends javax.swing.JFrame {
             dgvProductos.getColumnModel().getColumn(3).setResizable(false);
         }
 
+        btnLimpiarFiltrosProd.setText("Limpiar Filtros");
+        btnLimpiarFiltrosProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarFiltrosProdActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlProductoLayout = new javax.swing.GroupLayout(pnlProducto);
         pnlProducto.setLayout(pnlProductoLayout);
         pnlProductoLayout.setHorizontalGroup(
@@ -651,7 +660,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
                     .addGroup(pnlProductoLayout.createSequentialGroup()
                         .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
                         .addComponent(btnEliminarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModificarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -669,8 +678,9 @@ public class Main extends javax.swing.JFrame {
                                 .addGroup(pnlProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 570, Short.MAX_VALUE)))
+                                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnLimpiarFiltrosProd, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlProductoLayout.setVerticalGroup(
@@ -698,6 +708,9 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscarProducto)
                 .addContainerGap(77, Short.MAX_VALUE))
+                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLimpiarFiltrosProd)
+                //.addContainerGap(22, Short.MAX_VALUE)
         );
 
         pnlPantalla.addTab("Productos", pnlProducto);
@@ -937,6 +950,9 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+
     /************
     ***LISTADOS**
     ************/
@@ -1129,10 +1145,12 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = cliente.eliminarCliente();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    listarTodosClientes();
                     //Colocar metodo para refrescar grilla
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                    listarTodosClientes();
                 } 
             }
         }
@@ -1158,10 +1176,11 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = vendedor.eliminarVendedor();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el vendedor de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    //Colocar metodo para refrescar grilla
+                    listarTodosClientes();
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                    listarTodosClientes();
                 } 
             }
         }
@@ -1186,10 +1205,11 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = proveedor.eliminarProveedor();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el proveedor de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    //Colocar metodo para refrescar grilla
+                    listarTodosClientes();
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el proveedor", "Error", JOptionPane.ERROR_MESSAGE);
+                    listarTodosClientes();
                 } 
             }
         }
@@ -1214,6 +1234,7 @@ public class Main extends javax.swing.JFrame {
             ModificarCliente frmModificarCliente = new ModificarCliente(cuil, nombre, apellido, dni, telefono, email);
             frmModificarCliente.setLocationRelativeTo(null);
             frmModificarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            listarTodosClientes();
             frmModificarCliente.show();
         }
         else{
@@ -1237,6 +1258,7 @@ public class Main extends javax.swing.JFrame {
             ModificarVendedor frmModificarVendedor = new ModificarVendedor(cuit, sucursal, nombre, apellido, dni, telefono, email);
             frmModificarVendedor.setLocationRelativeTo(null);
             frmModificarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            listarTodosClientes();
             frmModificarVendedor.show();
         }
         else{
@@ -1260,6 +1282,7 @@ public class Main extends javax.swing.JFrame {
             ModificarProveedor frmModificarProveedor = new ModificarProveedor(cuit, nombreFantasia, nombre, apellido, dni, telefono, email);
             frmModificarProveedor.setLocationRelativeTo(null);
             frmModificarProveedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            listarTodosClientes();
             frmModificarProveedor.show();
         }
         else{
@@ -1288,17 +1311,20 @@ public class Main extends javax.swing.JFrame {
         AgregarCliente frmAgregarCliente = new AgregarCliente();
         frmAgregarCliente.setLocationRelativeTo(null);
         frmAgregarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        listarTodosClientes();
         frmAgregarCliente.show();
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
     
     //Eliminar cliente seleccionado de la grilla
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
         eliminarCliente();
+
     }//GEN-LAST:event_btnEliminarClienteActionPerformed
 
     //Modificar cliente
     private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
         modificarCliente();
+
     }//GEN-LAST:event_btnModificarClienteActionPerformed
 
     /*************
@@ -1312,6 +1338,7 @@ public class Main extends javax.swing.JFrame {
     //Buscar vendedor por filtros
     private void btnBuscarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVendedorActionPerformed
         listarFiltrosVendedores();
+        
     }//GEN-LAST:event_btnBuscarVendedorActionPerformed
 
     //Crear nuevo vendedor
@@ -1319,6 +1346,7 @@ public class Main extends javax.swing.JFrame {
         AgregarVendedor frmAgregarVendedor = new AgregarVendedor();
         frmAgregarVendedor.setLocationRelativeTo(null);
         frmAgregarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        listarTodosClientes();
         frmAgregarVendedor.show();
     }//GEN-LAST:event_btnNuevoVendedorActionPerformed
 
@@ -1350,6 +1378,7 @@ public class Main extends javax.swing.JFrame {
         CrearProveedor frmCrearProveedor = new CrearProveedor();
         frmCrearProveedor.setLocationRelativeTo(null);
         frmCrearProveedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        listarTodosClientes();
         frmCrearProveedor.show();
     }//GEN-LAST:event_btnNuevoProveedorActionPerformed
 
@@ -1366,6 +1395,27 @@ public class Main extends javax.swing.JFrame {
     /**************
     ***PRODUCTO****
     **************/
+    private DefaultTableModel modeloTabla;
+
+    private void inicializarTabla() {
+        DefaultTableModel modelo = new DefaultTableModel(
+        new Object[][]{}, 
+        new String[]{"Código", "Nombre", "Proveedor", "Categoría", "Modelo"}
+    ) {
+        boolean[] canEdit = new boolean[]{
+            false, false, false, false, false
+        };
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit[columnIndex];
+        }
+    };
+
+    dgvProductos.setModel(modelo);
+    modeloTabla = modelo;
+    }
+    
     private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
         String codigo = txtCodigo.getText().trim();
         String categoria = txtCategoria.getText().trim();
@@ -1495,47 +1545,39 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNuevoProductoActionPerformed
 
     private void pnlProductoComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlProductoComponentShown
-
-  DefaultTableModel modelo = new DefaultTableModel(
-    new Object[][]{}, 
-    new String[]{"Código", "Nombre", "Proveedor", "Categoría", "Modelo"} 
-) {
-    boolean[] canEdit = new boolean[]{
-        false, false, false, false, false
-    };
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return canEdit[columnIndex];
-    }
-};
-
-dgvProductos.setModel(modelo);
-cargarDatosEnTabla();
-    
+    inicializarTabla();
+    cargarDatosEnTabla();
     }//GEN-LAST:event_pnlProductoComponentShown
+
+    private void btnLimpiarFiltrosProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarFiltrosProdActionPerformed
+        txtCodigo.setText("");
+        txtCategoria.setText("");
+        txtModelo.setText("");
+        cargarDatosEnTabla();
+    }//GEN-LAST:event_btnLimpiarFiltrosProdActionPerformed
+
     
     private void cargarDatosEnTabla() {
     List<Producto> registros = Producto.getAll();
 
-    // Verificar si la lista está vacía o nula
+
     if (registros == null || registros.isEmpty()) {
         System.out.println("Advertencia: No hay productos existentes en la base de datos.");
         return;
     }
 
-    // Obtener el modelo de la tabla
-    DefaultTableModel modelo = (DefaultTableModel) dgvProductos.getModel();
-    modelo.setRowCount(0); // Limpiar la tabla antes de cargar nuevos datos
 
-    // Cargar los datos en el modelo sin incluir el ID del proveedor
+    DefaultTableModel modelo = (DefaultTableModel) dgvProductos.getModel();
+    modelo.setRowCount(0); 
+
+
     for (Producto registro : registros) {
         modelo.addRow(new Object[]{
-            registro.getCodigo(),                 // Columna 0: Código del producto
-            registro.getNombre(),                 // Columna 1: Nombre del producto
-            registro.getNombreProveedor(),        // Columna 2: Nombre completo del proveedor (nombre + apellido)
-            registro.getNombreCategoria(),        // Columna 3: Nombre de la categoría
-            registro.getNombreModelo()            // Columna 4: Nombre del modelo
+            registro.getCodigo(),                 
+            registro.getNombre(),                 
+            registro.getNombreProveedor(),        
+            registro.getNombreCategoria(),       
+            registro.getNombreModelo()         
         });
         }
     }//GEN-LAST:event_pnlProductoComponentShown
@@ -1637,6 +1679,7 @@ cargarDatosEnTabla();
     private javax.swing.JButton btnEliminarProveedor;
     private javax.swing.JButton btnEliminarVendedor;
     private javax.swing.JButton btnGenerarVenta;
+    private javax.swing.JButton btnLimpiarFiltrosProd;
     private javax.swing.JButton btnModificarCliente;
     private javax.swing.JButton btnModificarProducto;
     private javax.swing.JButton btnModificarProveedor;
