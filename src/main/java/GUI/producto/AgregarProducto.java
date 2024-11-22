@@ -4,6 +4,7 @@
  */
 package GUI.producto;
 
+import GUI.Main;
 import java.util.List;
 import javax.swing.JOptionPane;
 import persona.Proveedor;
@@ -28,19 +29,23 @@ public class AgregarProducto extends javax.swing.JFrame {
     
     private void cargarCombos() {
 
+   List<Proveedor> proveedores = Proveedor.getAll();
+    cboProveedor.removeAllItems();
+    for (Proveedor proveedor : proveedores) {
+        cboProveedor.addItem(proveedor.getNombre() + " " + proveedor.getApellido());
+    }
+
+
     List<Marca> marcas = Marca.getAll();
     cboMarca.removeAllItems();
     for (Marca marca : marcas) {
         cboMarca.addItem(marca.getNombre());
     }
-
-
     List<Modelo> modelos = Modelo.getAll();
     cboModelo.removeAllItems();
     for (Modelo modelo : modelos) {
         cboModelo.addItem(modelo.getNombre());
     }
-
 
     List<Categoria> categorias = Categoria.getAll();
     cboCategoria.removeAllItems();
@@ -71,6 +76,8 @@ public class AgregarProducto extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        lblProveedor = new javax.swing.JLabel();
+        cboProveedor = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -109,6 +116,10 @@ public class AgregarProducto extends javax.swing.JFrame {
 
         jLabel2.setText("Código:");
 
+        lblProveedor.setText("Proveedor:");
+
+        cboProveedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,25 +127,28 @@ public class AgregarProducto extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel3))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(cboMarca, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cboModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(cboMarca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboModelo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblProveedor)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(cboProveedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -160,6 +174,10 @@ public class AgregarProducto extends javax.swing.JFrame {
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProveedor)
+                    .addComponent(cboProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -170,7 +188,7 @@ public class AgregarProducto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregarProducto)
                     .addComponent(btnCancelar))
@@ -183,35 +201,48 @@ public class AgregarProducto extends javax.swing.JFrame {
     private void btnAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarProductoActionPerformed
     String codigo = txtCodigo.getText().trim();
     String nombre = txtNombre.getText().trim();
-    String marca = (String) cboMarca.getSelectedItem();
-    String modelo = (String) cboModelo.getSelectedItem();
-    String categoria = (String) cboCategoria.getSelectedItem();
+    String proveedorSeleccionado = (String) cboProveedor.getSelectedItem();
+    String marcaSeleccionada = (String) cboMarca.getSelectedItem();
+    String modeloSeleccionado = (String) cboModelo.getSelectedItem();
+    String categoriaSeleccionada = (String) cboCategoria.getSelectedItem();
 
-    if (codigo.isEmpty() || nombre.isEmpty() || marca == null || modelo == null || categoria == null) {
+    if (codigo.isEmpty() || nombre.isEmpty() || proveedorSeleccionado == null || 
+        marcaSeleccionada == null || modeloSeleccionado == null || categoriaSeleccionada == null) {
         JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    Proveedor proveedor = Proveedor.buscarPorNombre(marca);
-    Modelo modeloObj = Modelo.buscarPorNombre(modelo).get(0); 
-    Categoria categoriaObj = Categoria.buscarPorNombre(categoria).get(0); 
+    String[] proveedorSplit = proveedorSeleccionado.split(" ");
+    String nombreProveedor = proveedorSplit[0];
+    String apellidoProveedor = (proveedorSplit.length > 1) ? proveedorSplit[1] : "";
 
-    if (proveedor == null || modeloObj == null || categoriaObj == null) {
-        JOptionPane.showMessageDialog(this, "No se encontraron datos relacionados. Verifique los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+    Proveedor proveedor = Proveedor.buscarPorNombre(nombreProveedor, apellidoProveedor);
+    if (proveedor == null) {
+        JOptionPane.showMessageDialog(this, "No se encontró el proveedor seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
+    Marca marca = Marca.buscarPorNombre(marcaSeleccionada).get(0);
+    Modelo modelo = Modelo.buscarPorNombre(modeloSeleccionado).get(0);
+    Categoria categoria = Categoria.buscarPorNombre(categoriaSeleccionada).get(0);
+
+    if (marca == null || modelo == null || categoria == null) {
+        JOptionPane.showMessageDialog(this, "No se encontraron datos relacionados. Verifique los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
     Producto producto = new Producto();
     producto.setCodigo(codigo);
     producto.setNombre(nombre);
     producto.setProveedor(proveedor);
-    producto.setModelo(modeloObj);
-    producto.setCategoria(categoriaObj);
+    producto.setModelo(modelo);
+    producto.setCategoria(categoria);
+    producto.setStock(0);
 
     if (producto.crearProducto()) {
         JOptionPane.showMessageDialog(this, "Producto agregado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        dispose(); 
+        dispose();
+
     } else {
         JOptionPane.showMessageDialog(this, "Error al agregar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -263,12 +294,14 @@ public class AgregarProducto extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboCategoria;
     private javax.swing.JComboBox<String> cboMarca;
     private javax.swing.JComboBox<String> cboModelo;
+    private javax.swing.JComboBox<String> cboProveedor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel lblProveedor;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables

@@ -83,3 +83,4 @@ CREATE TABLE DetallePedido (
     FOREIGN KEY (pedido_id) REFERENCES Pedido(id) ON DELETE CASCADE,
     FOREIGN KEY (producto_id) REFERENCES Producto(id) ON DELETE CASCADE
 );
+

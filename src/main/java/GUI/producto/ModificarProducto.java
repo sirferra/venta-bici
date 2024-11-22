@@ -29,43 +29,61 @@ public class ModificarProducto extends javax.swing.JFrame {
 }
     
     private String codigoActual;
+    private Proveedor proveedorActual; 
 
-    public ModificarProducto(String codigo, String nombre, String marca, String modelo, String categoria) {
-        super();
-        this.codigoActual = codigo;
-        initComponents();
-        cargarCombos();
+    public ModificarProducto(String codigo, String nombre, Proveedor proveedor, String modelo, String categoria) {
+    super();
+    this.codigoActual = codigo;
+    this.proveedorActual = proveedor;
+    initComponents();
+    cargarCombos();
 
-        // Cargar datos actuales en los campos
-        txtCodigo.setText(codigo);
-        txtNombre.setText(nombre);
-        cboMarca.setSelectedItem(marca);
-        cboModelo.setSelectedItem(modelo);
-        cboCategoria.setSelectedItem(categoria);
-    }
+
+    txtCodigo.setText(codigo);
+    txtNombre.setText(nombre);
+
+    cboModelo.setSelectedItem(modelo);  
+    cboCategoria.setSelectedItem(categoria); 
+}
     
+ 
+    private boolean combosCargados = false;
+
     private void cargarCombos() {
-    // Llenar combobox de Marca
+        if (combosCargados) {
+            return; 
+        }
+
+        cboMarca.removeAllItems();
+        cboModelo.removeAllItems();
+        cboCategoria.removeAllItems();
+
+
     List<Marca> marcas = Marca.getAll();
     cboMarca.removeAllItems();
     for (Marca m : marcas) {
         cboMarca.addItem(m.getNombre());
     }
 
-    // Llenar combobox de Modelo
+
     List<Modelo> modelos = Modelo.getAll();
     cboModelo.removeAllItems();
     for (Modelo mod : modelos) {
         cboModelo.addItem(mod.getNombre());
     }
 
-    // Llenar combobox de Categoría
+
     List<Categoria> categorias = Categoria.getAll();
     cboCategoria.removeAllItems();
     for (Categoria cat : categorias) {
         cboCategoria.addItem(cat.getNombre());
     }
-}
+
+        combosCargados = true; 
+    }
+    
+
+ 
     
 
     /**
@@ -201,34 +219,49 @@ public class ModificarProducto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarProdcutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProdcutoActionPerformed
-       String codigo = txtCodigo.getText().trim();
-        String nombre = txtNombre.getText().trim();
-        String marca = cboMarca.getSelectedItem() != null ? cboMarca.getSelectedItem().toString() : "";
-        String modelo = cboModelo.getSelectedItem() != null ? cboModelo.getSelectedItem().toString() : "";
-        String categoria = cboCategoria.getSelectedItem() != null ? cboCategoria.getSelectedItem().toString() : "";
+    String codigo = txtCodigo.getText().trim();
+    String nombre = txtNombre.getText().trim();
+    String marca = (String) cboMarca.getSelectedItem();
+    String modelo = (String) cboModelo.getSelectedItem();
+    String categoria = (String) cboCategoria.getSelectedItem();
 
-        if (codigo.isEmpty() || nombre.isEmpty() || marca.isEmpty() || modelo.isEmpty() || categoria.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;}
-        
-       
-        Producto producto = Producto.buscarProductoPorCodigo(codigoActual);
-        if (producto != null) {
-            producto.setCodigo(codigo);
-            producto.setNombre(nombre);
-            producto.setProveedor(Proveedor.buscarPorNombre(marca));
-            producto.setModelo(Modelo.buscarModeloPorNombre(modelo));
-            producto.setCategoria(Categoria.buscarCategoriaPorNombre(categoria));
+    if (codigo.isEmpty() || nombre.isEmpty() || marca == null || modelo == null || categoria == null) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-            if (producto.actualizarProducto()) {
-                JOptionPane.showMessageDialog(this, "Producto modificado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al modificar el producto. Verifique los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró el producto con el código especificado.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+
+    if (proveedorActual == null) {
+        JOptionPane.showMessageDialog(this, "Error: No se encontró el proveedor asignado.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+
+    Modelo modeloObj = Modelo.buscarPorNombre(modelo).get(0);
+    Categoria categoriaObj = Categoria.buscarPorNombre(categoria).get(0);
+
+
+    Producto producto = Producto.buscarProductoPorCodigo(codigoActual);
+    if (producto == null) {
+        JOptionPane.showMessageDialog(this, "Error: No se encontró el producto para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+
+    producto.setCodigo(codigo);
+    producto.setNombre(nombre);
+    producto.setProveedor(proveedorActual); 
+    producto.setModelo(modeloObj);
+    producto.setCategoria(categoriaObj);
+
+
+    if (producto.actualizarProducto()) {
+        JOptionPane.showMessageDialog(this, "Producto modificado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al modificar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
     }//GEN-LAST:event_btnModificarProdcutoActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

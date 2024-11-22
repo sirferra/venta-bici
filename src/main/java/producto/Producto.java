@@ -28,8 +28,9 @@ public class Producto {
     }
 
     // Constructor completo (incluye nombres descriptivos)
-    public Producto(int id, String codigo, String nombre, Proveedor proveedor, Categoria categoria, int stock, Modelo modelo, 
-                    String nombreProveedor, String nombreCategoria, String nombreModelo) {
+    public Producto(int id, String codigo, String nombre, Proveedor proveedor, Categoria categoria, int stock,
+            Modelo modelo,
+            String nombreProveedor, String nombreCategoria, String nombreModelo) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -43,7 +44,8 @@ public class Producto {
     }
 
     // Constructor simplificado
-    public Producto(int id, String codigo, String nombre, int proveedorId, int categoriaId, int stock, double precio, int modeloId) {
+    public Producto(int id, String codigo, String nombre, int proveedorId, int categoriaId, int stock, double precio,
+            int modeloId) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -141,28 +143,28 @@ public class Producto {
     public double getPrecio() {
         return precio;
     }
+
     public void setPrecio(double precio) {
         this.precio = precio;
     }
 
-
     // Métodos CRUD
     public boolean crearProducto() {
         try {
-        String query = "INSERT INTO Producto (codigo, nombre, proveedor_id, modelo_id, categoria_id, precio) VALUES (?, ?, ?, ?, ?, ?)";
-        HashMap<Integer, Object> params = new HashMap<>();
-        params.put(1, getCodigo());
-        params.put(2, getNombre());
-        params.put(3, getProveedor().getId());
-        params.put(4, getModelo().getId());
-        params.put(5, getCategoria().getId());
-        params.put(6, getPrecio());
-        Conexion.getInstance().executeQueryWithParams(query, params);
-        return true;
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-         }
+            String query = "INSERT INTO Producto (codigo, nombre, proveedor_id, modelo_id, categoria_id, precio) VALUES (?, ?, ?, ?, ?, ?)";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, getCodigo());
+            params.put(2, getNombre());
+            params.put(3, getProveedor().getId());
+            params.put(4, getModelo().getId());
+            params.put(5, getCategoria().getId());
+            params.put(6, getPrecio());
+            Conexion.getInstance().executeQueryWithParams(query, params);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean actualizarProducto() {
@@ -185,11 +187,11 @@ public class Producto {
         }
     }
 
-    public boolean eliminarProducto() {
+    public boolean eliminarProductoPorCodigo(String codigo) {
         try {
-            String query = "DELETE FROM Producto WHERE id = ?";
+            String query = "DELETE FROM Producto WHERE codigo = ?";
             HashMap<Integer, Object> params = new HashMap<>();
-            params.put(1, getId());
+            params.put(1, codigo);
             Conexion.getInstance().executeQueryWithParams(query, params);
             return true;
         } catch (Exception e) {
@@ -216,7 +218,6 @@ public class Producto {
             return null;
         }
     }
-
     public static List<Producto> getAllRaw() {
         String query = "SELECT * FROM Producto";
         try {
@@ -225,68 +226,67 @@ public class Producto {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }   
+        }
     }
-    
+
     public static Producto buscarProductoPorCodigo(String codigo) {
-    try {
-        String query = "SELECT Producto.id, Producto.codigo, Producto.nombre, Producto.stock, Producto.precio, " +
-                       "CONCAT(Proveedor.nombre, ' ', Proveedor.apellido) AS nombre_proveedor, " +
-                       "Categoria.nombre AS nombre_categoria, " +
-                       "Modelo.nombre AS nombre_modelo " +
-                       "FROM Producto " +
-                       "INNER JOIN Proveedor ON Producto.proveedor_id = Proveedor.id " +
-                       "INNER JOIN Categoria ON Producto.categoria_id = Categoria.id " +
-                       "INNER JOIN Modelo ON Producto.modelo_id = Modelo.id " +
-                       "WHERE Producto.codigo = ?";
-        HashMap<Integer, Object> params = new HashMap<>();
-        params.put(1, codigo);
+        try {
+            String query = "SELECT Producto.id, Producto.codigo, Producto.nombre, Producto.stock, Producto.precio, " +
+                    "CONCAT(Proveedor.nombre, ' ', Proveedor.apellido) AS nombre_proveedor, " +
+                    "Categoria.nombre AS nombre_categoria, " +
+                    "Modelo.nombre AS nombre_modelo " +
+                    "FROM Producto " +
+                    "INNER JOIN Proveedor ON Producto.proveedor_id = Proveedor.id " +
+                    "INNER JOIN Categoria ON Producto.categoria_id = Categoria.id " +
+                    "INNER JOIN Modelo ON Producto.modelo_id = Modelo.id " +
+                    "WHERE Producto.codigo = ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, codigo);
 
-        ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
 
-        if (resultados.next()) {
-            int id = resultados.getInt("id");
-            String nombre = resultados.getString("nombre");
-            int stock = resultados.getInt("stock");
-            double precio = resultados.getDouble("precio");
-            String nombreProveedor = resultados.getString("nombre_proveedor");
-            String nombreCategoria = resultados.getString("nombre_categoria");
-            String nombreModelo = resultados.getString("nombre_modelo");
+            if (resultados.next()) {
+                int id = resultados.getInt("id");
+                String nombre = resultados.getString("nombre");
+                int stock = resultados.getInt("stock");
+                double precio = resultados.getDouble("precio");
+                String nombreProveedor = resultados.getString("nombre_proveedor");
+                String nombreCategoria = resultados.getString("nombre_categoria");
+                String nombreModelo = resultados.getString("nombre_modelo");
 
-            // Crear y retornar producto
-            Producto producto = new Producto();
-            producto.setId(id);
-            producto.setCodigo(codigo);
-            producto.setNombre(nombre);
-            producto.setStock(stock);
-            producto.setPrecio(precio);
-            producto.setNombreProveedor(nombreProveedor);
-            producto.setNombreCategoria(nombreCategoria);
-            producto.setNombreModelo(nombreModelo);
+                // Crear y retornar producto
+                Producto producto = new Producto();
+                producto.setId(id);
+                producto.setCodigo(codigo);
+                producto.setNombre(nombre);
+                producto.setStock(stock);
+                producto.setPrecio(precio);
+                producto.setNombreProveedor(nombreProveedor);
+                producto.setNombreCategoria(nombreCategoria);
+                producto.setNombreModelo(nombreModelo);
 
-            return producto;
-        } else {
-            System.out.println("No se encontró un producto con el código especificado.");
+                return producto;
+            } else {
+                System.out.println("No se encontró un producto con el código especificado.");
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-        return null;
     }
-}
-    
-    
+
     public static List<Producto> buscarPorFiltros(String codigo, String categoria, String modelo) {
         try {
             String query = "SELECT Producto.id, Producto.codigo, Producto.nombre, Producto.stock, Producto.precio, " +
-                           "CONCAT(Proveedor.nombre, ' ', Proveedor.apellido) AS nombre_proveedor, " +
-                           "Categoria.nombre AS nombre_categoria, " +
-                           "Modelo.nombre AS nombre_modelo " +
-                           "FROM Producto " +
-                           "INNER JOIN Proveedor ON Producto.proveedor_id = Proveedor.id " +
-                           "INNER JOIN Categoria ON Producto.categoria_id = Categoria.id " +
-                           "INNER JOIN Modelo ON Producto.modelo_id = Modelo.id " +
-                           "WHERE 1=1 ";
+                    "CONCAT(Proveedor.nombre, ' ', Proveedor.apellido) AS nombre_proveedor, " +
+                    "Categoria.nombre AS nombre_categoria, " +
+                    "Modelo.nombre AS nombre_modelo " +
+                    "FROM Producto " +
+                    "INNER JOIN Proveedor ON Producto.proveedor_id = Proveedor.id " +
+                    "INNER JOIN Categoria ON Producto.categoria_id = Categoria.id " +
+                    "INNER JOIN Modelo ON Producto.modelo_id = Modelo.id " +
+                    "WHERE 1=1 ";
 
             if (codigo != null && !codigo.isEmpty()) {
                 query += "AND Producto.codigo LIKE '%" + codigo + "%' ";
@@ -329,7 +329,6 @@ public class Producto {
                 producto.setNombreProveedor(nombreProveedor);
                 producto.setNombreCategoria(nombreCategoria);
                 producto.setNombreModelo(nombreModelo);
-
                 productos.add(producto);
             }
             return productos;
@@ -338,7 +337,7 @@ public class Producto {
             return null;
         }
     }
-    
+
     public static List<Producto> fromResultSetSinStock(ResultSet resultados) {
         try {
             List<Producto> productos = new ArrayList<>();
@@ -368,7 +367,7 @@ public class Producto {
             return null;
         }
     }
-    
+
     public static List<Producto> fromResultSetRaw(ResultSet resultados) {
         try {
             List<Producto> productos = new ArrayList<>();
@@ -401,15 +400,15 @@ public class Producto {
     public static Producto buscarPorId(int i) {
         try {
             String query = "SELECT * FROM Producto " +
-                           "WHERE Producto.id = ?";
+                    "WHERE Producto.id = ?";
             HashMap<Integer, Object> id = new HashMap<>();
             id.put(1, i);
-            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, id); 
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, id);
             return fromResultSetRaw(resultados).get(0);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;            
+            return null;
         }
     }
-    
+
 }
