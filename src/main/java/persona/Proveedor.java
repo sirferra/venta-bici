@@ -74,24 +74,24 @@ public class Proveedor extends Persona {
 
     // Filtrado por cuit
     public static List<Proveedor> buscarPorFiltros(String dni, String nombre, String apellido) {
-        try {
-            String sqlFiltro = "SELECT * FROM Proveedor WHERE 1 = 1";
-            if (dni != null && !dni.isEmpty()) {
-                sqlFiltro = sqlFiltro + " AND dni = '" + dni + "'";
-            }
-            if (nombre != null && !nombre.isEmpty()) {
-                sqlFiltro = sqlFiltro + " AND nombre = '" + nombre + "'"; 
-            }
-            if (apellido != null && !apellido.isEmpty()) {
-                sqlFiltro = sqlFiltro + " AND apellido = '" + apellido + "'";
-            }
-            ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro);
-            return Proveedor.fromResultSet(resultados);
-        } catch (SQLException e) {
-            e.printStackTrace();
+    try {
+        StringBuilder sqlFiltro = new StringBuilder("SELECT * FROM Proveedor WHERE 1 = 1");
+        if (dni != null && !dni.isEmpty()) {
+            sqlFiltro.append(" AND dni LIKE '%").append(dni).append("%'");
         }
-        return null;
+        if (nombre != null && !nombre.isEmpty()) {
+            sqlFiltro.append(" AND nombre LIKE '%").append(nombre).append("%'");
+        }
+        if (apellido != null && !apellido.isEmpty()) {
+            sqlFiltro.append(" AND apellido LIKE '%").append(apellido).append("%'");
+        }
+        ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro.toString());
+        return Proveedor.fromResultSet(resultados);
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return null;
+}
     
     //Crear proveedor
     public boolean crearProveedor() {
