@@ -182,6 +182,7 @@ public class CrearProveedor extends javax.swing.JFrame {
             txtTelefono.setText("");
             txtEmail.setText("");
             txtNombreFantasia.setText("");
+            this.dispose();
         }
         else{
             JOptionPane.showMessageDialog(this, "El DNI ingresado ya existe.", "Error", JOptionPane.ERROR_MESSAGE);

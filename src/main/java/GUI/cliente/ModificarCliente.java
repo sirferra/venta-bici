@@ -186,6 +186,7 @@ public class ModificarCliente extends javax.swing.JFrame {
         boolean bandera = cliente.modificarCliente(id_cliente);
         if (bandera) {
             JOptionPane.showMessageDialog(this, "Se ha modificado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();            
         }
         else{
             JOptionPane.showMessageDialog(this, "El DNI ingresado ya existe.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -168,6 +168,7 @@ public class AgregarCliente extends javax.swing.JFrame {
             txtDni.setText("");
             txtTelefono.setText("");
             txtEmail.setText("");
+            this.dispose();
         }
         else{
            JOptionPane.showMessageDialog(this, "El DNI ingresado ya existe.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -20,7 +20,6 @@ import javax.swing.WindowConstants;
 import persona.Cliente;
 import persona.Vendedor;
 import GUI.vendedor.AgregarVendedor;
-import java.util.Iterator;
 import GUI.ventas.CrearVenta;
 import pedido.Pedido;
 import persona.Proveedor;
@@ -1247,11 +1246,11 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = vendedor.eliminarVendedor();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el vendedor de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    listarTodosClientes();
+                    listarTodosVendedores();
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
-                    listarTodosClientes();
+                    listarTodosVendedores();
                 } 
             }
         }
@@ -1276,11 +1275,11 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = proveedor.eliminarProveedor();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el proveedor de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    listarTodosClientes();
+                    listarTodosProveedores();
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el proveedor", "Error", JOptionPane.ERROR_MESSAGE);
-                    listarTodosClientes();
+                    listarTodosProveedores();
                 } 
             }
         }
@@ -1305,8 +1304,13 @@ public class Main extends javax.swing.JFrame {
             ModificarCliente frmModificarCliente = new ModificarCliente(cuil, nombre, apellido, dni, telefono, email);
             frmModificarCliente.setLocationRelativeTo(null);
             frmModificarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            listarTodosClientes();
-            frmModificarCliente.show();
+            frmModificarCliente.setVisible(rootPaneCheckingEnabled);
+            frmModificarCliente.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+                    listarTodosClientes();
+                }
+            });
         }
         else{
             System.out.println("Seleccione una fila antes de intentar modificar");
@@ -1329,8 +1333,13 @@ public class Main extends javax.swing.JFrame {
             ModificarVendedor frmModificarVendedor = new ModificarVendedor(cuit, sucursal, nombre, apellido, dni, telefono, email);
             frmModificarVendedor.setLocationRelativeTo(null);
             frmModificarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            listarTodosClientes();
             frmModificarVendedor.show();
+            frmModificarVendedor.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+                    listarTodosVendedores();
+                }
+            });
         }
         else{
             System.out.println("Seleccione una fila antes de intentar modificar");
@@ -1353,8 +1362,13 @@ public class Main extends javax.swing.JFrame {
             ModificarProveedor frmModificarProveedor = new ModificarProveedor(cuit, nombreFantasia, nombre, apellido, dni, telefono, email);
             frmModificarProveedor.setLocationRelativeTo(null);
             frmModificarProveedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            listarTodosClientes();
             frmModificarProveedor.show();
+            frmModificarProveedor.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+                    listarTodosProveedores();
+                }
+            });
         }
         else{
             System.out.println("Seleccione una fila antes de intentar modificar");
@@ -1381,6 +1395,12 @@ public class Main extends javax.swing.JFrame {
         frmAgregarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         listarTodosClientes();
         frmAgregarCliente.show();
+        frmAgregarCliente.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                listarTodosClientes();
+            }
+        });
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
     
     //Eliminar cliente seleccionado de la grilla
@@ -1416,6 +1436,12 @@ public class Main extends javax.swing.JFrame {
         frmAgregarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         listarTodosClientes();
         frmAgregarVendedor.show();
+        frmAgregarVendedor.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                listarTodosVendedores();
+            }
+        });
     }//GEN-LAST:event_btnNuevoVendedorActionPerformed
 
     //Elimminar vendedor seleccionado de la grilla
@@ -1448,6 +1474,12 @@ public class Main extends javax.swing.JFrame {
         frmCrearProveedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         listarTodosClientes();
         frmCrearProveedor.show();
+        frmCrearProveedor.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                listarTodosProveedores();
+            }
+        });
     }//GEN-LAST:event_btnNuevoProveedorActionPerformed
 
     //Buscar proveedor por filtro
@@ -1702,10 +1734,6 @@ public class Main extends javax.swing.JFrame {
     private void btnBuscarVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVentasActionPerformed
         listarFiltrosPedidos();
     }//GEN-LAST:event_btnBuscarVentasActionPerformed
-    
-   
-   
-    
     
     /**
      * @param args the command line arguments

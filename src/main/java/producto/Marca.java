@@ -43,7 +43,7 @@ public class Marca {
 
     public static boolean crearMarca(String nombre) {
         try {
-            String sql = "INSERT INTO marca (nombre) VALUES (?)";
+            String sql = "INSERT INTO Marca (nombre) VALUES (?)";
             HashMap<Integer, Object> marca = new HashMap<>();
             marca.put(1, nombre);
             Conexion.getInstance().executeQueryWithParams(sql, marca);
@@ -65,19 +65,19 @@ public class Marca {
     }
 
     public static Marca buscarPorId(int id) {
-    try {
-        ResultSet resultados = Conexion.getInstance().executeQuery("SELECT id, nombre FROM Marca WHERE id = " + id);
-        List<Marca> marcas = Marca.fromResultSet(resultados);
-        return marcas.isEmpty() ? null : marcas.get(0);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return null;
+        try {
+            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT id, nombre FROM Marca WHERE id = " + id);
+            List<Marca> marcas = Marca.fromResultSet(resultados);
+            return marcas.isEmpty() ? null : marcas.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-}
 
     public static List<Marca> buscarPorNombre(String nombre) {
         try {
-            String sql = "SELECT * FROM marca WHERE nombre = ?";
+            String sql = "SELECT * FROM Marca WHERE nombre = ?";
             HashMap<Integer, Object> marca = new HashMap<>();
             marca.put(1, nombre);
             ResultSet resultados = Conexion.getInstance().executeQueryWithParams(sql, marca);
@@ -90,7 +90,7 @@ public class Marca {
 
     public boolean modificarMarca() {
         try {
-            String sql = "UPDATE marca SET id = ?, nombre = ? WHERE id = ?";
+            String sql = "UPDATE Marca SET id = ?, nombre = ? WHERE id = ?";
             HashMap<Integer, Object> marca = new HashMap<>();
             marca.put(1, getId());
             marca.put(2, getNombre());
@@ -105,7 +105,7 @@ public class Marca {
 
     public boolean eliminarMarca() {
         try {
-            String sql = "DELETE FROM marca WHERE id = ?";
+            String sql = "DELETE FROM Marca WHERE id = ?";
             HashMap<Integer, Object> marca = new HashMap<>();
             marca.put(1, getId());
             Conexion.getInstance().executeQueryWithParams(sql, marca);

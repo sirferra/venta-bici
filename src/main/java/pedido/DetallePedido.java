@@ -88,9 +88,9 @@ public class DetallePedido {
     public static List<DetallePedido> obtenerDetalles(int id_pedido){
         List<DetallePedido> detalles = new ArrayList<>();
         String sql = "SELECT dp.id, p.nombre, dp.cantidad, dp.precio, pe.total "
-                   + "FROM detallepedido AS dp "
-                   + "INNER JOIN producto AS p ON dp.producto_id = p.id "
-                   + "INNER JOIN pedido AS pe ON dp.pedido_id = pe.id "
+                   + "FROM DetallePedido AS dp "
+                   + "INNER JOIN Producto AS p ON dp.producto_id = p.id "
+                   + "INNER JOIN Pedido AS pe ON dp.pedido_id = pe.id "
                    + "WHERE dp.pedido_id = " + id_pedido;    
         try{
             ResultSet resultados = Conexion.getInstance().executeQuery(sql);
@@ -135,14 +135,7 @@ public class DetallePedido {
         }
         return productoMasVendido;
     }
-    
-    
-    
-    String sql = "SELECT pr.nombre AS producto, d.cantidad, d.precio, de.total FROM"
-            + "detallepedido AS d INNER JOIN"
-            + "Producto AS pr ON pedido_id = pr.id INNER JOIN "
-            + "";
-    
+       
     
     public static List<DetallePedido> fromResultSet(ResultSet rs) throws Exception {
         List<DetallePedido> detalles = new ArrayList<>(); 
