@@ -907,10 +907,12 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = cliente.eliminarCliente();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el cliente de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    listarTodosClientes();
                     //Colocar metodo para refrescar grilla
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                    listarTodosClientes();
                 } 
             }
         }
@@ -936,10 +938,11 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = vendedor.eliminarVendedor();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el vendedor de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    //Colocar metodo para refrescar grilla
+                    listarTodosClientes();
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                    listarTodosClientes();
                 } 
             }
         }
@@ -964,10 +967,11 @@ public class Main extends javax.swing.JFrame {
                 boolean bandera = proveedor.eliminarProveedor();
                 if (bandera) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado el proveedor de forma exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    //Colocar metodo para refrescar grilla
+                    listarTodosClientes();
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Se ha producido un error al borrar el proveedor", "Error", JOptionPane.ERROR_MESSAGE);
+                    listarTodosClientes();
                 } 
             }
         }
@@ -992,6 +996,7 @@ public class Main extends javax.swing.JFrame {
             ModificarCliente frmModificarCliente = new ModificarCliente(cuil, nombre, apellido, dni, telefono, email);
             frmModificarCliente.setLocationRelativeTo(null);
             frmModificarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            listarTodosClientes();
             frmModificarCliente.show();
         }
         else{
@@ -1015,6 +1020,7 @@ public class Main extends javax.swing.JFrame {
             ModificarVendedor frmModificarVendedor = new ModificarVendedor(cuit, sucursal, nombre, apellido, dni, telefono, email);
             frmModificarVendedor.setLocationRelativeTo(null);
             frmModificarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            listarTodosClientes();
             frmModificarVendedor.show();
         }
         else{
@@ -1038,6 +1044,7 @@ public class Main extends javax.swing.JFrame {
             ModificarProveedor frmModificarProveedor = new ModificarProveedor(cuit, nombreFantasia, nombre, apellido, dni, telefono, email);
             frmModificarProveedor.setLocationRelativeTo(null);
             frmModificarProveedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            listarTodosClientes();
             frmModificarProveedor.show();
         }
         else{
@@ -1066,17 +1073,20 @@ public class Main extends javax.swing.JFrame {
         AgregarCliente frmAgregarCliente = new AgregarCliente();
         frmAgregarCliente.setLocationRelativeTo(null);
         frmAgregarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        listarTodosClientes();
         frmAgregarCliente.show();
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
     
     //Eliminar cliente seleccionado de la grilla
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
         eliminarCliente();
+
     }//GEN-LAST:event_btnEliminarClienteActionPerformed
 
     //Modificar cliente
     private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
         modificarCliente();
+
     }//GEN-LAST:event_btnModificarClienteActionPerformed
 
     /*************
@@ -1090,6 +1100,7 @@ public class Main extends javax.swing.JFrame {
     //Buscar vendedor por filtros
     private void btnBuscarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVendedorActionPerformed
         listarFiltrosVendedores();
+        
     }//GEN-LAST:event_btnBuscarVendedorActionPerformed
 
     //Crear nuevo vendedor
@@ -1097,6 +1108,7 @@ public class Main extends javax.swing.JFrame {
         AgregarVendedor frmAgregarVendedor = new AgregarVendedor();
         frmAgregarVendedor.setLocationRelativeTo(null);
         frmAgregarVendedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        listarTodosClientes();
         frmAgregarVendedor.show();
     }//GEN-LAST:event_btnNuevoVendedorActionPerformed
 
@@ -1128,6 +1140,7 @@ public class Main extends javax.swing.JFrame {
         CrearProveedor frmCrearProveedor = new CrearProveedor();
         frmCrearProveedor.setLocationRelativeTo(null);
         frmCrearProveedor.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        listarTodosClientes();
         frmCrearProveedor.show();
     }//GEN-LAST:event_btnNuevoProveedorActionPerformed
 
