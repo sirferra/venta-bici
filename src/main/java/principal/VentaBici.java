@@ -10,7 +10,7 @@ public class VentaBici {
         System.out.println("Venta de bicicletas");
         try{
             //Recordar descomentar si inicio el programa por primera vez en una pc
-            Conexion.getInstance().migrarDB();
+            //Conexion.getInstance().migrarDB();
             UIManager.setLookAndFeel(new FlatDarculaLaf());
             FlatDarculaLaf.setup();
             

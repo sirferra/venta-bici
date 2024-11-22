@@ -74,24 +74,24 @@ public class Vendedor extends Persona {
     
     // Filtrado por cuit
     public static List<Vendedor> buscarPorFiltros(String dni, String nombre, String apellido) {
-        try {
-            String sqlFiltro = "SELECT * FROM Vendedor WHERE 1 = 1";
-            if (dni != null && !dni.isEmpty()) {
-                sqlFiltro = sqlFiltro + " AND dni = '" + dni + "'";
-            }
-            if (nombre != null && !nombre.isEmpty()) {
-                sqlFiltro = sqlFiltro + " AND nombre = '" + nombre + "'"; 
-            }
-            if (apellido != null && !apellido.isEmpty()) {
-                sqlFiltro = sqlFiltro + " AND apellido = '" + apellido + "'";
-            }
-            ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro);
-            return Vendedor.fromResultSet(resultados);
-        } catch (SQLException e) {
-            e.printStackTrace();
+    try {
+        StringBuilder sqlFiltro = new StringBuilder("SELECT * FROM Vendedor WHERE 1 = 1");
+        if (dni != null && !dni.isEmpty()) {
+            sqlFiltro.append(" AND dni LIKE '%").append(dni).append("%'");
         }
-        return null;
+        if (nombre != null && !nombre.isEmpty()) {
+            sqlFiltro.append(" AND nombre LIKE '%").append(nombre).append("%'");
+        }
+        if (apellido != null && !apellido.isEmpty()) {
+            sqlFiltro.append(" AND apellido LIKE '%").append(apellido).append("%'");
+        }
+        ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro.toString());
+        return Vendedor.fromResultSet(resultados);
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return null;
+}
     
     // Busca por nombre, apellido o ambos
     public static List<Vendedor> buscarPorNombreApellido(String nombre, String apellido) {
@@ -260,7 +260,20 @@ public class Vendedor extends Persona {
 
     @Override
     public String toString() {
-        return "Vendedor{" + "cuit=" + cuit + ", sucursal=" + sucursal + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
+        // return "Vendedor{" + "cuit=" + cuit + ", sucursal=" + sucursal + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
+        // Comento lo de arriba porque esta función es necesaria para rellenar el combobox
+        return this.getNombre() + " " + this.getApellido();
+    }
+
+    public static Vendedor buscarPorId(int id) {
+        try {
+            String query = "SELECT * FROM Vendedor WHERE id = " + id;
+            ResultSet resultados = Conexion.getInstance().executeQuery(query);
+            return Vendedor.fromResultSet(resultados).get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     
 }

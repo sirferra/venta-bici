@@ -30,17 +30,17 @@ INSERT INTO Modelo (nombre, marca_id) VALUES
 ('Aspect 950', 5),
 ('Addict RC', 5);
 
-INSERT INTO Producto (codigo, nombre, proveedor_id, categoria_id, stock, modelo_id) VALUES
-('P001', 'Giant Trance X 29 2', 1, 1, 10, 1),
-('P002', 'Giant Defy Advanced Pro 1', 1, 2, 5, 2),
-('P003', 'Trek Marlin 7 Gen 2', 2, 1, 8, 3),
-('P004', 'Trek Émonda SL 6 Pro', 2, 2, 3, 4),
-('P005', 'Specialized Stumpjumper Alloy', 3, 1, 7, 5),
-('P006', 'Specialized Tarmac SL7 Expert', 3, 2, 2, 6),
-('P007', 'Cannondale Trail 7', 1, 1, 9, 7),
-('P008', 'Cannondale Synapse Carbon 105', 1, 2, 4, 8),
-('P009', 'Scott Aspect 950', 2, 1, 6, 9),
-('P010', 'Scott Addict RC 15', 2, 2, 1, 10);
+INSERT INTO Producto (codigo, nombre, proveedor_id, categoria_id, stock, modelo_id, precio) VALUES
+('P001', 'Giant Trance X 29 2', 1, 1, 10, 1, 2500.00),
+('P002', 'Giant Defy Advanced Pro 1', 1, 2, 5, 2, 3200.00),
+('P003', 'Trek Marlin 7 Gen 2', 2, 1, 8, 3, 850.00),
+('P004', 'Trek Émonda SL 6 Pro', 2, 2, 3, 4, 4000.00),
+('P005', 'Specialized Stumpjumper Alloy', 3, 1, 7, 5, 3000.00),
+('P006', 'Specialized Tarmac SL7 Expert', 3, 2, 2, 6, 4500.00),
+('P007', 'Cannondale Trail 7', 1, 1, 9, 7, 2200.00),
+('P008', 'Cannondale Synapse Carbon 105', 1, 2, 4, 8, 3500.00),
+('P009', 'Scott Aspect 950', 2, 1, 6, 9, 750.00),
+('P010', 'Scott Addict RC 15', 2, 2, 1, 10, 5000.00);
 
 INSERT INTO Cliente (nombre, apellido, direccion, telefono, email, dni, cuil) VALUES
 ('Carlos', 'Pérez', 'Calle Falsa 123', '555-1234', 'carlos.perez@example.com', '12345678', '20-12345678-1'),

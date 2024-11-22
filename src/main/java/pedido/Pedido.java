@@ -6,6 +6,7 @@ package pedido;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import persona.Cliente;
 import persona.Vendedor;
@@ -18,8 +19,8 @@ public class Pedido {
     //Atributos
     private int id;
     private Date fecha;
-    private Cliente Cliente; 
-    private Vendedor Vendedor;
+    private Cliente cliente; 
+    private Vendedor vendedor;
     private double total;
     
     //Constructores
@@ -30,8 +31,14 @@ public class Pedido {
     public Pedido(int id, Date fecha, Cliente cliente, Vendedor vendedor, double total) {
         this.id = id;
         this.fecha = fecha;
-        this.Cliente = cliente;
-        this.Vendedor = vendedor;
+        this.cliente = cliente;
+        this.vendedor = vendedor;
+        this.total = total;
+    }
+    public Pedido(Date fecha, Cliente cliente, Vendedor vendedor, double total) {
+        this.fecha = fecha;
+        this.cliente = cliente;
+        this.vendedor = vendedor;
         this.total = total;
     }
 
@@ -54,19 +61,19 @@ public class Pedido {
     }
 
     public Cliente getCliente() {
-        return Cliente;
+        return cliente;
     }
 
     public void setCliente(Cliente Cliente) {
-        this.Cliente = Cliente;
+        this.cliente = Cliente;
     }
 
     public Vendedor getVendedor() {
-        return Vendedor;
+        return vendedor;
     }
 
     public void setVendedor(Vendedor Vendedor) {
-        this.Vendedor = Vendedor;
+        this.vendedor = Vendedor;
     }
 
     public double getTotal() {
@@ -177,23 +184,95 @@ public class Pedido {
     }
 
     
-    /*/Auxiliar para convertir resultsets
-    public static List<Pedido> fromResultSet(ResultSet resultados) {
+   
+    public boolean crearPedido() {
         try {
-            List<Pedido> pedido = new java.util.ArrayList<>();
-            while (resultados.next()) {
-                int id = resultados.getInt("id");
-                Date fecha = resultados.getDate("p.fecha");
-                int idVendedor = resultados.getInt("cliente_id");
-                int idCliente = resultados.getInt("vendedor_id");
-                double total = resultados.getDouble("total");
-                pedido.add(new Pedido(id, fecha, idVendedor, idCliente, total));
-            }
-            return pedido;
+            String sql = "INSERT INTO Pedido (fecha, vendedor_id, cliente_id, total) VALUES (?, ?, ?, ?)";
+            HashMap<Integer, Object> pedido = new HashMap<>();
+            pedido.put(1, getFecha());
+            pedido.put(2, getVendedor().getId());
+            pedido.put(3, getCliente().getId());
+            pedido.put(4, getTotal());
+            Conexion.getInstance().executeQueryWithParams(sql, pedido);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarPedido() {
+        try {
+            String sql = "DELETE FROM Pedido WHERE id = ?";
+            HashMap<Integer, Object> pedido = new HashMap<>();
+            pedido.put(1, getId());
+            Conexion.getInstance().executeQueryWithParams(sql, pedido);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean modificarPedido() {
+        try {
+            String sql = "UPDATE Pedido SET fecha = ?, vendedor_id = ?, cliente_id = ?, total = ? WHERE id = ?";
+            HashMap<Integer, Object> pedido = new HashMap<>();
+            pedido.put(1, getFecha());
+            pedido.put(2, getVendedor().getId());
+            pedido.put(3, getCliente().getId());
+            pedido.put(4, getTotal());
+            pedido.put(5, getId());
+            Conexion.getInstance().executeQueryWithParams(sql, pedido);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static List<Pedido> filtrarPorVendedor(Vendedor vendedor) {
+        try {
+            String sql = "SELECT * FROM Pedido WHERE vendedor_id = ?";
+            HashMap<Integer, Object> pedido = new HashMap<>();
+            pedido.put(1, vendedor.getId());
+            return fromResultSet(Conexion.getInstance().executeQueryWithParams(sql, pedido));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-    }*/
+    }
+    
+    
+    /*/Auxiliar para convertir resultsets**/
+    public static List<Pedido> fromResultSet(ResultSet rs) {
+        List<Pedido> pedidos = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                Date fecha = rs.getDate("fecha");
+                Cliente cliente = Cliente.buscarPorId(rs.getInt("cliente"));
+                Vendedor vendedor = Vendedor.buscarPorId(rs.getInt("vendedor"));
+                double total = rs.getDouble("total");
+                Pedido pedido = new Pedido(id, fecha, cliente, vendedor, total);
+                pedidos.add(pedido);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pedidos;
+    }
+
+    public static Pedido buscarPorId(int id) {
+        try {
+            String sql = "SELECT * FROM Pedido WHERE id = ?";
+            HashMap<Integer, Object> pedido = new HashMap<>();
+            pedido.put(1, id);
+            return fromResultSet(Conexion.getInstance().executeQueryWithParams(sql, pedido)).get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
 }

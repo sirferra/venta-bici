@@ -59,25 +59,27 @@ public class Cliente extends Persona{
     }
     
     // Buscar clientes por filtros
-    public static List<Cliente> buscarPorFiltros(String dni, String nombre, String apellido){
-        try {
-            String sqlFiltro = "SELECT * FROM Cliente WHERE 1 = 1";
-            if (dni != null && !dni.isEmpty()) {
-                sqlFiltro = sqlFiltro + " AND dni = '" + dni + "'";
-            }
-            if (nombre != null && !nombre.isEmpty()) {
-                sqlFiltro = sqlFiltro + " AND nombre = '" + nombre + "'"; 
-            }
-            if (apellido != null && !apellido.isEmpty()) {
-                sqlFiltro = sqlFiltro + " AND apellido = '" + apellido + "'";
-            }
-            ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro);
-            return Cliente.fromResultSet(resultados);
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public static List<Cliente> buscarPorFiltros(String dni, String nombre, String apellido) {
+    try {
+        StringBuilder sqlFiltro = new StringBuilder("SELECT * FROM Cliente WHERE 1 = 1");
+        
+        if (dni != null && !dni.isEmpty()) {
+            sqlFiltro.append(" AND dni LIKE '%").append(dni).append("%'");
         }
-        return null;
+        if (nombre != null && !nombre.isEmpty()) {
+            sqlFiltro.append(" AND nombre LIKE '%").append(nombre).append("%'");
+        }
+        if (apellido != null && !apellido.isEmpty()) {
+            sqlFiltro.append(" AND apellido LIKE '%").append(apellido).append("%'");
+        }
+
+        ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro.toString());
+        return Cliente.fromResultSet(resultados);
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return null;
+}
     
     //Función para crear un cliente
     public boolean crearCliente() {
@@ -192,6 +194,18 @@ public class Cliente extends Persona{
         }
     }
     
+    public static Cliente buscarPorId(int id) {
+        try {
+            String query = "SELECT id FROM cliente WHERE id = ?";
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, id);
+            ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+            return Cliente.fromResultSet(resultados).get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null; 
+        }
+    }
     //Convertir los resultados en una lista de objetos
     public static List<Cliente> fromResultSet(ResultSet resultados) {
         try {
@@ -214,7 +228,9 @@ public class Cliente extends Persona{
     }
 
     public String toString() {
-        return "Cliente{" + "cuil=" + cuil + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
+       // return "Cliente{" + "cuil=" + cuil + ", nombre=" + getNombre() + ", apellido=" + getApellido() + ", dni=" + getDni() + ", telefono=" + getTelefono() + ", email=" + getEmail() + '}';
+        // Comento lo de arriba porque esta función es necesaria para rellenar el combobox
+        return this.getNombre() + " " + this.getApellido();
     }
 
     public Object[] tObject() {

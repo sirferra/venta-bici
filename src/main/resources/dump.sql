@@ -56,6 +56,7 @@ CREATE TABLE Producto (
     nombre VARCHAR(255) NOT NULL,
     proveedor_id INT NOT NULL,
     categoria_id INT NOT NULL,
+    precio DOUBLE NOT NULL,
     stock INT NOT NULL,
     modelo_id INT NOT NULL,
     FOREIGN KEY (categoria_id) REFERENCES Categoria(id) ON DELETE CASCADE,
@@ -82,3 +83,4 @@ CREATE TABLE DetallePedido (
     FOREIGN KEY (pedido_id) REFERENCES Pedido(id) ON DELETE CASCADE,
     FOREIGN KEY (producto_id) REFERENCES Producto(id) ON DELETE CASCADE
 );
+
