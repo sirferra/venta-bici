@@ -207,27 +207,44 @@ public class Proveedor extends Persona {
     
     
     
-    public static Proveedor buscarPorId(int proveedor_id) {
-        try {
-            ResultSet resultados = Conexion.getInstance().executeQuery("SELECT * FROM Proveedor WHERE proveedor_id = '" + proveedor_id + "'");
-            List<Proveedor> proveedores = Proveedor.fromResultSet(resultados);
-            return proveedores.isEmpty() ? null : proveedores.get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
+   public static Proveedor buscarPorId(int proveedorId) {
+    try {
+        String query = "SELECT * FROM Proveedor WHERE id = ?"; 
+        HashMap<Integer, Object> params = new HashMap<>();
+        params.put(1, proveedorId);
+
+        ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+
+        if (resultados.next()) {
+            String cuit = resultados.getString("cuit");
+            String nombreFantasia = resultados.getString("nombreFantasia");
+            String nombre = resultados.getString("nombre");
+            String apellido = resultados.getString("apellido");
+            String direccion = resultados.getString("direccion");
+            String telefono = resultados.getString("telefono");
+            String email = resultados.getString("email");
+            String dni = resultados.getString("dni");
+
+            return new Proveedor(cuit, nombreFantasia, nombre, apellido, Integer.parseInt(dni), telefono, email);
+        } else {
+            System.out.println("No se encontró un proveedor con el ID proporcionado.");
+            return null;
         }
+    } catch (Exception e) {
+        e.printStackTrace();
         return null;
     }
+}
     
     public static Proveedor buscarPorNombre(String nombre) {
     try {
         String query = "SELECT * FROM Proveedor WHERE nombre = ?";
         HashMap<Integer, Object> params = new HashMap<>();
-        params.put(1, nombre);
+        params.put(1, nombre.trim()); // Eliminar espacios adicionales
 
         ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
 
         if (resultados.next()) {
-            // Construir el objeto Proveedor utilizando los datos obtenidos
             String cuit = resultados.getString("cuit");
             String nombreFantasia = resultados.getString("nombreFantasia");
             String apellido = resultados.getString("apellido");
@@ -235,13 +252,42 @@ public class Proveedor extends Persona {
             String telefono = resultados.getString("telefono");
             String email = resultados.getString("email");
 
-            // Crear y devolver un nuevo objeto Proveedor
             return new Proveedor(cuit, nombreFantasia, nombre, apellido, dni, telefono, email);
+        } else {
+            System.err.println("Error: No se encontró un proveedor con el nombre: " + nombre);
+            return null;
         }
     } catch (Exception e) {
         e.printStackTrace();
+        return null;
     }
-    return null; // Si no se encuentra un proveedor, devolver null
+}
+    
+    public static Proveedor buscarPorNombreYApellido(String nombre, String apellido) {
+    try {
+        String query = "SELECT * FROM Proveedor WHERE nombre = ? AND apellido = ?";
+        HashMap<Integer, Object> params = new HashMap<>();
+        params.put(1, nombre.trim());
+        params.put(2, apellido.trim());
+
+        ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);
+
+        if (resultados.next()) {
+            String cuit = resultados.getString("cuit");
+            String nombreFantasia = resultados.getString("nombreFantasia");
+            int dni = resultados.getInt("dni");
+            String telefono = resultados.getString("telefono");
+            String email = resultados.getString("email");
+
+            return new Proveedor(cuit, nombreFantasia, nombre, apellido, dni, telefono, email);
+        } else {
+            System.err.println("Error: No se encontró un proveedor con el nombre y apellido: " + nombre + " " + apellido);
+            return null;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
 }
     
     /*

@@ -582,20 +582,20 @@ public class Main extends javax.swing.JFrame {
 
         dgvProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "CÓDIGO", "NOMBRE", "PROVEEDOR", "CATEGORIA", "MODELO"
+                "CÓDIGO", "NOMBRE", "PROVEEDOR", "CATEGORIA", "MODELO", "null"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1217,17 +1217,33 @@ public class Main extends javax.swing.JFrame {
     if (fila >= 0) {
         String codigo = dgvProductos.getValueAt(fila, 0).toString();
         String nombre = dgvProductos.getValueAt(fila, 1).toString();
-        String proveedor = dgvProductos.getValueAt(fila, 2).toString();
+        String proveedorNombre = dgvProductos.getValueAt(fila, 2).toString();
         String categoria = dgvProductos.getValueAt(fila, 3).toString();
         String modelo = dgvProductos.getValueAt(fila, 4).toString();
 
-        ModificarProducto modificarProducto = new ModificarProducto(codigo, nombre, proveedor, categoria, modelo);
-        modificarProducto.setLocationRelativeTo(null);
-        modificarProducto.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        modificarProducto.setVisible(true);
+
+        if (dgvProductos.getColumnCount() > 5) {
+            int proveedorId = Integer.parseInt(dgvProductos.getValueAt(fila, 5).toString());
+
+
+            Proveedor proveedor = Proveedor.buscarPorId(proveedorId);
+            if (proveedor == null) {
+                JOptionPane.showMessageDialog(this, "Error: No se pudo encontrar el proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+
+            ModificarProducto modificarProducto = new ModificarProducto(codigo, nombre, proveedorNombre, modelo, categoria);
+            modificarProducto.setLocationRelativeTo(null);
+            modificarProducto.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+            modificarProducto.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: No se pudo obtener el ID del proveedor. La columna no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     } else {
         JOptionPane.showMessageDialog(this, "Por favor, selecciona un producto para modificar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
+    
     }//GEN-LAST:event_btnModificarProductoActionPerformed
 
     private void btnNuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProductoActionPerformed
@@ -1239,29 +1255,58 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNuevoProductoActionPerformed
 
     private void pnlProductoComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlProductoComponentShown
-        producto.Producto producto = new Producto();
-        
-        List<Producto> registros = producto.getAll();
-        
-        if (registros == null || registros.isEmpty()) {
+
+    DefaultTableModel modelo = new DefaultTableModel(
+        new Object[][]{}, 
+        new String[]{"Código", "Nombre", "Proveedor", "Categoría", "Modelo", "ID Proveedor"} 
+    ) {
+        boolean[] canEdit = new boolean[]{
+            false, false, false, false, false, false 
+        };
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit[columnIndex];
+        }
+    };
+
+
+    dgvProductos.setModel(modelo);
+
+
+    cargarDatosEnTabla();
+    
+    }//GEN-LAST:event_pnlProductoComponentShown
+    
+    private void cargarDatosEnTabla() {
+    List<Producto> registros = Producto.getAll();
+
+    if (registros == null || registros.isEmpty()) {
         System.out.println("Advertencia: No hay productos existentes en la base de datos.");
         return;
-        }
-        
-        DefaultTableModel modelo = (DefaultTableModel) dgvProductos.getModel();
-        modelo.setRowCount(0);
-        
-        for (Producto registro : registros) {
-            modelo.addRow(new Object[]{
+    }
+
+    DefaultTableModel modelo = (DefaultTableModel) dgvProductos.getModel();
+    modelo.setRowCount(0); // Limpiar la tabla antes de cargar nuevos datos
+
+    for (Producto registro : registros) {
+        modelo.addRow(new Object[]{
             registro.getCodigo(),
             registro.getNombre(),
             registro.getNombreProveedor(),
             registro.getNombreCategoria(),
-            registro.getNombreModelo()
-                    
+            registro.getNombreModelo(),
+            registro.getProveedor().getId() // ID del proveedor como columna oculta
         });
-        }
-    }//GEN-LAST:event_pnlProductoComponentShown
+    }
+
+    // Ocultar la columna del ID del proveedor
+    if (dgvProductos.getColumnModel().getColumnCount() > 5) {
+        dgvProductos.getColumnModel().getColumn(5).setMinWidth(0);
+        dgvProductos.getColumnModel().getColumn(5).setMaxWidth(0);
+        dgvProductos.getColumnModel().getColumn(5).setWidth(0);
+    }
+}
     
     
     /**
