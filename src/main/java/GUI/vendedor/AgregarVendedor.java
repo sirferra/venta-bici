@@ -183,6 +183,7 @@ public class AgregarVendedor extends javax.swing.JFrame {
             txtTelefono.setText("");
             txtEmail.setText("");
             txtSucursal.setText("");
+            this.dispose();
         }
         else{
             JOptionPane.showMessageDialog(this, "El DNI ingresado ya existe.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -74,24 +74,24 @@ public class Proveedor extends Persona {
 
     // Filtrado por cuit
     public static List<Proveedor> buscarPorFiltros(String dni, String nombre, String apellido) {
-    try {
-        StringBuilder sqlFiltro = new StringBuilder("SELECT * FROM Proveedor WHERE 1 = 1");
-        if (dni != null && !dni.isEmpty()) {
-            sqlFiltro.append(" AND dni LIKE '%").append(dni).append("%'");
+        try {
+            StringBuilder sqlFiltro = new StringBuilder("SELECT * FROM Proveedor WHERE 1 = 1");
+            if (dni != null && !dni.isEmpty()) {
+                sqlFiltro.append(" AND dni LIKE '%").append(dni).append("%'");
+            }
+            if (nombre != null && !nombre.isEmpty()) {
+                sqlFiltro.append(" AND nombre LIKE '%").append(nombre).append("%'");
+            }
+            if (apellido != null && !apellido.isEmpty()) {
+                sqlFiltro.append(" AND apellido LIKE '%").append(apellido).append("%'");
+            }
+            ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro.toString());
+            return Proveedor.fromResultSet(resultados);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        if (nombre != null && !nombre.isEmpty()) {
-            sqlFiltro.append(" AND nombre LIKE '%").append(nombre).append("%'");
-        }
-        if (apellido != null && !apellido.isEmpty()) {
-            sqlFiltro.append(" AND apellido LIKE '%").append(apellido).append("%'");
-        }
-        ResultSet resultados = Conexion.getInstance().executeQuery(sqlFiltro.toString());
-        return Proveedor.fromResultSet(resultados);
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
     
     //Crear proveedor
     public boolean crearProveedor() {
@@ -163,7 +163,7 @@ public class Proveedor extends Persona {
     public int buscarPorDni(String dni) {
         try {
             // Realizamos la consulta para obtener el proveedor por DNI 
-            String query = "SELECT id FROM proveedor WHERE dni = ?";
+            String query = "SELECT id FROM Proveedor WHERE dni = ?";
             // Utilizamos un parámetro para prevenir SQL Injection
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, dni);

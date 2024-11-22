@@ -145,7 +145,7 @@ public class Cliente extends Persona{
             if(id==0){
                 throw new Error("El id del cliente no existe");
             }
-            String query = "DELETE FROM cliente WHERE id = ?";
+            String query = "DELETE FROM Cliente WHERE id = ?";
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, id);
             Conexion.getInstance().executeQueryWithParams(query, params);
@@ -160,7 +160,7 @@ public class Cliente extends Persona{
     public static Cliente buscarPorDni(int dni) {
         try {
             // Realizamos la consulta para obtener el cliente por DNI 
-            String query = "SELECT * FROM cliente WHERE dni = " + dni;
+            String query = "SELECT * FROM Cliente WHERE dni = " + dni;
             // Ejecutamos la consulta y devolvemos el resultado
             ResultSet resultados = Conexion.getInstance().executeQuery(query);
             // Devolvemos el cliente encontrado (si existe)El indice de los resultSet arranca en 1
@@ -174,7 +174,7 @@ public class Cliente extends Persona{
     public static int buscarPorDni(String dni) {
         try {
             // Realizamos la consulta para obtener el cliente por DNI 
-            String query = "SELECT id FROM cliente WHERE dni = ?";
+            String query = "SELECT id FROM Cliente WHERE dni = ?";
             // Utilizamos un parámetro para prevenir SQL Injection
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, dni);
@@ -196,7 +196,7 @@ public class Cliente extends Persona{
     
     public static Cliente buscarPorId(int id) {
         try {
-            String query = "SELECT id FROM cliente WHERE id = ?";
+            String query = "SELECT id FROM Cliente WHERE id = ?";
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, id);
             ResultSet resultados = Conexion.getInstance().executeQueryWithParams(query, params);

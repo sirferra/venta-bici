@@ -216,7 +216,7 @@ public class Vendedor extends Persona {
     public static int buscarPorDni(String dni) {
         try {
             // Realizamos la consulta para obtener el cliente por DNI 
-            String query = "SELECT id FROM vendedor WHERE dni = ?";
+            String query = "SELECT id FROM Vendedor WHERE dni = ?";
             // Utilizamos un parámetro para prevenir SQL Injection
             HashMap<Integer, Object> params = new HashMap<>();
             params.put(1, dni);

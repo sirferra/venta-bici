@@ -57,7 +57,7 @@ CREATE TABLE Producto (
     proveedor_id INT NOT NULL,
     categoria_id INT NOT NULL,
     precio DOUBLE NOT NULL,
-    stock INT NOT NULL,
+    stock INT DEFAULT 0,
     modelo_id INT NOT NULL,
     FOREIGN KEY (categoria_id) REFERENCES Categoria(id) ON DELETE CASCADE,
     FOREIGN KEY (modelo_id) REFERENCES Modelo(id) ON DELETE CASCADE,
