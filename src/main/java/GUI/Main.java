@@ -105,6 +105,7 @@ public class Main extends javax.swing.JFrame {
         btnNuevoProducto = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         dgvProductos = new javax.swing.JTable();
+        btnLimpiarFiltrosProd = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -613,6 +614,13 @@ public class Main extends javax.swing.JFrame {
             dgvProductos.getColumnModel().getColumn(3).setResizable(false);
         }
 
+        btnLimpiarFiltrosProd.setText("Limpiar Filtros");
+        btnLimpiarFiltrosProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarFiltrosProdActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlProductoLayout = new javax.swing.GroupLayout(pnlProducto);
         pnlProducto.setLayout(pnlProductoLayout);
         pnlProductoLayout.setHorizontalGroup(
@@ -623,7 +631,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                     .addGroup(pnlProductoLayout.createSequentialGroup()
                         .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
                         .addComponent(btnEliminarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModificarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -641,8 +649,9 @@ public class Main extends javax.swing.JFrame {
                                 .addGroup(pnlProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 522, Short.MAX_VALUE)))
+                                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnLimpiarFiltrosProd, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlProductoLayout.setVerticalGroup(
@@ -669,7 +678,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel16))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscarProducto)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLimpiarFiltrosProd)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pnlPantalla.addTab("Productos", pnlProducto);
@@ -700,6 +711,9 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    
+    
 
     /************
     ***LISTADOS**
@@ -1130,8 +1144,29 @@ public class Main extends javax.swing.JFrame {
     /**************
     ***PRODUCTO****
     **************/
+    private DefaultTableModel modeloTabla;
+
+    private void inicializarTabla() {
+        DefaultTableModel modelo = new DefaultTableModel(
+        new Object[][]{}, 
+        new String[]{"Código", "Nombre", "Proveedor", "Categoría", "Modelo"}
+    ) {
+        boolean[] canEdit = new boolean[]{
+            false, false, false, false, false
+        };
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit[columnIndex];
+        }
+    };
+
+    dgvProductos.setModel(modelo);
+    modeloTabla = modelo;
+    }
+    
     private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
-    String codigo = txtCodigo.getText().trim();
+        String codigo = txtCodigo.getText().trim();
     String categoria = txtCategoria.getText().trim();
     String modelo = txtModelo.getText().trim();
 
@@ -1139,19 +1174,22 @@ public class Main extends javax.swing.JFrame {
 
     if (registros == null || registros.isEmpty()) {
         JOptionPane.showMessageDialog(this, "No hay productos que coincidan con los filtros.", "Sin resultados", JOptionPane.WARNING_MESSAGE);
+        modeloTabla.setRowCount(0); 
+        txtCodigo.setText("");
+        txtCategoria.setText("");
+        txtModelo.setText("");
+        cargarDatosEnTabla();
         return;
     }
 
-    DefaultTableModel modeloTabla = (DefaultTableModel) dgvProductos.getModel();
-
-    modeloTabla.setRowCount(0);
+    modeloTabla.setRowCount(0); 
 
     for (Producto registro : registros) {
         modeloTabla.addRow(new Object[]{
             registro.getCodigo(),
             registro.getNombre(),
-            registro.getNombreCategoria(),
             registro.getNombreProveedor(),
+            registro.getNombreCategoria(),
             registro.getNombreModelo()
         });
     }
@@ -1259,47 +1297,39 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNuevoProductoActionPerformed
 
     private void pnlProductoComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlProductoComponentShown
-
-  DefaultTableModel modelo = new DefaultTableModel(
-    new Object[][]{}, 
-    new String[]{"Código", "Nombre", "Proveedor", "Categoría", "Modelo"} 
-) {
-    boolean[] canEdit = new boolean[]{
-        false, false, false, false, false
-    };
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return canEdit[columnIndex];
-    }
-};
-
-dgvProductos.setModel(modelo);
-cargarDatosEnTabla();
-    
+    inicializarTabla();
+    cargarDatosEnTabla();
     }//GEN-LAST:event_pnlProductoComponentShown
+
+    private void btnLimpiarFiltrosProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarFiltrosProdActionPerformed
+        txtCodigo.setText("");
+        txtCategoria.setText("");
+        txtModelo.setText("");
+        cargarDatosEnTabla();
+    }//GEN-LAST:event_btnLimpiarFiltrosProdActionPerformed
+
     
     private void cargarDatosEnTabla() {
     List<Producto> registros = Producto.getAll();
 
-    // Verificar si la lista está vacía o nula
+
     if (registros == null || registros.isEmpty()) {
         System.out.println("Advertencia: No hay productos existentes en la base de datos.");
         return;
     }
 
-    // Obtener el modelo de la tabla
-    DefaultTableModel modelo = (DefaultTableModel) dgvProductos.getModel();
-    modelo.setRowCount(0); // Limpiar la tabla antes de cargar nuevos datos
 
-    // Cargar los datos en el modelo sin incluir el ID del proveedor
+    DefaultTableModel modelo = (DefaultTableModel) dgvProductos.getModel();
+    modelo.setRowCount(0); 
+
+
     for (Producto registro : registros) {
         modelo.addRow(new Object[]{
-            registro.getCodigo(),                 // Columna 0: Código del producto
-            registro.getNombre(),                 // Columna 1: Nombre del producto
-            registro.getNombreProveedor(),        // Columna 2: Nombre completo del proveedor (nombre + apellido)
-            registro.getNombreCategoria(),        // Columna 3: Nombre de la categoría
-            registro.getNombreModelo()            // Columna 4: Nombre del modelo
+            registro.getCodigo(),                 
+            registro.getNombre(),                 
+            registro.getNombreProveedor(),        
+            registro.getNombreCategoria(),       
+            registro.getNombreModelo()         
         });
     }
 }
@@ -1349,6 +1379,7 @@ cargarDatosEnTabla();
     private javax.swing.JButton btnEliminarProducto;
     private javax.swing.JButton btnEliminarProveedor;
     private javax.swing.JButton btnEliminarVendedor;
+    private javax.swing.JButton btnLimpiarFiltrosProd;
     private javax.swing.JButton btnModificarCliente;
     private javax.swing.JButton btnModificarProducto;
     private javax.swing.JButton btnModificarProveedor;
