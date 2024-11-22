@@ -99,4 +99,17 @@ public class MySqlDB {
         ps.execute();
         return ps.getResultSet();
     }
+
+    public int getIdFromLastInsert() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
