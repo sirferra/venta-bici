@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import venta.VentasHistorico;
 import GUI.vendedor.ModificarVendedor;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -16,15 +17,18 @@ import GUI.proveedor.CrearProveedor;
 import GUI.proveedor.ModificarProveedor;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
-
 import persona.Cliente;
 import persona.Vendedor;
 import GUI.vendedor.AgregarVendedor;
 import GUI.ventas.CrearVenta;
+import java.sql.ResultSet;
+import java.util.HashMap;
 import pedido.Pedido;
 import persona.Proveedor;
 import producto.Producto;
 import pedido.DetallePedido;
+import repositorio.Conexion;
+
 
 /**
  *
@@ -37,7 +41,6 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-        
     }
 
     //Metodo de rellenar tabla (insertar una vez listo el programa)
@@ -51,6 +54,8 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel28 = new javax.swing.JLabel();
+        btnBuscarVentas1 = new javax.swing.JButton();
         pnlPantalla = new javax.swing.JTabbedPane();
         pnlCliente = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -108,6 +113,7 @@ public class Main extends javax.swing.JFrame {
         btnNuevoProducto = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         dgvProductos = new javax.swing.JTable();
+        btnLimpiarFiltrosProd = new javax.swing.JButton();
         pnlVentas = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -134,8 +140,54 @@ public class Main extends javax.swing.JFrame {
         txtMasVendido = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
-        btnLimpiarFiltrosProd = new javax.swing.JButton();
-       // jPanel5 = new javax.swing.JPanel();
+        pnlHistorico = new javax.swing.JPanel();
+        lblFiltrosHistorico = new javax.swing.JLabel();
+        lblFechaHistorico = new javax.swing.JLabel();
+        txtNombreClienteHistorico = new javax.swing.JTextField();
+        txtApellidoClienteHistorico = new javax.swing.JTextField();
+        lblClienteHistorico = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        txtFechaHastaHistorico = new javax.swing.JTextField();
+        txtFechaDesdeHistorico = new javax.swing.JTextField();
+        jLabel35 = new javax.swing.JLabel();
+        txtNombreVendedorHistorico = new javax.swing.JTextField();
+        txtApellidoVendedorHistorico = new javax.swing.JTextField();
+        lblClienteHistorico1 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        btnBuscarHistorico = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        dgvHistorico = new javax.swing.JTable();
+        jLabel29 = new javax.swing.JLabel();
+        txtTotalHistorico = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        txtMasVendidoHistorico = new javax.swing.JTextField();
+        jLabel37 = new javax.swing.JLabel();
+        txtMontoMaxHistorico = new javax.swing.JTextField();
+        jLabel38 = new javax.swing.JLabel();
+        txtMontoMinHistorico = new javax.swing.JTextField();
+        lblFechaHistorico1 = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        txtMaximoHistorico = new javax.swing.JTextField();
+        txtMinimoHistorico = new javax.swing.JTextField();
+        btnLimpiarHistorico = new javax.swing.JButton();
+        jLabel41 = new javax.swing.JLabel();
+        txtMesMaximoHistorico = new javax.swing.JTextField();
+        jLabel42 = new javax.swing.JLabel();
+        txtMesMinimoHistorico = new javax.swing.JTextField();
+
+        jLabel28.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel28.setText("FILTROS");
+
+        btnBuscarVentas1.setText("Buscar");
+        btnBuscarVentas1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarVentas1ActionPerformed(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -227,9 +279,9 @@ public class Main extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane1))
                     .addGroup(pnlClienteLayout.createSequentialGroup()
-                        .addGap(0, 30, Short.MAX_VALUE)
+                        .addGap(0, 88, Short.MAX_VALUE)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 277, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 332, Short.MAX_VALUE)
                         .addComponent(btnEliminarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModificarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -279,7 +331,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscarCliente)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         pnlPantalla.addTab("Clientes", pnlCliente);
@@ -368,7 +420,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(pnlVendedoresLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlVendedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 877, Short.MAX_VALUE)
                     .addGroup(pnlVendedoresLayout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -420,7 +472,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscarVendedor)
-                .addGap(0, 77, Short.MAX_VALUE))
+                .addGap(0, 165, Short.MAX_VALUE))
         );
 
         pnlPantalla.addTab("Vendedores", pnlVendedores);
@@ -510,7 +562,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(pnlProveedoresLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 877, Short.MAX_VALUE)
                     .addGroup(pnlProveedoresLayout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -562,7 +614,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscarProveedor)
-                .addGap(0, 77, Short.MAX_VALUE))
+                .addGap(0, 165, Short.MAX_VALUE))
         );
 
         pnlPantalla.addTab("Proveedores", pnlProveedores);
@@ -657,10 +709,10 @@ public class Main extends javax.swing.JFrame {
             .addGroup(pnlProductoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 877, Short.MAX_VALUE)
                     .addGroup(pnlProductoLayout.createSequentialGroup()
                         .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 414, Short.MAX_VALUE)
                         .addComponent(btnEliminarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModificarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -680,7 +732,7 @@ public class Main extends javax.swing.JFrame {
                                     .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(btnLimpiarFiltrosProd, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 688, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlProductoLayout.setVerticalGroup(
@@ -707,10 +759,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel16))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscarProducto)
-                .addContainerGap(77, Short.MAX_VALUE))
-                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
                 .addComponent(btnLimpiarFiltrosProd)
-                //.addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pnlPantalla.addTab("Productos", pnlProducto);
@@ -885,7 +936,7 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(btnGenerarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(btnBuscarVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
         pnlVentasLayout.setVerticalGroup(
             pnlVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -940,6 +991,261 @@ public class Main extends javax.swing.JFrame {
         );
 
         pnlPantalla.addTab("Ventas", pnlVentas);
+
+        pnlHistorico.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                pnlHistoricoComponentShown(evt);
+            }
+        });
+
+        lblFiltrosHistorico.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFiltrosHistorico.setText("FILTROS");
+
+        lblFechaHistorico.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFechaHistorico.setText("Fecha");
+
+        lblClienteHistorico.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblClienteHistorico.setText("Cliente");
+
+        jLabel31.setText("Fecha desde:");
+
+        jLabel32.setText("Nombre:");
+
+        jLabel33.setText("Fecha hasta:");
+
+        jLabel34.setText("Apellido");
+
+        jLabel35.setText("Apellido");
+
+        lblClienteHistorico1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblClienteHistorico1.setText("Vendedor");
+
+        jLabel36.setText("Nombre:");
+
+        btnBuscarHistorico.setText("Buscar");
+        btnBuscarHistorico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarHistoricoActionPerformed(evt);
+            }
+        });
+
+        dgvHistorico.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane7.setViewportView(dgvHistorico);
+
+        jLabel29.setText("TOTAL:");
+
+        jLabel30.setText("Producto más vendido:");
+
+        jLabel37.setText("Monto Max:");
+
+        jLabel38.setText("Monto Min:");
+
+        lblFechaHistorico1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFechaHistorico1.setText("Monto");
+
+        jLabel39.setText("Minimo:");
+
+        jLabel40.setText("Maximo:");
+
+        btnLimpiarHistorico.setText("Limpiar filtros");
+        btnLimpiarHistorico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarHistoricoActionPerformed(evt);
+            }
+        });
+
+        jLabel41.setText("Mes Max:");
+
+        jLabel42.setText("Mes Min:");
+
+        javax.swing.GroupLayout pnlHistoricoLayout = new javax.swing.GroupLayout(pnlHistorico);
+        pnlHistorico.setLayout(pnlHistoricoLayout);
+        pnlHistoricoLayout.setHorizontalGroup(
+            pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel30)
+                            .addComponent(jLabel29))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtMasVendidoHistorico)
+                            .addComponent(txtTotalHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(63, 63, 63)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel37)
+                            .addComponent(jLabel38))
+                        .addGap(29, 29, 29)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtMontoMaxHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMontoMinHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel41)
+                            .addComponent(jLabel42))
+                        .addGap(29, 29, 29)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtMesMaximoHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMesMinimoHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 106, Short.MAX_VALUE))
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane7)
+                            .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                            .addComponent(jLabel35)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(txtApellidoVendedorHistorico))
+                                        .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                            .addComponent(jLabel36)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(lblClienteHistorico1)
+                                                .addComponent(txtNombreVendedorHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblFechaHistorico1)
+                                            .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                                .addComponent(jLabel39)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(txtMinimoHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(68, 68, 68)
+                                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                                .addComponent(jLabel31)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtFechaDesdeHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(lblFechaHistorico)
+                                            .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                                .addComponent(jLabel33)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(txtFechaHastaHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(67, 67, 67)
+                                                .addComponent(btnBuscarHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(btnLimpiarHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                                    .addComponent(jLabel34)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                    .addComponent(txtApellidoClienteHistorico))
+                                                .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                                    .addComponent(jLabel32)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(lblClienteHistorico)
+                                                        .addComponent(txtNombreClienteHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(lblFiltrosHistorico)
+                                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                                        .addComponent(jLabel40)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtMaximoHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
+        );
+        pnlHistoricoLayout.setVerticalGroup(
+            pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addComponent(lblClienteHistorico)
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel32)
+                            .addComponent(txtNombreClienteHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel34)
+                            .addComponent(txtApellidoClienteHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addComponent(lblFiltrosHistorico)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblClienteHistorico1)
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel36)
+                            .addComponent(txtNombreVendedorHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel35)
+                            .addComponent(txtApellidoVendedorHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(19, 19, 19)
+                .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFechaHistorico)
+                    .addComponent(lblFechaHistorico1))
+                .addGap(5, 5, 5)
+                .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtMinimoHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel39))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel40)
+                            .addComponent(txtMaximoHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtFechaDesdeHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel31))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel33)
+                            .addComponent(txtFechaHastaHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscarHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLimpiarHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(323, 323, 323)))
+                .addGap(18, 18, 18)
+                .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel30)
+                            .addComponent(txtMasVendidoHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel37))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtTotalHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel29)
+                            .addComponent(jLabel38)))
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addComponent(txtMontoMaxHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtMontoMinHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel42)))
+                    .addComponent(jLabel41)
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addComponent(txtMesMaximoHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtMesMinimoHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(39, 39, 39))
+        );
+
+        pnlPantalla.addTab("Historico", pnlHistorico);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1698,7 +2004,7 @@ public class Main extends javax.swing.JFrame {
             registro.getNombreModelo()         
         });
         }
-    }//GEN-LAST:event_pnlProductoComponentShown
+    }                                          
 
     
     /**************
@@ -1734,6 +2040,216 @@ public class Main extends javax.swing.JFrame {
     private void btnBuscarVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVentasActionPerformed
         listarFiltrosPedidos();
     }//GEN-LAST:event_btnBuscarVentasActionPerformed
+
+    private void btnBuscarVentas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVentas1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarVentas1ActionPerformed
+
+    
+    
+      /**************
+    ****HISTORICO****
+    **************/
+    private void btnBuscarHistoricoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarHistoricoActionPerformed
+    String nombreVendedor = txtNombreVendedorHistorico.getText().trim();
+    String apellidoVendedor = txtApellidoVendedorHistorico.getText().trim();
+    String nombreCliente = txtNombreClienteHistorico.getText().trim();
+    String apellidoCliente = txtApellidoClienteHistorico.getText().trim();
+    String fechaDesde = txtFechaDesdeHistorico.getText().trim();
+    String fechaHasta = txtFechaHastaHistorico.getText().trim();
+    String montoMinimo = txtMinimoHistorico.getText().trim();
+    String montoMaximo = txtMaximoHistorico.getText().trim();
+
+    try {
+        if (!fechaDesde.isEmpty()) {
+            VentasHistorico.convertirFecha(fechaDesde);
+        }
+        if (!fechaHasta.isEmpty()) {
+            VentasHistorico.convertirFecha(fechaHasta);
+        }
+
+        if (!montoMinimo.isEmpty()) {
+            double montoMin = Double.parseDouble(montoMinimo);
+            if (montoMin < 0) {
+                JOptionPane.showMessageDialog(this, "El monto mínimo no puede ser negativo.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        if (!montoMaximo.isEmpty()) {
+            double montoMax = Double.parseDouble(montoMaximo);
+            if (montoMax < 0) {
+                JOptionPane.showMessageDialog(this, "El monto máximo no puede ser negativo.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        if (!montoMinimo.isEmpty() && !montoMaximo.isEmpty()) {
+            double montoMin = Double.parseDouble(montoMinimo);
+            double montoMax = Double.parseDouble(montoMaximo);
+            if (montoMin > montoMax) {
+                JOptionPane.showMessageDialog(this, "El monto mínimo no puede ser mayor al monto máximo.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        ResultSet rs = VentasHistorico.obtenerVentasHistoricas(
+            nombreVendedor.isEmpty() ? null : nombreVendedor,
+            apellidoVendedor.isEmpty() ? null : apellidoVendedor,
+            nombreCliente.isEmpty() ? null : nombreCliente,
+            apellidoCliente.isEmpty() ? null : apellidoCliente,
+            fechaDesde.isEmpty() ? null : fechaDesde,
+            fechaHasta.isEmpty() ? null : fechaHasta,
+            montoMinimo.isEmpty() ? null : montoMinimo,
+            montoMaximo.isEmpty() ? null : montoMaximo
+        );
+
+        if (rs == null || !rs.isBeforeFirst()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron datos para mostrar.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        VentasHistorico.cargarDatosHistoricos(
+            rs, dgvHistorico,
+            txtTotalHistorico, txtMontoMaxHistorico,
+            txtMontoMinHistorico, txtMesMaximoHistorico,
+            txtMesMinimoHistorico, txtMasVendidoHistorico
+        );
+
+        txtNombreVendedorHistorico.setText("");
+        txtApellidoVendedorHistorico.setText("");
+        txtNombreClienteHistorico.setText("");
+        txtApellidoClienteHistorico.setText("");
+        txtFechaDesdeHistorico.setText("");
+        txtFechaHastaHistorico.setText("");
+        txtMontoMinHistorico.setText("");
+        txtMontoMaxHistorico.setText("");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Los montos deben ser números válidos mayores o iguales a 0.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al buscar ventas históricas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_btnBuscarHistoricoActionPerformed
+
+    private void pnlHistoricoComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlHistoricoComponentShown
+        cargarDatosHistoricos();
+    }//GEN-LAST:event_pnlHistoricoComponentShown
+
+    private void btnLimpiarHistoricoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarHistoricoActionPerformed
+       txtNombreVendedorHistorico.setText("");
+       txtApellidoVendedorHistorico.setText("");
+       txtNombreClienteHistorico.setText("");
+       txtApellidoClienteHistorico.setText("");
+       txtFechaDesdeHistorico.setText("");
+       txtFechaHastaHistorico.setText("");
+       txtMinimoHistorico.setText("");
+       txtMaximoHistorico.setText("");
+       
+       cargarDatosHistoricos();
+    }//GEN-LAST:event_btnLimpiarHistoricoActionPerformed
+    
+    private void cargarDatosHistoricos() {
+    try {
+        String sql = """
+            SELECT 
+                YEAR(p.fecha) AS anio,
+                MONTH(p.fecha) AS mes,
+                SUM(p.total) AS total_mes,
+                (
+                    SELECT producto.nombre
+                    FROM DetallePedido dp
+                    INNER JOIN Producto producto ON dp.producto_id = producto.id
+                    GROUP BY producto.id
+                    ORDER BY SUM(dp.cantidad) DESC
+                    LIMIT 1
+                ) AS producto_mas_vendido
+            FROM Pedido p
+            GROUP BY YEAR(p.fecha), MONTH(p.fecha)
+            ORDER BY YEAR(p.fecha) DESC, MONTH(p.fecha);
+        """;
+
+        ResultSet resultados = Conexion.getInstance().executeQuery(sql);
+
+        // Crear modelo de tabla
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Año");
+        String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                          "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+        for (String mes : meses) {
+            modelo.addColumn(mes);
+        }
+
+        // Mapear datos por año y mes
+        HashMap<Integer, Double[]> datosPorAño = new HashMap<>();
+        double totalGeneral = 0;
+        double montoMaximo = Double.MIN_VALUE;
+        double montoMinimo = Double.MAX_VALUE;
+        int mesMaximo = 0, mesMinimo = 0, anioMaximo = 0, anioMinimo = 0;
+        String productoMasVendido = "";
+
+        while (resultados.next()) {
+            int anio = resultados.getInt("anio");
+            int mes = resultados.getInt("mes");
+            double totalMes = resultados.getDouble("total_mes");
+
+            // Actualizar datos generales
+            totalGeneral += totalMes;
+            if (totalMes > montoMaximo) {
+                montoMaximo = totalMes;
+                mesMaximo = mes;
+                anioMaximo = anio;
+            }
+            if (totalMes < montoMinimo) {
+                montoMinimo = totalMes;
+                mesMinimo = mes;
+                anioMinimo = anio;
+            }
+
+            if (productoMasVendido.isEmpty()) {
+                productoMasVendido = resultados.getString("producto_mas_vendido");
+            }
+
+            // Añadir datos al mapa
+            datosPorAño.putIfAbsent(anio, new Double[12]);
+            datosPorAño.get(anio)[mes - 1] = totalMes;
+        }
+
+        // Rellenar modelo de tabla
+        for (var entry : datosPorAño.entrySet()) {
+            Object[] fila = new Object[13];
+            fila[0] = entry.getKey(); // Año
+            Double[] totalesMeses = entry.getValue();
+            for (int i = 0; i < 12; i++) {
+                fila[i + 1] = (totalesMeses[i] != null) ? String.format("%.2f", totalesMeses[i]) : "0.00";
+            }
+            modelo.addRow(fila);
+        }
+
+        // Asignar modelo a la tabla
+        dgvHistorico.setModel(modelo);
+
+        // Mostrar datos en campos de texto
+        txtTotalHistorico.setText(String.format("%.2f", totalGeneral));
+        txtMontoMaxHistorico.setText(String.format("%.2f", montoMaximo));
+        txtMontoMinHistorico.setText(String.format("%.2f", montoMinimo));
+        txtMesMaximoHistorico.setText(String.format("%s %d", meses[mesMaximo - 1], anioMaximo));
+        txtMesMinimoHistorico.setText(String.format("%s %d", meses[mesMinimo - 1], anioMinimo));
+        txtMasVendidoHistorico.setText(productoMasVendido);
+        
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al cargar los datos históricos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+
+
+    
+
+
+    
+    
     
     /**
      * @param args the command line arguments
@@ -1772,16 +2288,19 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarCliente;
+    private javax.swing.JButton btnBuscarHistorico;
     private javax.swing.JButton btnBuscarProducto;
     private javax.swing.JButton btnBuscarProveedor;
     private javax.swing.JButton btnBuscarVendedor;
     private javax.swing.JButton btnBuscarVentas;
+    private javax.swing.JButton btnBuscarVentas1;
     private javax.swing.JButton btnEliminarCliente;
     private javax.swing.JButton btnEliminarProducto;
     private javax.swing.JButton btnEliminarProveedor;
     private javax.swing.JButton btnEliminarVendedor;
     private javax.swing.JButton btnGenerarVenta;
     private javax.swing.JButton btnLimpiarFiltrosProd;
+    private javax.swing.JButton btnLimpiarHistorico;
     private javax.swing.JButton btnModificarCliente;
     private javax.swing.JButton btnModificarProducto;
     private javax.swing.JButton btnModificarProveedor;
@@ -1792,6 +2311,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnNuevoVendedor;
     private javax.swing.JTable dgvClientes;
     private javax.swing.JTable dgvDetalle;
+    private javax.swing.JTable dgvHistorico;
     private javax.swing.JTable dgvProductos;
     private javax.swing.JTable dgvProveedores;
     private javax.swing.JTable dgvVendedores;
@@ -1816,8 +2336,23 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1829,7 +2364,14 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JLabel lblClienteHistorico;
+    private javax.swing.JLabel lblClienteHistorico1;
+    private javax.swing.JLabel lblFechaHistorico;
+    private javax.swing.JLabel lblFechaHistorico1;
+    private javax.swing.JLabel lblFiltrosHistorico;
     private javax.swing.JPanel pnlCliente;
+    private javax.swing.JPanel pnlHistorico;
     private javax.swing.JTabbedPane pnlPantalla;
     private javax.swing.JPanel pnlProducto;
     private javax.swing.JPanel pnlProveedores;
@@ -1837,23 +2379,37 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel pnlVentas;
     private javax.swing.JTextField txtApellidoCli;
     private javax.swing.JTextField txtApellidoClient;
+    private javax.swing.JTextField txtApellidoClienteHistorico;
     private javax.swing.JTextField txtApellidoProv;
     private javax.swing.JTextField txtApellidoVen;
     private javax.swing.JTextField txtApellidoVend;
+    private javax.swing.JTextField txtApellidoVendedorHistorico;
     private javax.swing.JTextField txtCategoria;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDniCli;
     private javax.swing.JTextField txtDniProv;
     private javax.swing.JTextField txtDniVen;
     private javax.swing.JTextField txtFechaDesde;
+    private javax.swing.JTextField txtFechaDesdeHistorico;
     private javax.swing.JTextField txtFechaHasta;
+    private javax.swing.JTextField txtFechaHastaHistorico;
     private javax.swing.JTextField txtMasVendido;
+    private javax.swing.JTextField txtMasVendidoHistorico;
+    private javax.swing.JTextField txtMaximoHistorico;
+    private javax.swing.JTextField txtMesMaximoHistorico;
+    private javax.swing.JTextField txtMesMinimoHistorico;
+    private javax.swing.JTextField txtMinimoHistorico;
     private javax.swing.JTextField txtModelo;
+    private javax.swing.JTextField txtMontoMaxHistorico;
+    private javax.swing.JTextField txtMontoMinHistorico;
     private javax.swing.JTextField txtNombreCli;
     private javax.swing.JTextField txtNombreClient;
+    private javax.swing.JTextField txtNombreClienteHistorico;
     private javax.swing.JTextField txtNombreProv;
     private javax.swing.JTextField txtNombreVen;
     private javax.swing.JTextField txtNombreVend;
+    private javax.swing.JTextField txtNombreVendedorHistorico;
     private javax.swing.JTextField txtTotal;
+    private javax.swing.JTextField txtTotalHistorico;
     // End of variables declaration//GEN-END:variables
 }

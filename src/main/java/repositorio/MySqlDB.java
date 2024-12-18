@@ -91,14 +91,24 @@ public class MySqlDB {
     }
     
     //Ejecuta una instruccion SQL con parametros (provenientes de un hashmap)y devuelve un ResultSet
-    public ResultSet executeQueryWithParams(String query, HashMap<Integer, Object> parametros) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(query);
-        for (Map.Entry<Integer, Object> entry : parametros.entrySet()) {
-            ps.setObject(entry.getKey(), entry.getValue());
+public ResultSet executeQueryWithParams(String sql, HashMap<Integer, Object> parametros) throws SQLException {
+    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+    for (Map.Entry<Integer, Object> entry : parametros.entrySet()) {
+        if (entry.getValue() == null) {
+            preparedStatement.setNull(entry.getKey(), Types.NULL);
+        } else {
+            preparedStatement.setObject(entry.getKey(), entry.getValue());
         }
-        ps.execute();
-        return ps.getResultSet();
     }
+
+    // Depuración: Imprime los parámetros configurados
+    System.out.println("SQL Query: " + sql);
+    parametros.forEach((key, value) -> {
+        System.out.println("Parameter " + key + ": " + value);
+    });
+
+    return preparedStatement.executeQuery();
+}
 
     public int getIdFromLastInsert() {
         try {

@@ -4,10 +4,13 @@
  */
 package venta;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import repositorio.Conexion;
+import repositorio.MySqlDB;
 
 /**
  *
@@ -210,19 +213,53 @@ public class Venta {
             return null;
         }
     }
+    
+        
+    
+    public static boolean validarExistenciaVendedor(String nombre, String apellido) {
+    String sql = "SELECT COUNT(*) AS total FROM Vendedor WHERE (nombre LIKE ? OR ? = '') AND (apellido LIKE ? OR ? = '')";
+    try {
+        HashMap<Integer, Object> params = new HashMap<>();
+        params.put(1, "%" + nombre + "%");
+        params.put(2, nombre);
+        params.put(3, "%" + apellido + "%");
+        params.put(4, apellido);
+        ResultSet rs = Conexion.getInstance().executeQueryWithParams(sql, params);
+        if (rs.next()) {
+            return rs.getInt("total") > 0;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    public static boolean validarExistenciaCliente(String nombre, String apellido) {
+        String sql = "SELECT COUNT(*) AS total FROM Cliente WHERE (nombre LIKE ? OR ? = '') AND (apellido LIKE ? OR ? = '')";
+        try {
+            HashMap<Integer, Object> params = new HashMap<>();
+            params.put(1, "%" + nombre + "%");
+            params.put(2, nombre);
+            params.put(3, "%" + apellido + "%");
+            params.put(4, apellido);
+            ResultSet rs = Conexion.getInstance().executeQueryWithParams(sql, params);
+            if (rs.next()) {
+                return rs.getInt("total") > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
-    
-    
- /*
-    Posible tabla ventas, la imagine para este crud
-  * CREATE TABLE Venta (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    cliente VARCHAR(100),
-    producto VARCHAR(100),
-    cantidad INT,
-    total DECIMAL(10, 2)
-);
-  */
+
     
 }
+
+
+
+    
+
+    
+
